@@ -1,0 +1,140 @@
+.App{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    }
+    .sidebarAndPage{
+      display: flex;
+    flex-direction: row;
+    flex: 1;
+    }
+    .HeaderSection{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 50px;
+        padding: 5px 20px;
+        border-bottom:  1px solid rgb(112, 110, 110);
+
+    }
+    .FooterSection{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 50px;
+        border-top:  1px solid rgb(112, 110, 110);
+
+
+    }
+  
+    .SellerPanel{
+      width: 150px;
+      display: flex;
+      flex-direction: column;
+       padding: 2rem;
+
+       background-color: azure;
+       border-right: 1px solid rgb(148, 147, 147);
+       transition: width 1s ease-in-out;
+    }
+    .SellerPanel .options {
+      display: flex;
+      transition: display 0.1s ease-in-out;      }
+    .PanelSideBar .options:hover {
+        background-color: rgb(106, 114, 114);
+        padding: 3px 2px;
+        border-radius: 5px;
+     
+  }
+    
+    
+    .SellerPanel.closed{
+        width: 20px; 
+
+    }
+ 
+  
+    .SellerPanel .options:hover {
+        background-color: rgb(39, 46, 46);
+        padding: 3px 2px;
+        border-radius: 5px;
+      }
+    
+    .SellerPanel .toggleButton{
+      text-align: center;
+      padding: 3px;
+      margin-left: 18px;
+      margin-bottom:34px;
+      background-color: white;
+      border-radius: 10px;
+      transform: translate(-50%, 50%);
+      display: flex;
+      justify-content: center;
+      align-items: center; 
+      width: 30px; 
+      height: 30px;
+    }
+    .SellerPanel span{
+        padding:  5px;
+        margin-top:10px ;
+        margin-bottom:10px ;
+      }
+      .SellerPanel div{
+        margin-top:10px ;
+        margin-bottom:10px ;
+      }
+      .PagesContents{
+        padding: 2rem;
+      }
+
+      .headerIcons span{
+        font-size: 25px;
+        margin: 5px;
+      }
+      .custom-table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      .custom-table th, .custom-table td {
+        border: 1px solid black;
+        padding: 8px;
+      }
+      
+      .custom-table th {
+        background-color: #f2f2f2;
+      }
+      
+      .custom-table tr:hover {
+        background-color: #f5f5f5;
+      }
+        
+      @media  (max-width: 768px) {
+        .SellerPanel .options:last-child span:last-child {
+            display: none;
+          }
+          .SellerPanel .options {
+           font-size: 25px;
+          }
+ }
+    @media  (max-width: 577px) {
+        .sidebarAndPage{
+            display: flex;
+          flex-direction: column;
+          flex: 1;
+          }
+        .SellerPanel {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items:center ;
+            height:0;
+        } 
+        .SellerPanel .toggleButton{
+           display: none;
+          }
+ }
+          

@@ -1,0 +1,136 @@
+.App{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    }
+    .sidebarAndPage{
+      display: flex;
+    flex-direction: row;
+    flex: 1;
+    }
+    .PanelHeader{
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 20px;
+        border-bottom: 1px solid rgb(66, 65, 65);
+        
+    }
+    .PanelFooter{
+        border-top: 1px solid rgb(66, 65, 65);
+        padding: 4px 20px  4px 20px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        height: 50px;
+    }
+    .PanelSideBar{
+      width: 150px;
+       display: flex;
+       flex-direction: column;
+        padding: 2rem;
+
+        background-color: azure;
+        border-right: 1px solid rgb(148, 147, 147);
+        transition: width 1s ease-in-out;
+    }
+    .PanelSideBar .options {
+       
+        
+      display: flex;
+      transition: display 0.1s ease-in-out;      }
+    .PanelSideBar .options:hover {
+        background-color: rgb(106, 114, 114);
+        padding: 3px 2px;
+        border-radius: 5px;
+      }
+      .PanelSideBar.closed {
+        width: 10px; 
+      }
+    .PanelSideBar .toggleButton{
+        text-align: center;
+        padding: 3px;
+        margin-left: 18px;
+        margin-bottom:34px;
+        background-color: white;
+        border-radius: 10px;
+        transform: translate(-50%, 50%);
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        width: 30px; 
+        height: 30px;
+      }
+       .PanelSideBar span{
+      padding: 5px;
+      margin-top:10px ;
+      margin-bottom:10px ;
+    }
+    .PanelSideBar div{
+        margin-top:10px ;
+        margin-bottom:10px ;
+      }
+    .PanelPages{
+        padding: 2rem;
+
+    }
+    .card-Row{
+     
+    display: flex;
+    flex-direction: row;
+    row-gap: 10px;
+    justify-content:center;
+    }
+    .card-container {
+      background-color: rgb(214, 219, 219);
+      border-radius: 10px;
+      width: 10rem;
+      height: 10rem;
+      margin: 10px; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-body .icon {
+      display: flex;
+      justify-content: center;
+      
+
+    }
+    
+    .card-body span {
+      font-size: 25px;
+      margin: 10px;
+    }
+    
+    
+    @media  (max-width: 768px) {
+        .PanelSideBar .options:last-child span:last-child {
+            display: none;
+          }
+          .PanelSideBar .options {
+           font-size: 25px;
+          }
+ }
+    @media  (max-width: 577px) {
+        .sidebarAndPage{
+            display: flex;
+          flex-direction: column;
+          flex: 1;
+          }
+        .PanelSideBar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items:center ;
+            height:0;
+        } 
+        .PanelSideBar .toggleButton{
+           display: none;
+          }
+ }
+          
