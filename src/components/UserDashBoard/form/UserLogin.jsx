@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-// import { userAuthentic } from '../redux/slice/user';
+import { userAuthentic } from '../../Redux/Slice/user';
 import axios from 'axios';
 import '../form/style.css';
 
@@ -17,8 +17,8 @@ function UserLogin() {
   const [show , setShow] = useState(true)
 
  
-//   const user = useSelector(state => state.auth.user);
-//   const userRole = useSelector(state => state.auth.user?.role);
+  const user = useSelector(state => state.auth.user);
+  const userRole = useSelector(state => state.auth.user?.role);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -29,11 +29,11 @@ function UserLogin() {
       }, { withCredentials: true });
       
       if (response && response.data) {
-        // if (response.data.success) {
-        // //   dispatch(userAuthentic({
-        // //     user: response.data.user,
-        // //     token: response.data.token,
-        //   }));
+        if (response.data.success) {
+          dispatch(userAuthentic({
+            user: response.data.user,
+            token: response.data.token,
+          }));
         console.log("hi");
         console.log(response.data);
         toast.success(response.data.msg);
@@ -41,24 +41,24 @@ function UserLogin() {
       }else {
           toast.error(response.data.msg);
         }
-      
+      }
     } catch (error) {
       console.error("Error during registration:", error);
       toast.error(error.response.data.message);
     }
   }
 
-//   useEffect(() => {
-//     if (userRole === "admin") {
-//       navigate('/admin-dashboard');
-//     } else if(userRole === "seller") {
-//       navigate('/S-dashbord');
-//     }
-//      else if(userRole === "user") {
-//       navigate('/');
-//     }
+  useEffect(() => {
+    if (userRole === "admin") {
+      navigate('/admin');
+    } else if(userRole === "seller") {
+      navigate('/seller');
+    }
+     else if(userRole === "user") {
+      navigate('/');
+    }
    
-//   }, [userRole, navigate]);
+  }, [userRole, navigate]);
 const handleHide = ( ) =>{
   setShow(!show)
 }

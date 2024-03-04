@@ -13,6 +13,7 @@ import Store from './pages/SellerPanel/Store';
 import Users from './pages/SellerPanel/Users';
 import Order from './pages/SellerPanel/Order';
 import UserLogin from './components/UserDashBoard/form/UserLogin';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
