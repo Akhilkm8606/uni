@@ -8,19 +8,22 @@ function Dashboard() {
   
   const items = [
     {
-      icon: < AiOutlineShoppingCart />,
+      icon: < AiOutlineShoppingCart 
+      style={{color:"red"}} />,
       title: "Orders",
-      value: 123
+      value: 12345
     },
     {
-      icon: <AiOutlineUser />,
+      icon: <AiOutlineUser
+      style={{color:"blue"}} />,
       title: "Usres",
-      value: 123
+      value: 12345
     },
     {
-      icon: <AiOutlineShop />,
+      icon: <AiOutlineShop 
+      style={{color:"green"}} />,
       title: "Store",
-      value: 123
+      value: 12345
     },
   ];
 
@@ -30,14 +33,16 @@ function Dashboard() {
         <h2>DASHBOARD</h2>
       </Row>
       <Row>
-        <Row className='card-Row' >
+        <Row className='card-Row'>
         {items.map((item, index) => (
           <div className='card-container' key={index}>
             <Card className='card'>
               <Card.Body className='card-body'>
                 <span className='icon'>{item.icon}</span>
+                <div className='items'>
                 <span>{item.title}</span>
-                <span>{item.value}</span>
+                <span>{item.value.toLocaleString()}</span>                 </div>
+                
               </Card.Body>
             </Card>
           </div>
@@ -45,8 +50,16 @@ function Dashboard() {
         </Row>
 
       </Row>
+      <div>
+      jkjkjkj
+      </div>
     </div>
+   
   );
 }
+
+
+
+
 
 export default Dashboard;

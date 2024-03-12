@@ -43,7 +43,7 @@
     .SellerPanel .options {
       display: flex;
       transition: display 0.1s ease-in-out;      }
-    .PanelSideBar .options:hover {
+    .SellerPanel .options:hover {
         background-color: rgb(106, 114, 114);
         padding: 3px 2px;
         border-radius: 5px;

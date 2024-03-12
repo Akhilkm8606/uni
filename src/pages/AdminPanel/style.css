@@ -1,8 +1,140 @@
-.usersList{
-  background-color: aquamarine;
-  color: brown;
+
+.custom-table {
+  border-collapse: collapse; 
+  width: 600px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
 }
-.table th{
-    width: 200px;
-    color: #d61111;
+
+.custom-table th,
+.custom-table td {
+  width: fit-content;
+  border-bottom: 1px solid rgb(145, 145, 145); 
+  text-align: left;
+  padding: 10px;
+}
+
+.custom-table th {
+  background-color: #f2f2f2; 
+}
+.page-list{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 20px;
+ 
+}
+.page-list button{
+ 
+  margin: 20px;
+ 
+}
+.product-page {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 20px;
+}
+.pro-head{
+display: flex;
+flex-direction: row;
+justify-content: flex-start;
+gap: 30px;
+
+}
+.ProfileData {
+  padding: 30px;
+  width: 400px;
+  height: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+.ProfileData span{
+  margin-bottom: 10px;
+}
+.ProfileEdit{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px 30px;
+  height: 400px;
+
+}
+.ProfileEdit input{
+  width: 300px;
+  height: 30px;
+  margin-bottom: 10px;
+  border: none;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+.ProfileEdit input::placeholder{
+  padding-left: 20px;
+
+}
+.submitLink{
+  margin: 10px;
+  text-decoration: none;
+  background-color: rgb(96, 96, 171);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px ;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+
+}
+.deleteA-C{
+  margin: 20px;
+  width:90%;
+border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 200px;
+
+
+
+  
+}
+.deleteA-C .form{
+  padding-left: 20px;
+  padding-top: 10px;
+}
+.checkInput{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+.Dltbtn{
+  margin-left: 20px;
+  margin-top: 10px;
+  border-radius: 8px;
+  padding: 10px 10px;
+  border: none;
+  background-color: rgb(181, 77, 28);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+@media  (max-width: 768px) {
+  .pro-head{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    
+    }
+    .ProfileEdit{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      padding: 10px 30px;
+      height: 400px;
+    
+    }
 }

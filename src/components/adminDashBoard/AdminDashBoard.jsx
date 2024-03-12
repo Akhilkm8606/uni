@@ -9,12 +9,12 @@ function DashBoard() {
   const [selectedOption, setSelectedOption] = useState('Admin-dashBoard'); // State to track selected option
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option); // Update selected option
+    setSelectedOption(option);
   };
 
   return (
     <div className="App">
-      <Header/>
+      <Header handleOptionClick={handleOptionClick} />
       <div className='sidebarAndPage'>
         <Sidebar handleOptionClick={handleOptionClick} /> 
         <PageContent option={selectedOption} />

@@ -1,11 +1,12 @@
 import React from 'react'
+import { Card } from 'react-bootstrap';
 import { IoMdNotifications, IoIosMail } from "react-icons/io";
 
 function Header() {
     return (
         <div className='HeaderSection'>
             <div>
-                profile
+            
             </div>
             <div>
                 profile

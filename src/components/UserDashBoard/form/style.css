@@ -5,6 +5,7 @@
     width: 100%;
     align-items: center;
    height: 100vh;
+   background-color: rgb(13, 113, 53);
 }
 .registration-container form{
     display: flex;
@@ -13,13 +14,19 @@
     column-gap: 10px;
     width: 400px;
     align-items: center;
-    border: 1px solid;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(214, 204, 204, 0.19);
     padding: 30px;
+}
+.form h2{
+    color: black;
 }
 .registration-container form input {
     margin: 10px;
     width: 300px;
     padding: 10px;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(224, 224, 224, 0.19);
+
 
 }
 .bottom{
@@ -29,11 +36,15 @@
     align-items: center;
     gap: 100px;
     text-decoration: none;
+    
 }
 .bottom .btn{
     text-decoration: none;
     color: black;
-    border: 1px solid rgb(148, 146, 146);
     padding: 4px;
     border-radius: 10px;
+}
+.btn{
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(224, 224, 224, 0.19);
 }

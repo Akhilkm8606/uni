@@ -6,99 +6,70 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userAuthentic } from '../../Redux/Slice/user';
 import axios from 'axios';
 import '../form/style.css';
-
+import UserSignUp from './UserSignUp';
 
 function UserLogin() {
     const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const userRole = useSelector(state => state.auth.user?.role);
 
-  const [show , setShow] = useState(true)
-
- 
-  const user = useSelector(state => state.auth.user);
-  const userRole = useSelector(state => state.auth.user?.role);
-
-  const handleSubmit = async e => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/login', {
-        email,
-        password,
-      }, { withCredentials: true });
-      
-      if (response && response.data) {
-        if (response.data.success) {
-          dispatch(userAuthentic({
-            user: response.data.user,
-            token: response.data.token,
-          }));
-        console.log("hi");
-        console.log(response.data);
-        toast.success(response.data.msg);
-
-      }else {
-          toast.error(response.data.msg);
+    const handleSubmit = async e => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:5000/login', {
+                email,
+                password,
+            }, { withCredentials: true });
+            
+            if (response && response.data) {
+                if (response.data.success) {
+                    dispatch(userAuthentic({
+                        user: response.data.user,
+                        token: response.data.token,
+                    }));
+                    toast.success(response.data.msg);
+                    handleRedirect(response.data.user.role);
+                } else {
+                    toast.error(response.data.msg);
+                }
+            }
+        } catch (error) {
+            console.error("Error during login:", error);
+            toast.error(error.response?.data?.message || "An error occurred while logging in.");
         }
-      }
-    } catch (error) {
-      console.error("Error during registration:", error);
-      toast.error(error.response.data.message);
     }
-  }
 
-  useEffect(() => {
-    if (userRole === "admin") {
-      navigate('/admin');
-    } else if(userRole === "seller") {
-      navigate('/seller');
+    const handleRedirect = (role) => {
+        if (role === "admin") {
+            navigate('/admin');
+        } else if (role === "seller") {
+            navigate('/seller');
+        } else if (role === "user") {
+            navigate('/');
+        } else {
+            navigate('/'); // Fallback redirection
+        }
     }
-     else if(userRole === "user") {
-      navigate('/');
-    }
-   
-  }, [userRole, navigate]);
-const handleHide = ( ) =>{
-  setShow(!show)
-}
-  return (
-    <div className='registration-container'>
-     {show ? (
-      <div>
-      <form onSubmit={handleSubmit}>
-        <h2>signup</h2>
-        <input id='email' type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder='Email' />
-        <input id='password' type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder='Password' />
-        <button className='btn' type="submit">signup</button>
-        <div className='bottom'>
-          <p>Already have an account? </p>
-          <Link className='btn' onClick={handleHide}  to="">Log In </Link>
+
+    return (
+        <div className='registration-container'>
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <h2>LogIn</h2>
+                    <input id='email' type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder='Email' />
+                    <input id='password' type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder='Password' />
+                    <button className='btn' type="submit">Log In</button>
+                    <div className='bottom'>
+                        <p>Don't have an account? </p>
+                        <Link className='btn' to="/signup">Sign up</Link>
+                    </div>
+                </form>
+            </div>
+            <ToastContainer />
         </div>
-      </form>
-      </div>
-       ) : (
-      <div>
-      <form onSubmit={handleSubmit}>
-        <h2>LogIn</h2>
-        <input id='email' type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder='Email' />
-        <input id='password' type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder='Password' />
-        <button className='btn' type="submit">Log In </button>
-        <div className='bottom'>
-          <p>Don't have an account? </p>
-          <Link className='btn' onClick={handleHide} to="">signup</Link>
-        </div>
-      </form>
-      </div>
-       )}
-    
-  
-    <ToastContainer />
-  </div>
-);
+    );
 }
 
-
-  
-
-export default UserLogin
+export default UserLogin;
