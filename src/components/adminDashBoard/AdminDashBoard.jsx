@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../adminDashBoard/style.css';
-import Footer from './Footer';
+import Footer from '../UserDashBoard/Layout/Footer/Footer';
 import Header from './Header';
 import PageContent from './PageContent';
 import Sidebar from './Sidebar';

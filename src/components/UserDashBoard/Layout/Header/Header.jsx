@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 import { IoIosMail, IoMdCall, IoIosSearch, IoIosLogOut } from "react-icons/io";
 import { CgHeart, CgMoreVertical, CgProfile, CgShoppingCart } from "react-icons/cg";
 import { useDispatch, useSelector } from 'react-redux';
-import { userLogOut } from "../../Redux/Slice/user"; // Corrected import
-import NavBar from './NavBar';
+import { userLogOut } from "../../../Redux/Slice/user"; // Corrected import
 
 function Home() {
   const dispatch = useDispatch();
@@ -53,7 +52,7 @@ function Home() {
             </div>
           </div>
         </Nav>
-        <NavBar />
+      
       </div>
     </>
   );
