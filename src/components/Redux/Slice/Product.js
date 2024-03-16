@@ -30,7 +30,7 @@ export const productReducer = (state = { products: [] }, action) => {
       return {
         ...state,
         loading: false,
-        error: action.payload.message, // Correct the spelling of payload
+        error: action.payload // Correct the spelling of payload
       };
     case CLEAR_ERRORS:
       return {

@@ -1,13 +1,17 @@
 import { Button, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import "./Home.css";
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link ,useNavigate} from 'react-router-dom';
 import { IoIosMail, IoMdCall, IoIosSearch, IoIosLogOut } from "react-icons/io";
 import { CgHeart, CgMoreVertical, CgProfile, CgShoppingCart } from "react-icons/cg";
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogOut } from "../../../Redux/Slice/user"; // Corrected import
 
 function Home() {
+  const [keyword,setkeyword] = useState('')
+  const navigate = useNavigate()
+  
+
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
@@ -17,6 +21,17 @@ function Home() {
     } catch (error) {
       console.error("Error logging out:", error);
     }
+  }
+  const searchSubmitHandler = (e) => {
+    e.preventDefault(); 
+    if (keyword.trim()) {
+      navigate(`/products/${keyword}`)
+       
+    }else{
+      navigate("/products")
+    }
+
+    console.log("Search keyword:", keyword);
   }
 
   return (
@@ -32,11 +47,13 @@ function Home() {
           </Link>
         </Nav>
         <Nav className='main-header'>
-          <div className='search-bar'>
-            <input type="search" placeholder='Search' />
-            <IoIosSearch className="search-icon" />
-          </div>
-          <div className='logo'>
+          <form className='search-bar' onSubmit={searchSubmitHandler}>
+            <input type="search" placeholder='Search' onChange={(e) => setkeyword(e.target.value)} />
+            <button className='search_btn'  type='submit'>
+search
+               </button>
+          </form>
+          <div to={'/'} className='logo'>
             UNIFIED CART
           </div>
           <div className='cart'>
@@ -46,7 +63,7 @@ function Home() {
               ) : (
                 <Link className='icon-text-link' to={"/login"}><CgProfile className='icon-links' /></Link>
               )}
-              <Link className='icon-text-link'><CgShoppingCart className='icon-links' /></Link>
+              <Link to={"/cart"} className='icon-text-link'><CgShoppingCart className='icon-links' /></Link>
               <Link className='icon-text-link'><CgHeart className='icon-links' /></Link>
               <Link className='icon-text-link'><CgMoreVertical className='icon-links' /></Link>
             </div>

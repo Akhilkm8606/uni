@@ -1,7 +1,6 @@
 import React from 'react'
-import Header from '../Header/Header'
-import Footer from '../Footer/Footer'
-import Product from '../Product/Product'
+
+import Product from '../Product/ProductCard'
 import NavBar from '../Header/NavBar'
 
 function Home() {

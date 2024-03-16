@@ -1,7 +1,14 @@
-.container h3 {
+.container .row{
   display: flex;
   justify-content: center;
   width: 100%;
+}
+.container  h3 {
+  display: flex;
+  justify-content: center;
+  padding: 10px 30px;
+  border-bottom: 1px solid;
+  width: 300px;
 }
 
 .products-container {

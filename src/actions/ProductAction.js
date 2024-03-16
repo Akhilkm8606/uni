@@ -11,25 +11,23 @@ import {
   CLEAR_ERRORS,
 } from "../Constants/ProductConstants";
 
-export const getProducts = () => async (dispatch) =>{
+export const getProducts = (keyword) => async (dispatch) => {
   try {
-    dispatch({
-      type: ALL_PRODUCTS_REQUEST
-    });
+    dispatch({ type: ALL_PRODUCTS_REQUEST });
+    const url = keyword ? `http://localhost:5000/products?keyword=${keyword}` : 'http://localhost:5000/products';
 
-    const response = await axios.get('http://localhost:5000/products');
-// console.log(response.data,"hghg");
+    const response = await axios.get(url);
     dispatch({
       type: ALL_PRODUCTS_SUCCESS,
-      payload: response.data // Pass only the relevant data from the response
+      payload: response.data,
     });
   } catch (error) {
     dispatch({
       type: ALL_PRODUCTS_FAILURE,
-      payload: error.response // Pass only the error response
+      payload: error.response,
     });
   }
-}
+};
 export const getProductDetails = (id) => async (dispatch) =>{
   try {
     dispatch({

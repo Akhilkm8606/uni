@@ -27,6 +27,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     background-color: rgb(2, 21, 52)!important;
+    padding: 10px;
  
 }
 .main-header div{
@@ -37,9 +38,8 @@
 } 
 
 .search-bar{
-    position: relative;
-    /* flex-wrap: wrap;  */
-
+display: flex;
+flex-direction: row;
 }
 .search-bar input{
     width: 300px;
@@ -51,14 +51,14 @@
 
     
 }
-.search-icon {
-    position: absolute;
-    top: 52%;
-    left: 70%;
-    transform: translateY(-50%);
-    color: #888;
-    pointer-events: none; 
-    font-size: 20px;
+.search_btn {
+    
+   padding:5px 10px;
+   background-color: blue;
+   color: white;
+   border-radius: 10px;
+   border: none;
+   outline: none;
 }
 .logo{
     margin: 3px;
@@ -74,7 +74,9 @@
     text-decoration: none;
     color: white;
     margin-left: 20px!important;
-
+    text-decoration: none;
+    font-size: 20px;
+   
 }
 #header{
     margin: auto;
@@ -106,47 +108,12 @@
     background-color: rgb(2, 21, 52)!important;
     padding: 10px;
 }
-.main-header div{
-    text-align: center;
-    color: beige;
-   
-    
-} 
-
-.search-bar{
-    position: relative;
-    /* flex-wrap: wrap;  */
-
-}
-.search-bar input{
-    width: 300px;
-    border-radius: 10px;
-    outline: none;
-    border: none;
-    padding: 5px 20px;
-    margin: 3px;
-
-    
-}
-.search-icon {
-    position: absolute;
-    top: 52%;
-    left: 70%;
-    transform: translateY(-50%);
-    color: #888;
-    pointer-events: none; 
-    font-size: 20px;
-}
-.logo{
-    margin: 3px;
-    font-size: 20px;
 
 
-}
-.inner-div {
-    margin-left: 30%;
 
-}
+
+
+
 
 .log-Btn {
     background-color: transparent;
@@ -160,14 +127,7 @@
 }
 
 
-.icon-text-link{
-    font-size: 20px;
-    text-align: center;
-    color: white;
-  margin-left: 20px!important;
 
-    text-decoration: none;
-}
 .nav-Bar{
     display: flex;
     background-color: rgb(2, 21, 52)!important;

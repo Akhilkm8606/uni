@@ -1,8 +1,12 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Box, IconButton, Menu, MenuItem, Button, Container, useMediaQuery, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = [ { name: 'Home', link: '/' }, 
+{ name: 'Products', link: '/products' }, 
+{ name: 'Contact', link: '/contact' }, 
+{ name: 'About', link: '/about' }]
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -71,10 +75,14 @@ function NavBar() {
   </Menu>
 )}
 
-            {!isMobile && (
+{!isMobile && (
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
                 {pages.map((page) => (
-                  <Button key={page} sx={{ color: 'inherit', mx: 5 }}>{page}</Button>
+                  <Button key={page.name} sx={{ color: 'inherit', mx: 5 }}>
+                    <Link to={page.link} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      {page.name}
+                    </Link>
+                  </Button>
                 ))}
               </Box>
             )}
