@@ -1,0 +1,71 @@
+.review-container .row {
+    display: flex;
+    justify-content: center;
+    
+
+}
+.review-header{
+    
+    padding: 3px 10px;
+    width: 125px;
+    border-bottom: #512806 solid;
+
+}
+.reviews{
+    width: 80%;
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    border: 1px solid #575555;
+    border-radius: 5px;
+    gap: 10px;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    padding: 20px;
+
+
+}
+.review-item{
+    border: 1px solid rgb(103, 103, 103);
+    width: 300px;
+    height: 200px;
+    display: grid;
+    place-items: center;
+  
+
+}
+.user-avatar{
+    width: 30px;
+    height: 30px;
+}
+.user-avatar>img{
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.add_review{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+}
+.review-row{
+ 
+    margin: 30px;
+}
+.review-Col{
+    border: 1px solid rgb(103, 103, 103);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 50px;
+    width: 50%;
+    gap: 10px;
+}

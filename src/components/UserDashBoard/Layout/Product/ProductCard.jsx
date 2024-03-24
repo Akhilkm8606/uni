@@ -8,17 +8,16 @@ import './ProductCard.css';
 import Loader from '../Loader/Loader';
 import { Row } from 'react-bootstrap';
 
-function Product() {
+function ProductCard() {
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector(state => state.data);
-  console.log(products, 'jhjhjh');
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
    
- 
+  const displayedProducts = products.slice(0, 8);
 
   return (
     <>
@@ -30,7 +29,7 @@ function Product() {
               <h3>FEATURED PRODUCTS</h3>
             </Row>
             <div className="products-container">
-              {Array.isArray(products) && products.map((product, index) => (
+              {Array.isArray(displayedProducts) && displayedProducts.map((product, index) => (
                 <div className="product-card" key={index}>
                   <Link className='link' to={`/product/${product._id}`}>
                     <Card>
@@ -45,7 +44,7 @@ function Product() {
                         </Typography>
                         <ReactStars
                           {...Option}
-                          value={product.rating} // Add rating value here
+                          value={parseFloat(product.rating) || 0}  // Add rating value here
                           count={5} // Add total stars count here
                         />
                         <span>{`₹ : ${product.price}`}</span>
@@ -61,4 +60,4 @@ function Product() {
   );
 }
 
-export default Product;
+export default ProductCard;

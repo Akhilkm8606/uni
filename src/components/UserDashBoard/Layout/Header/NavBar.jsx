@@ -21,6 +21,10 @@ function NavBar() {
     setAnchorElNav(null);
   };
 
+  const handleMenuItemClick = () => {
+    handleCloseNavMenu(); // Close the menu after clicking on a menu item
+  };
+
   return (
     <div>
       <AppBar position="relative">
@@ -65,15 +69,18 @@ function NavBar() {
       },
     }}
   >
-    {pages.map((page) => (
-      <MenuItem key={page} onClick={handleCloseNavMenu}>
-        <Typography variant="body1" color="textPrimary">
-          {page}
-        </Typography>
-      </MenuItem>
-    ))}
-  </Menu>
-)}
+     {pages.map((page) => (
+                  <MenuItem key={page.name} onClick={handleMenuItemClick}>
+                    <Link to={page.link} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Typography variant="body1" color="textPrimary">
+                        {page.name}
+                      </Typography>
+                    </Link>
+                  </MenuItem>
+                ))}
+              </Menu>
+            )}
+
 
 {!isMobile && (
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>

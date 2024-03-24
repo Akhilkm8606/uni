@@ -6,11 +6,11 @@ import { IoIosMail, IoMdCall, IoIosSearch, IoIosLogOut } from "react-icons/io";
 import { CgHeart, CgMoreVertical, CgProfile, CgShoppingCart } from "react-icons/cg";
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogOut } from "../../../Redux/Slice/user"; // Corrected import
+import Cookies from 'js-cookie'; 
 
 function Home() {
   const [keyword,setkeyword] = useState('')
   const navigate = useNavigate()
-  
 
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -18,6 +18,8 @@ function Home() {
   const handleLogOut = () => {
     try {
       dispatch(userLogOut());
+      Cookies.remove("token")
+
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -63,7 +65,7 @@ search
               ) : (
                 <Link className='icon-text-link' to={"/login"}><CgProfile className='icon-links' /></Link>
               )}
-              <Link to={"/cart"} className='icon-text-link'><CgShoppingCart className='icon-links' /></Link>
+              <Link to={"/cart"} value={5} className='icon-text-link'><CgShoppingCart className='icon-links' /></Link>
               <Link className='icon-text-link'><CgHeart className='icon-links' /></Link>
               <Link className='icon-text-link'><CgMoreVertical className='icon-links' /></Link>
             </div>

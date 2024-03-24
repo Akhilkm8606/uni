@@ -71,7 +71,8 @@ font-size: 18px;
 
 .detailsBlock-3-1 {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .detailsBlock-3-1 button {
@@ -88,58 +89,31 @@ font-size: 18px;
   margin: 0 10px;
 }
 
-.detailsBlock-3-1-1 {
-  margin-left: 20px;
-}
+
 
 .detailsBlock-3-1-1 a {
   text-decoration: none;
+ 
+  margin-right: 30px;
+}
+.addToCart{
   background-color: #007bff;
   color: #fff;
   padding: 10px 20px;
   border-radius: 5px;
 }
+.buy{
+  background-color: #9b340b;
+  color: #fff;
+  padding: 10px 30px;
 
-.detailsBlock-3-1-1 a:hover {
-  background-color: #0056b3;
+  border-radius: 5px;
 }
-.review-container .row {
-    display: flex;
-    justify-content: center;
-    
+.detailsBlock-3-1-1 .buy:hover {
+  background-color: #137602;
+}
 
-}
-.review-header{
-    
-    padding: 10px 20px;
-    width: 100px;
-    border-bottom: #512806 solid;
 
-}
-.reviews{
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 30px;
-    border: 1px solid #575555;
-    border-radius: 5px;
-    padding:30px ;
-  
-
-}
-.user-avatar{
-    width: 30px;
-    height: 30px;
-}
-.user-avatar>img{
-    width: 30px;
-    height: 30px;
-    object-fit: cover;
-    border-radius: 50%;
-}
 @media (max-width: 768px) {
   .product-details{
     width: 80%;}

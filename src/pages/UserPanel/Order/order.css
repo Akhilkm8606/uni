@@ -1,0 +1,87 @@
+/* order.css */
+
+.order-container {
+    max-width: 80%;
+    
+    margin: 20px auto;
+    padding: 20px;
+}
+.Order-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+    grid-auto-flow: dense; /* Enable grid wrapping */
+    gap: 20px;
+  }  
+
+.order-container h2 {
+    margin-bottom: 20px;
+}
+
+.order-container .form {
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #c1c1c1;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-container form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.order-container form input[type='text'],
+.order-container form input[type='number'],
+.order-container form select {
+    width: calc(100% - 40px);
+    height: 30px;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.order-container form button[type='submit'] {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.order-container form button[type='submit']:hover {
+    background-color: #0056b3;
+}
+.ordered-item{
+
+    border-radius: 5px;
+    border: #007bff sol;
+    height: 500px;
+    padding: 10px;
+    width: 80%;
+    margin: 0 auto;
+  }
+  .item-img{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+    padding: 10px;
+    
+  }
+  .item-img p{
+   
+    grid-template-columns: 1fr 2fr;
+      padding: 10px;
+      
+    }
+  .item-details img{
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 10px;
+
+  } 

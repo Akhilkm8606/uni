@@ -8,6 +8,7 @@ import {
   PRODUCTS_DETAILS_SUCCESS,
   PRODUCTS_DETAILS_FAILURE,
 
+
   CLEAR_ERRORS,
 } from "../Constants/ProductConstants";
 
@@ -24,7 +25,10 @@ export const getProducts = (keyword) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ALL_PRODUCTS_FAILURE,
-      payload: error.response,
+      payload: {
+        message: error.message,
+        status: error.response.status,
+      },
     });
   }
 };
@@ -35,18 +39,24 @@ export const getProductDetails = (id) => async (dispatch) =>{
     });
 
     const response = await axios.get(`http://localhost:5000/product/${id}`);
-console.log(response.data.product,"details");
     dispatch({
       type: PRODUCTS_DETAILS_SUCCESS,
       payload: response.data.product
     });
+    
   } catch (error) {
     dispatch({
       type: PRODUCTS_DETAILS_FAILURE,
-      payload: error.response // Pass only the error response
+      payload: {
+        error: {
+          message: error.message,
+          status: error.status,
+        }}
     });
   }
 }
+
+
 
 export const clearError = () => async (dispatch) =>{
   dispatch({
