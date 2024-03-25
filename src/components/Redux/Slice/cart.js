@@ -8,6 +8,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+    
     getCart :(state, action) => {
       state.items = action.payload;
       },

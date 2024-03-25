@@ -46,18 +46,35 @@ function ProductDetails() {
 
   };
  
+const handleAddToCart = async () => {
+  try {
+    const response = await axios.post(`http://localhost:5000/product/addCart/${id}`, { quantity }, { withCredentials: true });
+    // Update the cart state with the response data
+    setCart(response.data.cart);
+    setQuantity(1); // Reset quantity after adding to cart
+    toast.success('Product added to cart successfully');
+  } catch (error) {
+    console.error('Error adding product to cart:', error);
+    toast.error('Failed to add product to cart');
+  }
+};
 
-  const handleAddToCart = async () => {
-   
-      if (!isAuthenticated) {
-      
-      } else {
-        const response = await axios.post(`http://localhost:5000/product/addCart/${id}`, { quantity }, { withCredentials: true });
-        setQuantity(1);
-        setCart(response.data.cart);
-      }
-   
-  };
+  
+  // const handleAddToCart = async () => {
+    
+  //     try {
+  //       const response = await axios.post(`http://localhost:5000/product/addCart/${id}`, { quantity }, { withCredentials: true });
+  //       setQuantity(1);
+  //       setCart(response.data.cart);
+  //       toast.success('Product added to cart successfully');
+  //     } catch (error) {
+  //       // Handle error
+  //       console.error('Error adding product to cart:', error);
+  //       toast.error('Failed to add product to cart');
+  //     }
+    
+  // };
+  
 
   return (
     <>
@@ -88,7 +105,7 @@ function ProductDetails() {
                   <button onClick={increaseQuantity}>+</button>
                 </div>
                 <div className='detailsBlock-3-1-1'>
-                  <Link className='addToCart' to={'/cart'} onClick={handleAddToCart}>ADD CART</Link>
+                  <Link className='addToCart' to={'/cart'}  onClick={handleAddToCart}>ADD CART</Link>
                   <button  onClick={buyItem} productInfo={buyProduct} >BUY</button>
                 </div>
               </div>
