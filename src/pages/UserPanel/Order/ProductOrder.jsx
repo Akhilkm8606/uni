@@ -9,25 +9,22 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function ProductOrderForm() {
     const location = useLocation();
-  
+
     const { id } = useParams();
     const cartItems = useSelector(state => state.cart.items);
-    
+
     // Find the item with the specified id
     const selectedItem = cartItems.find(item => item._id === id);
-    
-    console.log(selectedItem, 'kkvhgggffg');
-    
+    console.log(selectedItem);
 
-
+    const cartId = selectedItem ? selectedItem._id : null;
     const navigate = useNavigate('')
     const user = useSelector(state => state.auth.user);
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const userID = user?._id;
-    console.log(userID);
 
-    
-  
+
+
     if (!isAuthenticated) {
         toast.error("Please login", {
             autoClose: 1000,
@@ -37,8 +34,8 @@ function ProductOrderForm() {
     }
     const [formData, setFormData] = useState({
         user: userID,
-        items: [],
-        totalPrice: '',
+        items: [selectedItem],
+        totalPrice: selectedItem ? selectedItem.amount : '',
         status: 'Pending',
         paymentMethod: '',
         shippingAddress: {
@@ -89,23 +86,19 @@ function ProductOrderForm() {
             const response = await axios.post('http://localhost:5000/orders', formData, {
                 withCredentials: true
             });
-            console.log(response.data);
+
             // Reset form after successful submission
-            setFormData({
-                user: userID,
-                items: [],
-                totalPrice: '',
-                status: 'Pending',
-                shippingAddress: '',
-                paymentMethod: ''
-            });
-
-
+            setFormData(
+                response.data.order);
+            if (response.data.success) {
+                const orderId =response.data.order._id
+                
+                navigate(`/Order/payment/${orderId}`)
+            }
         } catch (error) {
             console.error('Error creating order:', error);
         }
     };
-    console.log(formData);
 
     return (
         <div className="order-container">
@@ -116,7 +109,7 @@ function ProductOrderForm() {
 
                         <label>Total Price:</label>
                         <input
-                            type="number"
+                            type="text"
                             name="totalPrice"
                             value={formData.totalPrice}
                             onChange={handleChange}
@@ -212,26 +205,27 @@ function ProductOrderForm() {
                 </Col>
                 <Col className='ordered-item'>
                     <div className='item-details'>
-                    {selectedItem && (
-  <div>
-    <div className='item-img'>
-      <img src={`http://localhost:5000/uploads/${selectedItem.productId.images[0]}`} alt={selectedItem.productId.name} className="card-img-top" />
-      <p>{selectedItem.productId.name}</p>
-    </div>
-    <form action="">
-      <span>
-        <input type="text" placeholder='' /> <button>Apply</button>
-      </span>
-    </form>
-    <div>
-      <p>{selectedItem._id}</p>
-      <p>Shipping</p>
-      <p>Total</p>
-    </div>
-  </div>
-)}
+                        {selectedItem && (
+                            <div>
+                                <div className='item-img'>
+                                    <img src={`http://localhost:5000/uploads/${selectedItem.productId.images[0]}`} alt={selectedItem.productId.name} className="card-img-top" />
+                                    <p>{selectedItem.productId.name}</p>
+                                </div>
+                                <form action="">
+                                    <span>
+                                        <input type="text" placeholder='' /> <button>Apply</button>
+                                    </span>
+                                </form>
+                                <div>
+                                    <p>{selectedItem._id}</p>
+                                    <p>Total Amount :{selectedItem.amount}</p>
+                                    <p>Shipping :{20}</p>
+                                    <p>Total {selectedItem.amount + 20}</p>
+                                </div>
+                            </div>
+                        )}
 
-                       
+
                     </div>
                 </Col>
             </Row>

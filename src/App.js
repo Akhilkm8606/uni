@@ -27,6 +27,7 @@ import Products from './pages/UserPanel/Product/Products';
 import ReviewCard from './pages/UserPanel/Product/Review/ReviewCard';
 import { useEffect } from 'react';
 import { userAuthentic, userLogOut } from './components/Redux/Slice/user';
+import Payment from './pages/UserPanel/payment/Payment';
 
 
 
@@ -50,7 +51,7 @@ function App() {
         <Route path="/adReview/:id" element={<ReviewCard />} />
         <Route path="/Cart" element={< Cart />} />
         <Route path="/Order/:id" element={< Order />} />
-        <Route path="/paymet"  />
+        <Route path="/Order/payment/:id" element={<Payment/>}  />
       {/* admin */}
         <Route path="/admin" element={<DashBoard />} />
         <Route path="/admin/*" element={<PageContentRouter />} />

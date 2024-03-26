@@ -46,7 +46,9 @@ function Cart() {
 
 
 
-  
+  const calculateTotalPrice = (item) => {
+    return item.quantity * item.productId.price;
+  };
 
   const updateQuantity = useCallback(async (itemId, quantity) => {
     try {
@@ -56,7 +58,10 @@ function Cart() {
         setCart(prevCart => {
           const updatedCart = prevCart.map(item => {
             if (item._id === itemId) {
-              return { ...item, quantity };
+              // Update quantity and recalculate total price
+              const updatedItem = { ...item, quantity };
+              updatedItem.amount = calculateTotalPrice(updatedItem);
+              return updatedItem;
             }
             return item;
           });
@@ -66,13 +71,9 @@ function Cart() {
     } catch (error) {
       console.error('Error updating item quantity:', error);
     }
-  }, [setCart]);
-
+  }, [setCart, calculateTotalPrice]);
   
-  
-  const calculateTotalPrice = (item) => {
-    return item.quantity * item.productId.price;
-  };
+ 
 
   const calculateTotalCartPrice = () => {
     let total = 0;

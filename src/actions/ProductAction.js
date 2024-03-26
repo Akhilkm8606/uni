@@ -27,7 +27,7 @@ export const getProducts = (keyword) => async (dispatch) => {
       type: ALL_PRODUCTS_FAILURE,
       payload: {
         message: error.message,
-        status: error.response.status,
+        status: error.response,
       },
     });
   }
