@@ -5,7 +5,7 @@ import { Link ,useNavigate} from 'react-router-dom';
 import { IoIosMail, IoMdCall, IoIosSearch, IoIosLogOut } from "react-icons/io";
 import { CgHeart, CgMoreVertical, CgProfile, CgShoppingCart } from "react-icons/cg";
 import { useDispatch, useSelector } from 'react-redux';
-import { userLogOut } from "../../../Redux/Slice/user"; // Corrected import
+import { userAuthentic, userLogOut } from "../../../Redux/Slice/user"; // Corrected import
 import Cookies from 'js-cookie'; 
 
 function Home() {
@@ -14,11 +14,15 @@ function Home() {
 
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  
 
+ 
   const handleLogOut = () => {
     try {
       dispatch(userLogOut());
       Cookies.remove("token")
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
 
     } catch (error) {
       console.error("Error logging out:", error);

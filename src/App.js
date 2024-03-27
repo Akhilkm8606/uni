@@ -1,6 +1,6 @@
 // App.js
 import './App.css';
-import { Route, Routes, useParams } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import DashBoard from './components/adminDashBoard/AdminDashBoard';
 import SellerDashBoard from './components/SellerDashBoard/DashBoadr';
 import PageContent from './components/adminDashBoard/PageContent';
@@ -25,22 +25,34 @@ import Header from './components/UserDashBoard/Layout/Header/Head';
 import Cart from './pages/UserPanel/Cart/Cart';
 import Products from './pages/UserPanel/Product/Products';
 import ReviewCard from './pages/UserPanel/Product/Review/ReviewCard';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { userAuthentic, userLogOut } from './components/Redux/Slice/user';
 import Payment from './pages/UserPanel/payment/Payment';
+import PaymentSuccess from './pages/UserPanel/payment/PaymentSuccess';
 
 
 
 function App() {
-  
+  const location = useLocation();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   console.log(isAuthenticated);
+  const [showHeader, setShowHeader] = useState(true); // Local state to manage header visibility
+
+  const hideHeaderRoutes = ['/login', '/signup', '/products'];
+
+  const shouldHideHeader = hideHeaderRoutes.includes(location.pathname) || location.pathname.startsWith('/admin') || location.pathname.startsWith('/seller');
+  const currentRoute = location.pathname;
+  useEffect(() => {
+    setShowHeader(!shouldHideHeader);
+  }, [location.pathname]);
+
   return (
     <>
-    <Header/>
-    {/* user */}
-      <Routes>
-        <Route path="/" element={< Home/>} />
+      {showHeader && !shouldHideHeader && <Header />}
+
+    
+      <Routes>   
+              <Route path="/" element={< Home/>} />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/signup" element={<UserSignUp />} />
         <Route path="/product/:id" element={<ProductDetails />} />
@@ -52,6 +64,7 @@ function App() {
         <Route path="/Cart" element={< Cart />} />
         <Route path="/Order/:id" element={< Order />} />
         <Route path="/Order/payment/:id" element={<Payment/>}  />
+        <Route path="/PaymentSuccess" element={<PaymentSuccess/>}  />
       {/* admin */}
         <Route path="/admin" element={<DashBoard />} />
         <Route path="/admin/*" element={<PageContentRouter />} />
@@ -70,8 +83,7 @@ function App() {
         <Route path="/seller/Users" element={<Users />} />
         <Route path="/seller/Order" element={<Order />} />
       </Routes>
-    <Footer/>
-    </>
+      {showHeader && !shouldHideHeader && <Footer/>}    </>
 
   );
 }

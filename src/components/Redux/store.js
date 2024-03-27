@@ -1,17 +1,46 @@
+// store.js
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import {thunk} from 'redux-thunk';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
+import storage from 'redux-persist/lib/storage';
 import userSlice from './Slice/user';
-import { productReducer,productDetailsReducer } from './Slice/Product';
-import  cartReducer from './Slice/cart';
+import { productReducer, productDetailsReducer } from './Slice/Product';
+import cartReducer from './Slice/cart';
+import { combineReducers } from 'redux'; // Import combineReducers
 
-const store = configureStore({
-  reducer: {
-    auth: userSlice,
-    data: productReducer,
-    product: productDetailsReducer,
-    cart:cartReducer,
-  },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+// Combine all reducers into a single rootReducer
+const rootReducer = combineReducers({
+  auth: userSlice,
+  data: productReducer,
+  product: productDetailsReducer,
+  cart: cartReducer,
 });
 
-export default store;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
+});
+
+const persistor = persistStore(store); // Move persistor creation outside the configureStore
+
+export { store, persistor }; // Export both store and persistor

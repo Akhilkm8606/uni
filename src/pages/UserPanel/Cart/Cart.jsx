@@ -13,6 +13,8 @@ function Cart() {
   const Navigate = useNavigate();
   const user = useSelector(state => state.auth.user);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  console.log(isAuthenticated);
+  console.log(user);
 
   
 
@@ -100,8 +102,9 @@ function Cart() {
   return (
     <>
       <div className='cart-container'>
+         <h2 className='cart-head'>Shopping Cart</h2>
         <Table className='custom-table'>
-          <h2 className='cart-head'>Shopping Cart</h2>
+         
           <tbody className='t-body'>
             {Array.isArray(cart) && cart.map((item, index) => (
               <tr key={index}>

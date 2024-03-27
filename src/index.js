@@ -1,17 +1,20 @@
+// index.js
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client'; // Import createRoot from "react-dom/client"
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './components/Redux/store';
+import { store, persistor } from './components/Redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById('root')); // Use createRoot from "react-dom/client"
 root.render(
   <Provider store={store}>
-       <BrowserRouter>
-    <App />
-    </BrowserRouter>
-   </Provider>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>
 );
-

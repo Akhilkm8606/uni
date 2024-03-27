@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Payment from '../payment/Payment';
 
 function ProductOrderForm() {
     const location = useLocation();
@@ -34,7 +35,12 @@ function ProductOrderForm() {
     }
     const [formData, setFormData] = useState({
         user: userID,
-        items: [selectedItem],
+       items: [{
+        product: selectedItem.productId._id,
+        name: selectedItem.productId.name, // Add name field
+        quantity: selectedItem.quantity,
+        price: selectedItem.price // Assuming the amount is the price
+    }],
         totalPrice: selectedItem ? selectedItem.amount : '',
         status: 'Pending',
         paymentMethod: '',
@@ -50,7 +56,7 @@ function ProductOrderForm() {
         },
 
     });
-
+    console.log(formData);
     useEffect(() => {
         if (!isAuthenticated) {
             toast.error("Please login", {
@@ -91,6 +97,7 @@ function ProductOrderForm() {
             setFormData(
                 response.data.order);
             if (response.data.success) {
+                
                 const orderId =response.data.order._id
                 
                 navigate(`/Order/payment/${orderId}`)
@@ -229,6 +236,7 @@ function ProductOrderForm() {
                     </div>
                 </Col>
             </Row>
+         
         </div>
     );
 }

@@ -14,8 +14,10 @@ function UserLogin() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const userRole = useSelector(state => state.auth.user?.role);
+   
 
-    const handleSubmit = async e => {
+  
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/login', {
@@ -23,24 +25,37 @@ function UserLogin() {
                 password,
             }, { withCredentials: true });
           
-            
-            if (response && response.data) {
-                if (response.data.success) {
-                    dispatch(userAuthentic({
-                        user: response.data.user,
-                        token: response.data.token,
-                    }));
-                    toast.success(response.data.msg);
-                    handleRedirect(response.data.user.role);
-                } else {
-                    toast.error(response.data.msg);
-                }
+            const { data } = response;
+            if (data.success) {
+                const { user, token } = data;
+                dispatch(userAuthentic({ user, token }));
+                localStorage.setItem('token', token); // Storing token in localStorage
+                localStorage.setItem('user', JSON.stringify(user)); 
+                                toast.success(data.msg);
+                handleRedirect(user.role);
+            } else {
+                toast.error(data.msg);
             }
         } catch (error) {
             console.error("Error during login:", error);
             toast.error(error.response?.data?.message || "An error occurred while logging in.");
         }
-    }
+    };
+
+    useEffect(() => {
+        // Check for token on component mount
+        const token = localStorage.getItem('token');
+        const userString = localStorage.getItem('user');
+        const user = userString ? JSON.parse(userString) : null;
+        if (token && user) {
+            // Dispatch userAuthentic action with token
+            dispatch(userAuthentic({user, token }));
+            handleRedirect(userRole)
+            // Set loading to false after authentication data is fetched
+        }
+    }, [dispatch]);
+
+
 
     const handleRedirect = (role) => {
         if (role === "admin") {

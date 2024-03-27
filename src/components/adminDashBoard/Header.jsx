@@ -12,9 +12,11 @@ function Header({ handleOptionClick }) {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   console.log('ddhjhjh',isAuthenticated);
+  
 
   const handleLogOut =()=>{
     try {
+     
       dispatch(userLogOut())
       console.log('logoted');
     } catch (error) {
@@ -22,6 +24,7 @@ function Header({ handleOptionClick }) {
 
     }
   }
+ 
 
   const [showCard, setShowCard] = useState(false);
   const [showMsg, setShowMsg] = useState(false);
