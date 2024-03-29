@@ -32,23 +32,26 @@ function ProductCard() {
               {Array.isArray(displayedProducts) && displayedProducts.map((product, index) => (
                 <div className="product-card" key={index}>
                   <Link className='link' to={`/product/${product._id}`}>
-                    <Card>
+                    <Card className='cards'>
                       <CardMedia className='media-img'
                         component="img"
                         image={`http://localhost:5000/uploads/${product.images[0]}`}
                         alt={product.name}
                       />
-                      <CardContent className='content'>
-                        <Typography gutterBottom variant="h5" component="div">
+                      
+                      <div className='content'>
+                        <p  component="div">
                           {product.name}
-                        </Typography>
-                        <ReactStars
+                        </p>
+                       <span>
+                       {/* <ReactStars
                           {...Option}
                           value={parseFloat(product.rating) || 0}  // Add rating value here
                           count={5} // Add total stars count here
-                        />
+                        /> */}
                         <span>{`₹ : ${product.price}`}</span>
-                      </CardContent>
+                       </span>
+                      </div>
                     </Card>
                   </Link>
                 </div>

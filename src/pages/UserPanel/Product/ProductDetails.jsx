@@ -21,7 +21,6 @@ function ProductDetails() {
   const dispatch = useDispatch();
   const { id } = useParams(); // Access the product ID from the URL params
   const product = useSelector(state => state.product.products);
-
   const [quantity, setQuantity] = useState(1);
 
   const increaseQuantity = () => {
@@ -60,21 +59,7 @@ const handleAddToCart = async () => {
 };
 
   
-  // const handleAddToCart = async () => {
-    
-  //     try {
-  //       const response = await axios.post(`http://localhost:5000/product/addCart/${id}`, { quantity }, { withCredentials: true });
-  //       setQuantity(1);
-  //       setCart(response.data.cart);
-  //       toast.success('Product added to cart successfully');
-  //     } catch (error) {
-  //       // Handle error
-  //       console.error('Error adding product to cart:', error);
-  //       toast.error('Failed to add product to cart');
-  //     }
-    
-  // };
-  
+ 
 
   return (
     <>
@@ -93,7 +78,8 @@ const handleAddToCart = async () => {
               <p> Product #{product._id}</p>
             </div>
             <div className='detailsBlock-2'>
-              <ReactStars value={parseFloat(product.rating) || 0} count={5} />
+              <ReactStars value={parseFloat(product.rating) || 0} count={5}        color="white"/>
+              <div>Reviews :({product.reviews.length})</div>
             </div>
             <div className='detailsBlock-3'>
               <p><span>₹</span> {product.price}</p>
@@ -106,7 +92,6 @@ const handleAddToCart = async () => {
                 </div>
                 <div className='detailsBlock-3-1-1'>
                   <Link className='addToCart' to={'/cart'}  onClick={handleAddToCart}>ADD CART</Link>
-                  <button  onClick={buyItem} productInfo={buyProduct} >BUY</button>
                 </div>
               </div>
             </div>
@@ -116,7 +101,7 @@ const handleAddToCart = async () => {
           </div>
         </div>
       )}
-      <ReviewCard />
+      <ReviewCard productId={id} />
       <ToastContainer />
         </>
   );

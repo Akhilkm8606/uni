@@ -29,6 +29,8 @@ import { useEffect, useState } from 'react';
 import { userAuthentic, userLogOut } from './components/Redux/Slice/user';
 import Payment from './pages/UserPanel/payment/Payment';
 import PaymentSuccess from './pages/UserPanel/payment/PaymentSuccess';
+import About from './components/UserDashBoard/About/About';
+import Contact from './components/UserDashBoard/Contact/Contact';
 
 
 
@@ -38,7 +40,7 @@ function App() {
   console.log(isAuthenticated);
   const [showHeader, setShowHeader] = useState(true); // Local state to manage header visibility
 
-  const hideHeaderRoutes = ['/login', '/signup', '/products'];
+  const hideHeaderRoutes = ['/login', '/signup', ];
 
   const shouldHideHeader = hideHeaderRoutes.includes(location.pathname) || location.pathname.startsWith('/admin') || location.pathname.startsWith('/seller');
   const currentRoute = location.pathname;
@@ -55,6 +57,8 @@ function App() {
               <Route path="/" element={< Home/>} />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/signup" element={<UserSignUp />} />
+        <Route path="/About" element={<About />} />
+        <Route path="/Contact" element={<Contact />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/product/cart/:id" element={<Cart />} />
         <Route path="/sad" element={<Loader />} />

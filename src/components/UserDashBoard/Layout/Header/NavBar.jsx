@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 
 const pages = [ { name: 'Home', link: '/' }, 
 { name: 'Products', link: '/products' }, 
-{ name: 'Contact', link: '/contact' }, 
-{ name: 'About', link: '/about' }]
+{ name: 'About', link: '/About' },
+{ name: 'Contact', link: '/Contact' },]
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);

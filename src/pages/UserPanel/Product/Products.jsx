@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../../../actions/ProductAction';
 import { Card, Row } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
-import { CardContent, CardMedia, Typography } from '@mui/material';
+import {  CardMedia } from '@mui/material';
 import Loader from '../../../components/UserDashBoard/Layout/Loader/Loader';
 import ReactStars from 'react-rating-stars-component';
+import '../../../components/UserDashBoard/Layout/Product/ProductCard.css';
 
 function Products() {
   const { keyword } = useParams();
@@ -19,9 +20,11 @@ function Products() {
 
   return (
     <>
+    
       {loading ? (
         <Loader />
       ) : (
+       
         <div className='container'>
           <Row>
             <h3>PRODUCTS</h3>
@@ -31,20 +34,26 @@ function Products() {
               products.map((product, index) => (
                 <div className='product-card' key={index}>
                   <Link className='link' to={`/product/${product._id}`}>
-                    <Card>
-                      <CardMedia
-                        className='media-img'
-                        component='img'
+                  <Card className='cards'>
+                      <CardMedia className='media-imges'
+                        component="img"
                         image={`http://localhost:5000/uploads/${product.images[0]}`}
                         alt={product.name}
                       />
-                      <CardContent className='content'>
-                        <Typography gutterBottom variant='h5' component='div'>
+                      
+                      <div className='content'>
+                        <p  component="div">
                           {product.name}
-                        </Typography>
-                        <ReactStars count={5} value={product.rating} />
+                        </p>
+                       <div className='price-n-rating'>
+                       <ReactStars
+                          {...Option}
+                          value={parseFloat(product.rating) || 0}  // Add rating value here
+                          count={5} // Add total stars count here
+                        />
                         <span>{`₹ : ${product.price}`}</span>
-                      </CardContent>
+                       </div>
+                      </div>
                     </Card>
                   </Link>
                 </div>

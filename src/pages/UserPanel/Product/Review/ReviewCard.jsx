@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import '../Review/Review.css';
 import ReactStars from 'react-rating-stars-component';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { userAuthentic } from '../../../../components/Redux/Slice/user';
+import axios from 'axios';
+import { Try } from '@mui/icons-material';
+import { getProductDetails } from '../../../../actions/ProductAction';
+import { addReview, addReviews } from '../../../../components/Redux/Slice/review';
 
-function ReviewCard() {
+
+function ReviewCard({productId}) {
+  console.log(productId,'id');
   const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(null);
-  const user = useSelector(state => state.auth.user)
-
+  const [rating, setRating] = useState(0);
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const product = useSelector(state => state.product.products);
+
 
   const [reviews, setReviews] = useState([
     {
@@ -29,50 +36,71 @@ function ReviewCard() {
     },
   ]);
 
-  
   const ratingHandler = (value) => {
     setRating(value);
   };
 
+   
+  useEffect(() => {
+    const fetchReviewData = async () => {
+      try {
+      
+       
+          const response = await axios.get(`http://localhost:5000/getReview/${productId}`, {
+            withCredentials: true
+          });
+          setReviews(response.data);
+          console.log(response.data);
+        
+      } catch (error) {
+        console.error('Error fetching cart data:', error);
+      }
+    };
+    fetchReviewData();
+
+  }, [dispatch]);
+  
   const reviewHandler = async (e) => {
     e.preventDefault();
   
-    if (!isAuthenticated) {
-      toast.error("Please login to add a review", {
-        autoClose: 1000,
-      });
-      return;
+    try {
+      // Send the request to add the review
+      const response = await axios.post(
+        `http://localhost:5000/addReview/${productId}`,
+        { 
+          comment: comment,
+          rating: rating
+        },
+        {
+          withCredentials: true // Include this if your backend requires credentials
+        }
+      );
+  
+    
+     
+      if (response.status === 200) {
+        // Extract the newly added review from the response data
+        const newReview = response.data.review; // Assuming the server returns the newly added review
+        
+        // Dispatch the addReview action with the new review as payload
+        dispatch(addReviews(newReview));
+  
+        // Reset comment and rating
+        setComment('');
+        setRating(0);
+  
+        toast.success("Review added", {
+          autoClose: 1000,
+        });
+      } else {
+        // If response status is not 200, show error message
+        toast.error('Failed to add review');
+      }
+     
+    } catch (error) {
+      console.error('Error adding review:', error);
+      toast.error('Failed to add review');
     }
-  
-    if (!rating || !comment) {
-      // Display an error message if either rating or comment is missing
-      toast.error('Please provide both a rating and a comment.');
-      return;
-    }
-  
-    // Create the new review object
-    const newReview = {
-      username: user.username,
-      avatar: 'https://randomuser.me/api/portraits/lego/6.jpg', // Add logic to get the avatar dynamically
-      rating: rating,
-      comment: comment,
-    };
-  
-    // Update the reviews array in the state
-    const updatedReviews = [...reviews, newReview];
-    setReviews(updatedReviews);
-  
-    // Save the updated reviews array to localStorage
-    localStorage.setItem("reviews", JSON.stringify(updatedReviews));
-  
-    // Reset the comment and rating state
-    setComment('');
-    setRating(0);
-  
-    // Display a success message to the user
-    toast.success("Review added", {
-      autoClose: 1000,
-    });
   };
   
   return (
@@ -82,11 +110,13 @@ function ReviewCard() {
       </Row>
       <Row className="review-row">
         <Col className="review-Col" md={6}>
+          <p>Please rate the product and leave your review below:</p>
           <ReactStars
+            value={rating}
             onChange={(value) => ratingHandler(value)}
-            {...Option}
-            defaultValue={0}
             count={5}
+            size={24}
+            color="white"
           />
           <form className="add_review" onSubmit={reviewHandler}>
             <input
@@ -99,23 +129,23 @@ function ReviewCard() {
           </form>
         </Col>
       </Row>
-      <Row className="reviews">
-        {reviews.map((review, index) => (
-          <Col key={index} md={6}>
+      <Row >
+        <div className="reviews">
+        {reviews && (
+          <Col  md={6}>
             <div className="review-item">
-              <div className="user-avatar">
-                <img src={review.avatar} alt={`Avatar of ${review.username}`} />
-              </div>
+              
               <div className="user-info">
-                <h4>{review.username}</h4>
-                <ReactStars {...Option} value={review.rating} count={5} />
+                <h4>{reviews.username}</h4>
+                <ReactStars value={product.rating} count={5} size={24} color="white" edit={false} />
               </div>
-              <p>{review.comment}</p>
+              <p>{reviews.comment}</p>
             </div>
           </Col>
-        ))}
+        )}
+        </div>
+       
       </Row>
-      <ToastContainer />
     </div>
   );
 }

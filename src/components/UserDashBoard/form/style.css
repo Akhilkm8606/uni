@@ -1,50 +1,259 @@
-.registration-container {
+.login-container,.registration-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background: #44A08D;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #093637, #44A08D);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #093637, #44A08D);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.login  {
+
+    backdrop-filter: blur(10px);
+    /* Blur effect */
+    background-color: rgba(197, 203, 204, 0.289);
+    /* Semi-transparent background color */
+    border-radius: 10px;
+    /* Rounded corners */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    /* Box shadow */
+    width: 800px;
+    height: 400px;
+    padding: 30px;
+}
+.input-wrapper .error {
+    color: red;
+    font-size: 12px;
+    display: none;
+  }
+  .input-wrapper .error {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    width: 100%;
-    align-items: center;
-   height: 100vh;
-   background-color: rgb(13, 113, 53);
+    justify-content: space-around;
+    padding: 10px;
+
 }
-.registration-container form{
+  input:invalid[focus = "true"] ~  error {
+    display: block;
+  }
+.registration{
+
+    backdrop-filter: blur(10px);
+    /* Blur effect */
+    background-color: rgba(197, 203, 204, 0.289);
+    /* Semi-transparent background color */
+    border-radius: 10px;
+    /* Rounded corners */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    /* Box shadow */
+    width: 800px;
+    height: fit-content;
+    padding: 30px;
+}
+
+.login-container form  {
     display: flex;
     flex-direction: column;
     justify-content: center;
     column-gap: 10px;
-    width: 400px;
+
     align-items: center;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(214, 204, 204, 0.19);
-    padding: 30px;
+    border-radius: 10px;
+
 }
-.form h2{
-    color: black;
+.registration form>span {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    column-gap: 10px;
+
+    align-items: center;
+    border-radius: 10px;
+
 }
-.registration-container form input {
+.registration form .btn {
+    margin: auto; /* Center the button horizontally */
+    display: block;
+
+}
+.greetings {
+    text-align: center;
+    color: rgb(83, 14, 153);
+}
+
+.log-head h2 {
+    background: linear-gradient(45deg, #07316c, #000502);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #FFFFFF;
+    padding: 20px;
+
+    text-align: center;
+}
+
+.log-head {
+    justify-self: center;
+    align-self: center;
+
+}
+
+.log-head p {
+    color: #040217;
+    font-size: 12px;
+    font-weight: 600;
+    font-style: italic;
+    text-align: center;
+
+}
+
+.tag-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    color: goldenrod;
+}
+
+.login-container form input,.registration form input {
     margin: 10px;
-    width: 300px;
-    padding: 10px;
+    width: 500px;
+    padding: 20px 10px;
     border: none;
+    color: #FFFFFF;
+    outline: none;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    /* Blur effect */
+    background-color: rgba(197, 203, 204, 0.289);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(224, 224, 224, 0.19);
 
 
 }
-.bottom{
+
+.login-container form input::placeholder, 
+ .registration form input::placeholder {
+    text-align: center;
+    color: white;
+    /* Placeholder color */
+}
+
+.bottom {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 100px;
     text-decoration: none;
-    
+
 }
-.bottom .btn{
+
+.bottom {
+    padding: 10px;
+    font-style: oblique;
+    color: rgb(255, 255, 255);
+}
+
+.bottom .btn {
     text-decoration: none;
-    color: black;
-    padding: 4px;
+    color: white;
     border-radius: 10px;
+    padding: 10px;
+    padding: 10px 20px;
+
+
 }
-.btn{
+
+.btn {
     border: none;
+    border-radius: 10px;
+    background-color: rgb(8, 83, 15);
+    color: white;
+    font-weight: bold;
+    padding: 10px 50px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(224, 224, 224, 0.19);
+}
+.btn:hover{
+    background-color: blue;
+}
+.input-wrapper {
+    color: red;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+
+}
+  
+   
+
+@media (max-width: 992px) {
+
+    .login,.registration {
+
+        width: 600px;
+
+    }
+ 
+}
+
+@media (max-width: 768px) {
+
+
+
+
+    .login,.registration{
+        width: 500px;
+
+
+    }
+    .login-container form input,.registration form input {
+    
+        width: 100%;
+      max-width: 400px;
+    
+    }
+}
+
+@media (max-width: 577px) {
+.login {
+        width: 80%;
+        max-width: 400px;
+    }
+    .registration {
+        width: 90%;
+        max-width: 400px;
+    }
+
+    .bottom {
+
+        flex-direction: column;
+
+        margin-top: 10px;
+        gap: 10px;
+
+
+    }
+    .login-container form input,.registration form input {
+    
+        width: 100%;
+      max-width: 400px;
+    
+    }
+
+    .registration form>span {
+      
+        flex-direction: column;
+       
+    
+    }.registration-container {
+      
+
+        height: 900px;
+       
+    }
 }

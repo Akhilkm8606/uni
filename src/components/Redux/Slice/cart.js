@@ -14,7 +14,7 @@ const cartSlice = createSlice({
       },
     removeCart :(state, action) => {
       state.items = null;
-      },
+      },  
   },
 });
 

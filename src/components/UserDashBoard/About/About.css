@@ -1,0 +1,32 @@
+.about {
+    padding: 20px;
+    border-radius: 10px;
+    height: fit-content;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items: center;
+    font-size:18px;
+
+  }
+  
+  .about h2,h3 {
+padding: 30px 10px;
+    color: navy;
+  }
+  .about ul li,p{
+    color: rgb(14, 24, 69);
+
+    padding: 10px;
+    list-style:  none;
+    
+
+  }
+   .about strong{
+    font-size: 25px;
+    color: green;
+    padding: 10px;
+   }

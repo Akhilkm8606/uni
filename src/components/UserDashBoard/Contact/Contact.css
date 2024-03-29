@@ -1,0 +1,133 @@
+.contact {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+   
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 20px;
+  }
+  
+  .contact h2,
+  .contact h3 {
+    text-align: center;
+    color: navy;
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+  
+  .contact-info {
+   padding: 30px 10px;
+    justify-self: flex-start;
+    align-self: flex-start;
+    color: rgb(14, 24, 69);
+  }
+  
+  .contact-info p {
+    margin-bottom: 10px;
+  }
+  
+  .contact-info ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .contact-info ul li,
+  a {
+    text-decoration: none;
+    margin-bottom: 5px;
+  }
+  
+  .contact-form {
+    background-color: #4a6e85;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 5px;
+    justify-self: center;
+    align-self: center;
+  }
+  
+  .contact-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .form-item {
+    flex: 0 0 48%; /* Adjust as needed */
+  }
+  
+  .contact-form .form-group {
+    margin-bottom: 5px;
+  }
+  
+  .contact-form label {
+    font-weight: bold;
+    color: white;
+  }
+  
+  .contact-form input[type="text"],
+  .contact-form input[type="email"],
+  .contact-form input[type="tel"],
+  .contact-form input[type="file"],
+  .contact-form textarea,
+  .contact-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgb(215, 215, 215);
+    border-radius: 5px;
+    outline: none;
+    background-color: transparent;
+    color: #fff;
+  }
+  
+  .contact-form select {
+    background-color: rgb(68, 66, 72);
+  }
+  
+  .contact-form textarea {
+    resize: vertical;
+  }
+  
+  .contact-form button {
+    padding: 10px 20px;
+    background-color: #062d14;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .contact-form button:hover {
+    background-color: #555;
+  }
+  
+  .form-group.checkbox {
+    display: flex;
+    align-items: center;
+  }
+  
+  .form-group.checkbox label {
+    margin-left: 10px; /* Adjust as needed */
+  }
+  @media (max-width: 768px) {
+    .contact {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+       
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        gap: 20px;
+      }
+      
+
+  }
