@@ -12,7 +12,6 @@
   .contact h2,
   .contact h3 {
     text-align: center;
-    color: navy;
     font-size: 24px;
     margin-bottom: 5px;
   }
@@ -21,7 +20,6 @@
    padding: 30px 10px;
     justify-self: flex-start;
     align-self: flex-start;
-    color: rgb(14, 24, 69);
   }
   
   .contact-info p {

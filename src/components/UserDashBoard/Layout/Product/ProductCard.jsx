@@ -44,12 +44,8 @@ function ProductCard() {
                           {product.name}
                         </p>
                        <span>
-                       {/* <ReactStars
-                          {...Option}
-                          value={parseFloat(product.rating) || 0}  // Add rating value here
-                          count={5} // Add total stars count here
-                        /> */}
-                        <span>{`₹ : ${product.price}`}</span>
+                      
+                        <span>{`Price : ${product.price}/-`}</span>
                        </span>
                       </div>
                     </Card>

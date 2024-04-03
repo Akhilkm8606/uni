@@ -50,8 +50,10 @@ flex-direction: row;
     
 }
 .search_btn {
-    
-   padding:5px 10px;
+    text-align: center;
+    margin: 5px;
+    font-size: 13px;
+   padding:6px 10px;
    background-color: blue;
    color: white;
    border-radius: 10px;
@@ -112,7 +114,8 @@ flex-direction: row;
     color: white;
     font-size: 15px;
 }
-
+.icon-user{
+    margin: 3px 15px;}
 .main-header{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -125,7 +128,6 @@ flex-direction: row;
     text-align: center;
     color: white;
   margin-right: -9px!important;
-  margin-bottom: 7px;
 
     text-decoration: none;border: none;
 }
@@ -149,7 +151,32 @@ flex-direction: row;
     color: rgb(255, 255, 255);
 
   }
+  .profile_setting{
+    display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 30px 20px ;
+  position: absolute;
+  top:8%;
+  right: 1%;
+  transform: translate(-50%,50%);
+  border-radius: 10px;
+  z-index: 1000;
   
+  background-color: white; /* Ensure it appears above other elements */
+}
+.profileLinks ,h4{
+  text-decoration: none;
+  color: rgb(2, 9, 33);
+
+margin-bottom: 10px;
+}
+.profileLinks svg{
+margin-right: 10px ;
+
+
+}
 @media (max-width: 992px) {
     .main-header {
         display: flex;

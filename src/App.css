@@ -4,12 +4,6 @@
   box-sizing: border-box;
 }
 body{
-  background: #44A08D;
-  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #303536, #b4cac6);
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #89afa0, #707776);
-
      height: fit-content;
     }
 img {

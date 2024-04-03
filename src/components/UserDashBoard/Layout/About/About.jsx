@@ -1,12 +1,9 @@
 import React from 'react';
 import './About.css';
- import securityIcon from '../../../assets/success.svg';
 
 
 function About() {
-    const qualityIcon = require('../../../assets/success.svg') ;
-// import shippingIcon from '../../../assets/success.svg';
-// import supportIcon from '.../../../assets/success.svg';
+    
 
   return (
     <div className="about">

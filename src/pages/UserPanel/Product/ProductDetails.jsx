@@ -9,18 +9,25 @@ import { Row, Col, Button } from 'react-bootstrap';
 import ReviewCard from './Review/ReviewCard';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { getCart } from '../../../components/Redux/Slice/cart';
 
 
 function ProductDetails() {
   
   const navigate = useNavigate()
   const [cart, setCart] = useState([]);
-  const [buyProduct, setBuyProduct] = useState(null);
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const dispatch = useDispatch();
   const { id } = useParams(); // Access the product ID from the URL params
+  useEffect(() => {
+    console.log("Product rating:", product.rating); // Log product rating
+    dispatch(getProductDetails(id));
+  }, [dispatch, id]);
+  
+
   const product = useSelector(state => state.product.products);
+console.log(product.rating);
+
   const [quantity, setQuantity] = useState(1);
 
   const increaseQuantity = () => {
@@ -37,28 +44,31 @@ function ProductDetails() {
     }
   }
 
-  useEffect(() => {
-    dispatch(getProductDetails(id));
-  }, [dispatch, id]);
-  const buyItem = () => {
+
+
+
+  const handleAddToCart = async () => {
+    try {
+      const response = await axios.post(`http://localhost:5000/product/addCart/${id}`, { quantity }, { withCredentials: true });
+      // Update the cart state with the response data
+      setCart(response.data.cart);
+     setQuantity(1); // Reset quantity after adding to cart
+      toast.success('Product added to cart successfully');
+      
+        navigate('/cart');
     
-
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+      toast.error('Failed to add product to cart');
+    }
   };
- 
-const handleAddToCart = async () => {
-  try {
-    const response = await axios.post(`http://localhost:5000/product/addCart/${id}`, { quantity }, { withCredentials: true });
-    // Update the cart state with the response data
-    setCart(response.data.cart);
-    setQuantity(1); // Reset quantity after adding to cart
-    toast.success('Product added to cart successfully');
-  } catch (error) {
-    console.error('Error adding product to cart:', error);
-    toast.error('Failed to add product to cart');
-  }
-};
-
   
+  
+  useEffect(() => {
+    dispatch(getCart(cart)); // Dispatch the action without logging the cart state
+  }, [dispatch, cart]);
+  
+ 
  
 
   return (
@@ -78,7 +88,7 @@ const handleAddToCart = async () => {
               <p> Product #{product._id}</p>
             </div>
             <div className='detailsBlock-2'>
-              <ReactStars value={parseFloat(product.rating) || 0} count={5}        color="white"/>
+              <ReactStars value={parseFloat(product.rating) || 0} count={5}  isHalf={true}      color="white"/>
               <div>Reviews :({product.reviews.length})</div>
             </div>
             <div className='detailsBlock-3'>
@@ -91,7 +101,7 @@ const handleAddToCart = async () => {
                   <button onClick={increaseQuantity}>+</button>
                 </div>
                 <div className='detailsBlock-3-1-1'>
-                  <Link className='addToCart' to={'/cart'}  onClick={handleAddToCart}>ADD CART</Link>
+                  <Link className='addToCart'  onClick={handleAddToCart}>ADD CART</Link>
                 </div>
               </div>
             </div>

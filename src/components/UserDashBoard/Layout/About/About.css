@@ -15,10 +15,8 @@
   
   .about h2,h3 {
 padding: 30px 10px;
-    color: navy;
   }
   .about ul li,p{
-    color: rgb(14, 24, 69);
 
     padding: 10px;
     list-style:  none;

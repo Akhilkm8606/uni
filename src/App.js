@@ -27,10 +27,11 @@ import Products from './pages/UserPanel/Product/Products';
 import ReviewCard from './pages/UserPanel/Product/Review/ReviewCard';
 import { useEffect, useState } from 'react';
 import { userAuthentic, userLogOut } from './components/Redux/Slice/user';
-import Payment from './pages/UserPanel/payment/Payment';
 import PaymentSuccess from './pages/UserPanel/payment/PaymentSuccess';
-import About from './components/UserDashBoard/About/About';
-import Contact from './components/UserDashBoard/Contact/Contact';
+import About from './components/UserDashBoard/Layout/About/About';
+import Contact from './components/UserDashBoard/Layout/Contact/Contact';
+import MyAccount from './components/UserDashBoard/Layout/Profile/Profile';
+import EditProfile from './components/UserDashBoard/Layout/Profile/EditProfile';
 
 
 
@@ -59,6 +60,8 @@ function App() {
         <Route path="/signup" element={<UserSignUp />} />
         <Route path="/About" element={<About />} />
         <Route path="/Contact" element={<Contact />} />
+        <Route path="/MyAccount" element={<MyAccount />} />
+        <Route path="/edit-profile/:id" element={<EditProfile />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/product/cart/:id" element={<Cart />} />
         <Route path="/sad" element={<Loader />} />
@@ -67,7 +70,6 @@ function App() {
         <Route path="/adReview/:id" element={<ReviewCard />} />
         <Route path="/Cart" element={< Cart />} />
         <Route path="/Order/:id" element={< Order />} />
-        <Route path="/Order/payment/:id" element={<Payment/>}  />
         <Route path="/PaymentSuccess" element={<PaymentSuccess/>}  />
       {/* admin */}
         <Route path="/admin" element={<DashBoard />} />

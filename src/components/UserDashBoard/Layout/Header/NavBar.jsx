@@ -60,7 +60,6 @@ function NavBar() {
     PaperProps={{
       style: {
         marginTop: '50px', // Adjust the top margin for better alignment
-        backgroundColor: 'blue', // Background color set to blue
         width: '100%', // Set width to 100%
         display: 'flex', // Set display to flex
         justifyContent: 'center', // Center items horizontally

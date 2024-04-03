@@ -8,7 +8,7 @@ import axios from 'axios';
 import '../form/style.css';
 import UserSignUp from './UserSignUp';
 import { GiJewelCrown, GiLaurelCrown } from "react-icons/gi";
-
+import Cookies from 'js-cookie'; 
 function UserLogin() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -38,6 +38,8 @@ function UserLogin() {
                 password,
             }, { withCredentials: true });
           
+            console.log(Cookies.get('token'));
+
             const { data } = response;
             if (data.success) {
                 const { user, token } = data;

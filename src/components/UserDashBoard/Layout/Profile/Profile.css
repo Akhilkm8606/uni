@@ -1,0 +1,191 @@
+.pm {
+    min-height: 100vh;
+    width: 100%;
+    ;
+}
+
+.pp {
+    display: flex;
+    justify-content: center;
+}
+
+.pp img {
+    border: 1px solid rgb(70, 69, 69);
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+.d {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 10px;
+    
+
+}
+.d div{
+   
+    text-align: center;
+    padding-bottom: 10px;
+    width: 500px;
+    border: 1px solid rgb(112, 106, 106);
+    border-radius: 10px;
+    background-color: rgb(8 108 67 / 78%)
+
+
+}
+.d div h3,h5{
+    padding: 10px;
+
+}
+.edit{
+    margin: 5px;
+    text-align: center;
+    border: 1px solid rgb(85, 85, 85);
+    padding: 5px 10px ;
+    border-radius: 10px;
+
+}
+.edit-profile-button{
+    text-decoration: none;
+   
+    color: #dadada;
+
+}
+.ps3 {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.ps3 h1 {
+    border-bottom: 2px solid;
+}
+
+.ps4 {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.orders-list {
+    display: flex;
+    flex-wrap: wrap;    justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  
+  
+}
+
+.order-item {
+   
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.order-item h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.order-item p {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.product-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-image {
+    margin-right: 10px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.product-details {
+    flex: 1;
+}
+
+.no-orders {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.no-orders h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.no-orders p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.sbtn button {
+    height: 50px;
+    width: 150px;
+    position: absolute;
+    right: 40px;
+    top: 80px;
+    background-color: rgb(255, 174, 66);
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px 1px;
+}
+
+
+
+/* edit profile */
+
+.edit-profile-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #191919;
+    border-radius: 5px;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+  
+@media (max-width: 600px) {
+    .order-item {
+        flex-direction: column;
+    }
+    .edit-profile-container{
+        width: 80%;
+    }
+}

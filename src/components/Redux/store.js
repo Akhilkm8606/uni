@@ -1,5 +1,5 @@
 // store.js
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore, } from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -14,8 +14,9 @@ import storage from 'redux-persist/lib/storage';
 import userSlice from './Slice/user';
 import { productReducer, productDetailsReducer } from './Slice/Product';
 import cartReducer from './Slice/cart';
+import themeReducer from './Slice/themeSlice';
+import categoryReducer from './Slice/category';
 import { combineReducers } from 'redux'; // Import combineReducers
-import reviewReducer from "./Slice/review";
 
 const persistConfig = {
   key: 'root',
@@ -28,7 +29,9 @@ const rootReducer = combineReducers({
   data: productReducer,
   product: productDetailsReducer,
   cart: cartReducer,
-  reviews: reviewReducer
+  cate: categoryReducer,
+  
+  theme: themeReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -13,7 +13,7 @@
 }
 .reviews{
     width: 80%;
-    height: 300px;
+    height: 240px;
     display: flex;
     flex-direction: row;
     align-content: center;
@@ -33,6 +33,7 @@
 .review-item{
     border: 1px solid rgb(103, 103, 103);
     width: 300px;
+    /* max-width:500px ; */
     height: 200px;
     display: grid;
     place-items: center;
@@ -52,6 +53,9 @@
     object-fit: cover;
     border-radius: 50%;
 }
+.user-info h4{
+    font-size: 15px;
+}
 .add_review{
   display: flex;
   flex-direction: row;
@@ -64,7 +68,7 @@
     background-color: transparent;
     border-radius: 10px;
     outline: none;
-    border: 1px solid rgb(255, 255, 255);
+    border: 1px solid rgb(0, 156, 44);
     color: white;
     padding: 10px 20px;
 }
@@ -73,6 +77,8 @@
     color: #040e26;
   }
   .add_review button{
+    width: 150px;
+    align-self: center;
     background-color: #040e26;
     color: white;
     padding: 10px 20px;
@@ -107,6 +113,13 @@ width: 80%;
         flex-direction: column;
        
     
+    
+    }
+    .review-item{
+        width: 100%;
+        max-width:300px ;
+       
+      
     
     }
 }
