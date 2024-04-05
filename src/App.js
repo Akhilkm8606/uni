@@ -5,7 +5,7 @@ import DashBoard from './components/adminDashBoard/AdminDashBoard';
 import SellerDashBoard from './components/SellerDashBoard/DashBoadr';
 import PageContent from './components/adminDashBoard/PageContent';
 import AllOrders from './pages/AdminPanel/Orders';
-import ADMProducts from './pages/AdminPanel/Products/Products';
+import ADMProducts from './pages/AdminPanel/Products/List/Products';
 import AllUsers from './pages/AdminPanel/Users/Users';
 import MDashBoard from './pages/AdminPanel/Dashboard';
 import Store from './pages/SellerPanel/Store';

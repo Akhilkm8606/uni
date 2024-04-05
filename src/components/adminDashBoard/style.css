@@ -53,8 +53,14 @@ margin-bottom: 20px;
     .header-right .icon-user{
       font-size: 25px;
       color: rgb(0, 0, 0);
-      margin-left: 10px;
+      margin-left: 4px;
      
+    }
+    .icon-Home{
+      color: rgb(0, 0, 0);
+      font-size: 25px;
+      margin-bottom: 10px;
+
     }
     .profile_setting{
         display: flex;
@@ -89,6 +95,7 @@ margin-bottom: 20px;
     }
     .PanelSideBar{
       width: 150px;
+      height: 400px;
        display: flex;
        flex-direction: column;
         padding: 2rem;

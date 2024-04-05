@@ -6,7 +6,7 @@ function Users() {
   return (
     <div>
       <UserList/>
-      <SellerList/>
+      {/* <SellerList/> */}
     </div>
   )
 }

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+// AddProduct.jsx
+
+import React, { useState } from 'react';
 import { Row } from 'react-bootstrap';
-import axios from 'axios'; // Import axios for making HTTP requests
-import './Product.css';
+import axios from 'axios';
+import './AddProduct.css'; // Import CSS file for styling
 
 function AddProduct() {
   const [formData, setFormData] = useState({
@@ -12,13 +14,11 @@ function AddProduct() {
     quantity: "",
     description: "",
     features: "",
-    images: ""
+    images: null
   });
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
-
-    // For file inputs, set the value to files array
     const newValue = type === 'file' ? e.target.files[0] : value;
     setFormData({
       ...formData,
@@ -30,21 +30,18 @@ function AddProduct() {
     e.preventDefault();
 
     try {
-      // Create FormData object
       const formDataToSend = new FormData();
       for (const key in formData) {
         formDataToSend.append(key, formData[key]);
       }
 
-      // Send form data to the server
       await axios.post('http://localhost:5000/seller/product', formDataToSend, {
         withCredentials: true,
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    }
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
       });
 
-      // Clear the form after successful submission
       setFormData({
         name: "",
         category: "",
@@ -63,90 +60,95 @@ function AddProduct() {
     }
   };
 
-  console.log(formData); // Remove this line if you don't need the console log
-
   return (
     <div>
       <Row>
-        <h3>ADD PRODUCT</h3>
-        <form onSubmit={handleSubmit} className='addProduct'>
-          <div className="column">
-            <input
+        <h3 className="add-product-title">ADD PRODUCT</h3>
+        <form onSubmit={handleSubmit} className='add-product-form'>
+          <div className="form-column">
+            
+          <div className="form-row"> 
+          <input
+              className="form-input"
               placeholder='Name'
               type="text"
-              id="name"
               name="name"
               value={formData.name}
               onChange={handleChange}
               required
             />
             <input
+              className="form-input"
               placeholder='Category'
-              id="category"
               name="category"
               value={formData.category}
               onChange={handleChange}
               required
             />
-             
+          </div>
+            
+             <div className="form-row"> 
+            
             <input
-              placeholder='Brand'
-              type="text"
-              id="brand"
-              name="brand"
-              value={formData.brand}
-              onChange={handleChange}
-              required
-            />
-            <input
+              className="form-input"
               placeholder='Price'
               type="number"
-              id="price"
               name="price"
               value={formData.price}
               onChange={handleChange}
               required
             />
           </div>
-          <div className="column">
+          
+       
+          <div className="form-row">
             <input
+              className="form-input"
               placeholder='Quantity'
               type="number"
-              id="quantity"
               name="quantity"
               value={formData.quantity}
               onChange={handleChange}
               required
             />
             <input
+              className="form-input"
               placeholder='Description'
               type="text"
-              id="description"
               name="description"
               value={formData.description}
               onChange={handleChange}
               required
             />
+                  </div>
+          <div className="form-row">
+
             <input
+              className="form-input"
               placeholder='Features'
               type="text"
-              id="features"
               name="features"
               value={formData.features}
               onChange={handleChange}
               required
             />
             <input
-              placeholder='Images'
+              className="form-input"
               type="file"
-              id="images"
               name="images"
               onChange={handleChange}
               required
             />
-            <div>
-              <button type="submit">Submit</button>
+         
             </div>
+
+
+
+          </div>
+         
+          <div>
+          <button className="submit-button" type="submit">Submit</button>
+
           </div>
         </form>
       </Row>

@@ -1,7 +1,31 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { Row, Table } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { getAllOrder } from '../../components/Redux/Slice/orders'
+
 
 function Orders() {
+  const dispatch = useDispatch()
+  const [orders,getOrders] =useState([])
+  useEffect(() =>{
+    const fetchOrders = async () =>{
+    try {
+    
+        const response = await axios.get('http://localhost:5000/all_orders',{withCredentials:true})
+        getOrders(response.data.orders)
+     console.log(response.data.orders)
+
+      dispatch(getAllOrder(response.data.orders))
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+  fetchOrders()
+
+  },[dispatch])
   return (
     <div>
       <Row>

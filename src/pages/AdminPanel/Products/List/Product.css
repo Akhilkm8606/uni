@@ -1,0 +1,102 @@
+/* ProductList.css */
+
+.pd-container {
+  padding: 20px;
+  width: 100%;
+}
+
+.pd-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.pd-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.products-div {
+
+  padding: 30px;
+display: grid;
+place-items: center;
+max-height: 600px; /* Set the maximum height for the container */
+overflow: auto; 
+scroll-behavior: smooth;
+}
+
+.p-outer-div{
+border: 1px solid rgb(86, 86, 86);
+width: 70%;
+border-radius: 10px;
+}
+.custom-p-table {
+  width: 80%;
+  border-collapse: collapse;
+}
+
+
+.custom-p-table th,
+.custom-p-table td {
+  text-align: center;
+
+}
+
+.pdata-row {
+  border-bottom: 10px solid rgb(236, 236, 236) !important;
+  padding: 5px;
+  background-color: rgb(70, 118, 177);
+}
+
+.p-imag {
+  max-width: 50px;
+  margin: 10px;
+}
+
+
+
+.custom-p-table .action-icons > * {
+  margin: 0 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.custom-p-table .action-icons > *:hover {
+  
+  color: red;
+}
+.add-p-btn{
+display: grid;
+place-content: center;
+margin: 10px;
+}
+.p-btn{
+  width: 300px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: orangered;
+  color: white;
+}.custom-p-table .action-icons > *:hover {
+  color: red;
+}
+
+/* Customizing the scrollbar */
+.products-div::-webkit-scrollbar {
+  width: 10px;
+}
+
+.products-div::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.products-div::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+.products-div::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

@@ -6,10 +6,10 @@ import { Link, useParams } from 'react-router-dom';
 import { CardMedia } from '@mui/material';
 import Loader from '../../../components/UserDashBoard/Layout/Loader/Loader';
 import ReactStars from 'react-rating-stars-component';
-import '../../../components/UserDashBoard/Layout/Product/ProductCard.css';
 import axios from 'axios';
 import { getCategory } from '../../../components/Redux/Slice/category'; // Import getCategory action
-
+import ReactPaginate from 'react-paginate'; // Import ReactPaginate
+import {  MdSkipNext, MdSkipPrevious } from "react-icons/md";
 function Products() {
   const { keyword } = useParams();
   const dispatch = useDispatch();
@@ -19,6 +19,8 @@ function Products() {
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
   const [priceRanges, setPriceRanges] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [pageNumber, setPageNumber] = useState(0);
+  const productsPerPage = 10; // Number of products per page
 
   useEffect(() => {
     dispatch(getProducts(keyword));
@@ -29,6 +31,7 @@ function Products() {
       try {
         const response = await axios.get('http://localhost:5000/categorys', { withCredentials: true });
         dispatch(getCategory(response.data.categorys));
+       
       } catch (error) {
         console.log(error);
       }
@@ -36,20 +39,19 @@ function Products() {
     fetchData();
   }, [dispatch]);
 
-  // Find min and max prices
-  const minProductPrice = Math.min(...products.map(product => product.price));
-  const maxProductPrice = Math.max(...products.map(product => product.price));
-
-  // Create price ranges
   useEffect(() => {
+    // Find min and max prices
+    const minProductPrice = Math.min(...products.map(product => product.price));
+    const maxProductPrice = Math.max(...products.map(product => product.price));
+
+    // Create price ranges
     const ranges = [];
     for (let i = minProductPrice; i <= maxProductPrice; i += 1000) {
       ranges.push({ min: i, max: i + 1000 });
     }
     setPriceRanges(ranges);
-  }, [minProductPrice, maxProductPrice]);
+  }, [products]);
 
-  // Filter products based on selected categories and price ranges
   useEffect(() => {
     let filtered = products;
 
@@ -84,6 +86,11 @@ function Products() {
     }
   };
 
+  // Paginate your filtered products
+  const indexOfLastProduct = (pageNumber + 1) * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
   return (
     <>
       {loading ? (
@@ -98,39 +105,36 @@ function Products() {
             <div className='categoryList'>
               {categoryList.map((item) => (
                 <div className='category' key={item._id}>
-                  <label>
+                  <p className='cateitems'>
                     <input
                       type="checkbox"
                       checked={selectedCategories.includes(item._id)}
                       onChange={() => handleCategoryClick(item._id)}
                     />
-                 <span>
-                 {item.name}
-                 </span>
-                  </label>
+                    <span>{item.name}</span>
+                  </p>
                 </div>
               ))}
             </div>
             <div className='price-filter'>
-             
               {priceRanges.map((range, index) => (
                 <div key={index}>
-                  <label>
+                  <p className='cateitems' >
                     <input
                       type="checkbox"
                       checked={selectedPriceRanges.some(r => r.min === range.min && r.max === range.max)}
                       onChange={() => handlePriceRangeClick(range)}
                     />
                     {`₹${range.min} - ₹${range.max}`}
-                  </label>
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
           <div className='products-container'>
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product, index) => (
+            {currentProducts.length > 0 ? (
+              currentProducts.map((product, index) => (
                 <div className='product-card' key={index}>
                   <Link className='link' to={`/product/${product._id}`}>
                     <Card className='cards'>
@@ -159,6 +163,15 @@ function Products() {
               <p>No products available for the selected category and price range</p>
             )}
           </div>
+
+          <ReactPaginate
+            previousLabel={<MdSkipPrevious/>}
+            nextLabel={<MdSkipNext/>}
+            pageCount={Math.ceil(filteredProducts.length / productsPerPage)}
+            onPageChange={({ selected }) => setPageNumber(selected)}
+            containerClassName={'pagination'}
+            activeClassName={'active'}
+          />
         </div>
       )}
     </>

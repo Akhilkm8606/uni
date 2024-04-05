@@ -1,0 +1,48 @@
+/* AddProduct.css */
+
+.add-product-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .add-product-form {
+    margin-top: 20px;
+  }
+  
+  .form-column {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Align items vertically */
+    margin-bottom: 10px; /* Adjust margin for spacing between rows */
+  }
+/* AddProduct.css */
+
+.form-input {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: calc(50% - 5px); /* Set the width to 50% minus half of the margin */
+  }
+  
+  .file-input {
+    width: calc(50% - 5px); /* Set the width to 50% minus half of the margin */
+    margin-left: 10px; /* Adjust the margin as needed */
+  }
+  
+  .submit-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  

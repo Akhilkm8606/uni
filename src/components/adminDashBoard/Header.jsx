@@ -4,7 +4,7 @@ import { FaCircleUser, FaShopify, FaUser } from "react-icons/fa6";
 import { IoExit, IoSearchOutline, IoSettingsOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { AiOutlineMail } from "react-icons/ai";
-import { IoMdNotifications } from 'react-icons/io';
+import { IoMdHome, IoMdNotifications } from 'react-icons/io';
 import { userLogOut } from '../Redux/Slice/user';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -60,6 +60,9 @@ function Header({ handleOptionClick }) {
         <IoSearchOutline className='searchIcon' />
       </div>
       <div className='header-right'>
+      <Link to={"/"} className='icon-text-link'><IoMdHome className='icon-Home' /></Link>
+      
+
         <AiOutlineMail onClick={() => handleProfile('msg')} className='icon-user' />
         {showMsg && <div className='masseges'>Message Section</div>}
 

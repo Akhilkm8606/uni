@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { themeset } from '../../Redux/Slice/themeSlice';
 import { FaMoon } from "react-icons/fa";
-import { CiLight } from "react-icons/ci";
+import { BsBrightnessHigh } from "react-icons/bs";
+
 
 
 function Theme() {
@@ -25,7 +26,7 @@ function Theme() {
       {theme ? (
         <span style={{cursor:'pointer',fontSize:'16px'}} onClick={toggletheme} className="material-symbols-outlined theme"><FaMoon/></span>
       ) : (
-        <span style={{cursor:'pointer',fontSize:'18px'}} onClick={toggletheme} className="material-symbols-outlined theme"><CiLight /> </span>
+        <span style={{cursor:'pointer',fontSize:'18px',color:'white'}} onClick={toggletheme} className="material-symbols-outlined theme"><BsBrightnessHigh /> </span>
       )}
     </span>
   )
