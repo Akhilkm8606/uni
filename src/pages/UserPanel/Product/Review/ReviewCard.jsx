@@ -17,7 +17,7 @@ function ReviewCard({productId}) {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  const product = useSelector(state => state.product.products);
+  const product = useSelector(state => state.product.product);
 
 
   const [reviews, setReviews] = useState([])
@@ -78,7 +78,7 @@ function ReviewCard({productId}) {
             onChange={(value) => ratingHandler(value)}
             count={5}
             size={24}
-            color="white"
+           
           />
           <form className="add_review" onSubmit={reviewHandler}>
             <input

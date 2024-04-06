@@ -3,6 +3,7 @@ import {
   ALL_PRODUCTS_REQUEST,
   ALL_PRODUCTS_SUCCESS,
   ALL_PRODUCTS_FAILURE,
+  CLEAR_PRODUCTS,
 
   PRODUCTS_DETAILS_REQUEST,
   PRODUCTS_DETAILS_SUCCESS,
@@ -11,6 +12,9 @@ import {
 
   CLEAR_ERRORS,
 } from "../Constants/ProductConstants";
+export const clearProducts = () => ({
+  type: CLEAR_PRODUCTS
+});
 
 export const getProducts = (keyword) => async (dispatch) => {
   try {
@@ -42,7 +46,9 @@ export const getProductDetails = (id) => async (dispatch) =>{
     dispatch({
       type: PRODUCTS_DETAILS_SUCCESS,
       payload: response.data.product
+    
     });
+    
     
   } catch (error) {
     dispatch({

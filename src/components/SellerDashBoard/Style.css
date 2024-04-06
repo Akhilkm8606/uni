@@ -4,11 +4,7 @@
     width: 100vw;
     height: 100vh;
     }
-    .sidebarAndPage{
-      display: flex;
-    flex-direction: row;
-    flex: 1;
-    }
+   
     .HeaderSection{
         display: flex;
         flex-direction: row;

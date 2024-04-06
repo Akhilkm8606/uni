@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useDispatch } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
@@ -7,6 +8,9 @@ import '../form/style.css';
 import { GiLaurelCrown } from 'react-icons/gi';
 
 function UserSignUp() {
+    
+    const dispatch = useDispatch();
+
     const navigate = useNavigate();
     const [input, setInput] = useState({
         username: "",
@@ -60,6 +64,7 @@ function UserSignUp() {
                     };
                 }
             } 
+            dispatch
         } catch (error) {
             console.error("Error during registration:", error);
             toast.error(error.response.data.message,{

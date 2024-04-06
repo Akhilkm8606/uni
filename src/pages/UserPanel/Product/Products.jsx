@@ -15,6 +15,7 @@ function Products() {
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector((state) => state.data);
   const categoryList = useSelector((state) => state.cate.category);
+  console.log(categoryList);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
   const [priceRanges, setPriceRanges] = useState([]);
@@ -24,6 +25,7 @@ function Products() {
 
   useEffect(() => {
     dispatch(getProducts(keyword));
+    
   }, [dispatch, keyword]);
 
   useEffect(() => {
@@ -103,18 +105,22 @@ function Products() {
 
           <div className='filters'>
             <div className='categoryList'>
-              {categoryList.map((item) => (
-                <div className='category' key={item._id}>
-                  <p className='cateitems'>
-                    <input
-                      type="checkbox"
-                      checked={selectedCategories.includes(item._id)}
-                      onChange={() => handleCategoryClick(item._id)}
-                    />
-                    <span>{item.name}</span>
-                  </p>
-                </div>
-              ))}
+            {categoryList ? (
+      categoryList.map((item) => (
+        <div className='category' key={item._id}>
+          <p className='cateitems'>
+            <input
+              type="checkbox"
+              checked={selectedCategories.includes(item._id)}
+              onChange={() => handleCategoryClick(item._id)}
+            />
+            <span>{item.name}</span>
+          </p>
+        </div>
+      ))
+    ) : (
+      <p>Loading categories...</p>
+    )}
             </div>
             <div className='price-filter'>
               {priceRanges.map((range, index) => (
@@ -133,17 +139,14 @@ function Products() {
           </div>
 
           <div className='products-container'>
-            {currentProducts.length > 0 ? (
+            {products && currentProducts.length > 0 ? (
               currentProducts.map((product, index) => (
                 <div className='product-card' key={index}>
                   <Link className='link' to={`/product/${product._id}`}>
                     <Card className='cards'>
-                      <CardMedia
-                        className='media-imges'
-                        component="img"
-                        image={`http://localhost:5000/uploads/${product.images[0]}`}
-                        alt={product.name}
-                      />
+                    <div className='media-img'>
+                        <img className='p-img' src={`http://localhost:5000/uploads/${product.images[0]}`}alt={product.name}/>
+                    </div>
                       <div className='content'>
                         <p component="div">
                           {product.name}

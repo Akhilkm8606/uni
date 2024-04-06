@@ -7,11 +7,11 @@ import { AiOutlineMail } from "react-icons/ai";
 import { IoMdHome, IoMdNotifications } from 'react-icons/io';
 import { userLogOut } from '../Redux/Slice/user';
 import { useDispatch, useSelector } from 'react-redux';
+import Theme from '../UserDashBoard/Layout/Theme';
 
 function Header({ handleOptionClick }) {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  console.log('ddhjhjh',isAuthenticated);
   
 
   const handleLogOut =()=>{
@@ -60,8 +60,7 @@ function Header({ handleOptionClick }) {
         <IoSearchOutline className='searchIcon' />
       </div>
       <div className='header-right'>
-      <Link to={"/"} className='icon-text-link'><IoMdHome className='icon-Home' /></Link>
-      
+      <Link to={"/"} ><IoMdHome className='icon-Home' /></Link>
 
         <AiOutlineMail onClick={() => handleProfile('msg')} className='icon-user' />
         {showMsg && <div className='masseges'>Message Section</div>}

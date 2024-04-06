@@ -1,59 +1,159 @@
-// UserList.js
 import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAllUsers } from '../../../components/Redux/Slice/user'; // Adjust the path accordingly
+import { deleteUser, setAllUsers } from '../../../components/Redux/Slice/user';
+import { DataGrid, GridDeleteIcon } from '@mui/x-data-grid';
+import Switch from '@mui/material/Switch';
+import EditIcon from '@mui/icons-material/Edit';
+import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress } from '@mui/material';
 
 function UserList() {
-    const dispatch = useDispatch();
-    const users = useSelector(state => state.auth.users);
-    const [user, setUsers] =  useState([]);
+  const dispatch = useDispatch();
+  const users = useSelector(state => state.auth.users);
+  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [loading, setLoading] = useState(false); // Loading state
+  console.log(users);
+  
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/users", {
+          withCredentials: true
+        });
+        const updatedUsers = response.data.users.map(user => {
+          const existingUser = users.find(u => u._id === user._id);
+          return existingUser ? { ...existingUser, status: user.status } : user;
+        });
+        dispatch(setAllUsers(response.data.users));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchUsers();
+  }, [dispatch]);
+
+  const handleEdit = (userId) => {
+    // Handle edit functionality here
+    console.log("Edit user with ID:", userId);
+  };
 
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await axios.get("http://localhost:5000/users", {
-                    withCredentials: true
-                });
-                dispatch(setAllUsers(response.data.users)); // Dispatch action to update users array
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+  const handleDeleteClick = (userId) => {
+    setDeleteUserId(userId);
+    setOpenDeleteDialog(true);
+  };
 
-        fetchUsers();
-    }, [dispatch]);
+  const handleDeleteConfirm = async () => {
+    try {
+      setLoading(true); // Set loading to true
+      const userIdToRemove = deleteUserId;
+      console.log(userIdToRemove); // Ensure userIdToRemove is correctly assigned
+      await axios.delete(`http://localhost:5000/users/${userIdToRemove}`, { withCredentials: true });
+      setOpenDeleteDialog(false);
+      dispatch(deleteUser(userIdToRemove)); // Use deleteUser action creator instead of userDelete
+      console.log('User deleted successfully');
+    } catch (error) {
+      console.error('Error deleting user:', error.message);
+    } finally {
+      setLoading(false); // Reset loading state regardless of success or failure
+    }
+  };
+  
+  
+  const handleDeleteCancel = () => {
+    setDeleteUserId(null);
+    setOpenDeleteDialog(false);
+  };
 
-    return (
-      <div>
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'username', headerName: 'User', width: 150 },
+    { field: 'email', headerName: 'Email', width: 200 },
+    { field: 'phone', headerName: 'Phone', width: 150 },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 120,
+      renderCell: (params) => {
+        const user = params.row;
+        return (
+          <Switch
+            checked={user.status === 'active'}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+        );
+      }
+    }, { field: 'role', headerName: 'Role', width: 120 },
+    {
+      field: 'edit',
+      headerName: 'Edit',
+      width: 100,
+      renderCell: (params) => (
+        <EditIcon
+          onClick={() => handleEdit(params.row.id)}
+          style={{ cursor: 'pointer' }}
+        />
+      )
+    },
+    {
+      field: 'delete',
+      headerName: 'Delete',
+      width: 100,
+      renderCell: (params) => {
+        const userId = params.row._id;
+        return (
+          <IconButton onClick={() => handleDeleteClick(userId)}>
+            <GridDeleteIcon />
+          </IconButton>
+        );
+      }
+    }
+  ];
+
+  // Add unique IDs to the users array
+  const usersWithIds = users.map((user, index) => ({ ...user, id: user._id }));
+  const filteredUsers = usersWithIds.filter(user => user.role === 'user')
+  console.log(filteredUsers);
+
+
+  return (
+    <div className='users_container'>
       <div className='usersList'>
-        <Table striped bordered hover className='custom-table'>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>First Name</th>
-              <th>Email</th>
-              <th>Phone Number</th>
-              <th>Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            {user.map((user, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.phone}</td>
-                <td>{user.role}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <h2>Customers</h2>
+        <div className='inpu-div'>
+          <input type="text" placeholder='search here' />
+          <button className='s-btn'>search</button>
+        </div>
+        <div style={{ height: 400, width: '100%' }}>
+          <DataGrid
+            rows={filteredUsers}
+            columns={columns}
+            pageSize={5}
+            checkboxSelection
+            disableSelectionOnClick
+          />
+        </div>
       </div>
+      <Dialog open={openDeleteDialog} onClose={handleDeleteCancel}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this user?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="primary" disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : 'Delete'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
-    );
+  );
 }
+
 
 export default UserList;

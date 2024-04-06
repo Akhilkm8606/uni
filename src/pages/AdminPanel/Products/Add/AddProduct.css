@@ -1,48 +1,185 @@
 /* AddProduct.css */
 
+.add-p-row{
+ background-color: #e2e1e1;
+ border-radius: 10px;
+ padding: 30px;
+ width: 60%;
+ margin-left: auto;
+ margin-right: auto;
+
+}
 .add-product-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.add-product-form {
+  margin-top: 20px;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-row {
   
-  .add-product-form {
-    margin-top: 20px;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Align items vertically */
+  margin-bottom: 10px; /* Adjust margin for spacing between rows */
+}
+.form-row-file{
+  width: 100%;
+  display: flex;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  height: 220px;
+  border: 1px solid rgb(66, 65, 65);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+.form-f-row,.form-d-row{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+.form-f-row>input,.form-d-row>input{
+  width: 100%;
+  padding: 30px  10px;
+  text-align: start;
+}
+.file-upload-container {
+  display: flex;
+  align-items: center;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-upload-box {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: #e2e1e1;
+  padding: 20px;
+  text-align: center;
+}
+
+.divider {
+  margin: 10px 0;
+}
+
+.select-files-button {
+  border-radius: 10px;
+  background-color: #041fa9;
+  border: 1px solid #aaa;
+  color: white;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.select-files-button:hover {
+  background-color: #eee;
+}
+
+/* {
+  margin-left: auto;
+  margin-right: auto;
+} */
+
+/* Text input style */
+.form-input {
+border-radius: 8px;
+  padding: 20px 10px ;
+  margin-bottom: 10px;
+  width: calc(50% - 5px); /* Set the width to 50% minus half of the margin */
+  border: 1px solid #ccc; /* Add border */
+  outline: none; /* Remove outline */
+  transition: border-color 0.3s ease; /* Add transition effect */
+}
+
+.form-input:focus {
+  border-color: #007bff; /* Change border color on focus */
+}
+
+/* File input style */
+.file-input {
+  padding: 10px;
+  margin-left: 10px; /* Adjust the margin as needed */
+  background-color: #007bff; /* Add background color */
+  color: #fff; /* Add text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Add border radius */
+  cursor: pointer; /* Change cursor to pointer */
+  outline: none; /* Remove outline */
+  transition: background-color 0.3s ease; /* Add transition effect */
+}
+
+.file-input:hover {
+  background-color: #0056b3; /* Change background color on hover */
+}
+
+.file-input:disabled {
+  background-color: #ccc; /* Change background color when disabled */
+  color: #666; /* Change text color when disabled */
+  cursor: not-allowed; /* Change cursor when disabled */
+}
+.save-p-btn{
+  display: grid;
+  place-content: center;
+
+}
+
+/* Submit button style */
+.submit-button {
+
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.submit-button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+
+@media (max-width: 776px) {
+  .add-p-row{
+   
+    width: 90%;
+ 
+   
+   }
+  .form-row {
   
-  .form-column {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
-  }
-  
-  .form-row {
-    display: flex;
     justify-content: space-between;
     align-items: center; /* Align items vertically */
     margin-bottom: 10px; /* Adjust margin for spacing between rows */
   }
-/* AddProduct.css */
-
-.form-input {
-    padding: 10px;
-    margin-bottom: 10px;
-    width: calc(50% - 5px); /* Set the width to 50% minus half of the margin */
-  }
-  
-  .file-input {
-    width: calc(50% - 5px); /* Set the width to 50% minus half of the margin */
-    margin-left: 10px; /* Adjust the margin as needed */
-  }
-  
-  .submit-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .submit-button:hover {
-    background-color: #0056b3;
-  }
-  
+.form-input{
+  width: 100%;
+}
+}

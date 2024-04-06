@@ -5,8 +5,6 @@ import DashBoard from './components/adminDashBoard/AdminDashBoard';
 import SellerDashBoard from './components/SellerDashBoard/DashBoadr';
 import PageContent from './components/adminDashBoard/PageContent';
 import AllOrders from './pages/AdminPanel/Orders';
-import ADMProducts from './pages/AdminPanel/Products/List/Products';
-import AllUsers from './pages/AdminPanel/Users/Users';
 import MDashBoard from './pages/AdminPanel/Dashboard';
 import Store from './pages/SellerPanel/Store';
 import Users from './pages/SellerPanel/Users';
@@ -75,8 +73,7 @@ function App() {
         <Route path="/admin" element={<DashBoard />} />
         <Route path="/admin/*" element={<PageContentRouter />} />
         <Route path="/admin/Admin-dashBoard" element={<MDashBoard />} />
-        <Route path="/admin/Products" element={<ADMProducts />} />
-        <Route path="/admin/Users" element={<AllUsers />} />
+        {/* <Route path="/admin/Products" element={<ADMProducts />} /> */}
         <Route path="/admin/Orders" element={<AllOrders />} />
         <Route path="/admin/profile" element={<Profile />} />
         <Route path="/admin/AddProdcts" element={<PageContent option="AddProdcts" />} />

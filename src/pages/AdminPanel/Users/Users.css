@@ -1,0 +1,9 @@
+.usersList{
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+.usersList>div{
+  margin: 20px;
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, json, useNavigate, useParams } from 'react-router-dom';
-import { getProductDetails } from '../../../actions/ProductAction';
+import { clearProducts, getProductDetails } from '../../../actions/ProductAction';
 import { useDispatch, useSelector } from 'react-redux';
 import Carousel from 'react-material-ui-carousel';
 import './ProductDetails.css';
@@ -13,20 +13,19 @@ import { getCart } from '../../../components/Redux/Slice/cart';
 
 
 function ProductDetails() {
-  
   const navigate = useNavigate()
   const [cart, setCart] = useState([]);
-
   const dispatch = useDispatch();
-  const { id } = useParams(); // Access the product ID from the URL params
+  const { id } = useParams();
+  console.log(id); // Access the product ID from the URL params
   useEffect(() => {
-    console.log("Product rating:", product.rating); // Log product rating
     dispatch(getProductDetails(id));
+    dispatch(clearProducts());
   }, [dispatch, id]);
   
 
-  const product = useSelector(state => state.product.products);
-console.log(product.rating);
+  const product = useSelector(state => state.product.product);
+  console.log(product);
 
   const [quantity, setQuantity] = useState(1);
 
@@ -43,10 +42,6 @@ console.log(product.rating);
       setQuantity(quty);
     }
   }
-
-
-
-
   const handleAddToCart = async () => {
     try {
       const response = await axios.post(`http://localhost:5000/product/addCart/${id}`, { quantity }, { withCredentials: true });
@@ -73,6 +68,7 @@ console.log(product.rating);
 
   return (
     <>
+    
       {product && (
         <div className='productdetail-container'>
           <div className='product-content'>
@@ -88,7 +84,7 @@ console.log(product.rating);
               <p> Product #{product._id}</p>
             </div>
             <div className='detailsBlock-2'>
-              <ReactStars value={parseFloat(product.rating) || 0} count={5}  isHalf={true}      color="white"/>
+              <ReactStars value={parseFloat(product.rating) || 0} count={5}  isHalf={true}   />
               <div>Reviews :({product.reviews.length})</div>
             </div>
             <div className='detailsBlock-3'>

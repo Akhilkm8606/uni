@@ -29,6 +29,7 @@ function Cart() {
             withCredentials: true
           });
           setCart(response.data.userCart);
+       
         }
       } catch (error) {
         console.error('Error fetching cart data:', error);

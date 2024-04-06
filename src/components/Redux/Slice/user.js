@@ -24,9 +24,14 @@ const userSlice = createSlice({
         },
         setAllUsers: (state, action) => {
             state.users = action.payload; // Update users array with fetched users
-        }
+        },
+        deleteUser :(state,action) =>{
+            const userDelete = action.payload;
+            state.users = state.users.filter(users => users._id !== userDelete);
+      
+          }
     }
 });
 
-export const { userAuthentic, userLogOut, setAllUsers } = userSlice.actions;
+export const { userAuthentic, userLogOut, setAllUsers,deleteUser } = userSlice.actions;
 export default userSlice.reducer;

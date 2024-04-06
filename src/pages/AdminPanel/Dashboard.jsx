@@ -12,6 +12,7 @@ function Dashboard() {
   const users = useSelector(state => state.auth.users);
   const user = users.filter(user =>  user.role === 'user');
   const seller = users.filter(user =>  user.role === 'seller');
+  
  
   const allUsers = [...user, ...seller];
 
