@@ -4,6 +4,154 @@
   margin-right: auto;
 
 }
-.usersList>div{
-  margin: 20px;
+.usersList>div,select{
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.input-div input{
+  width: 300px;
+  padding: 10px;
+  border-radius: 8px;
+
+}
+.s-btn{
+  padding: 10px;
+  border-radius: 8px;
+  margin-left: 10px;
+  background-color: rgb(46, 166, 46);
+  outline: none;
+}
+.select{
+
+  width: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-left: 10px;
+  color: white;
+  background-color: rgb(70, 137, 139);
+  outline: none;
+  text-align: center;
+}
+
+.box{
+  background-color: rgb(255, 255, 255);
+  border-radius: 4px;
+  border: 2px solid rgb(4, 28, 113);
+ padding: 20px;
+}
+.rle,.sts{
+padding: 2px 5px;
+border-radius: 10px;
+text-align: center;
+}
+/* useredit */
+
+.user-detail {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+/* .u-box{
+  margin-left: 20px;
+  margin-right: auto;
+} */
+.user-form{
+  width: 100%;
+
+}
+.hd{
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+  
+#hdn{
+  font-size: 28px;
+  font-weight: bolder;
+  padding: 10px;
+}
+.u-box{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 3px;
+  padding: 10px;
+}
+.user-field{
+  width: 45%;
+padding: 10px;
+border-radius: 10px;
+
+}
+.optn{
+  display: flex;
+  width: 45%;
+padding: 10px;
+border-radius: 10px;
+
+}
+#role,#status{
+  width: 40%;
+  padding: 10px;
+border-radius: 10px;
+text-align: center;
+}
+.u-btn{
+  margin-top: 15px;
+  display: grid;
+  place-items: center;
+}
+.sbt-btn{
+ width: 250px;
+ padding: 10px;
+ border-radius: 10px;
+ color: rgb(245, 245, 245);
+ background-color: rgb(28, 28, 255);
+ border: none;
+
+}
+
+
+@media (max-width: 768px) {
+  .user-detail {
+    flex-direction: column;
+    width: 80%;
+   
+  }
+  .hd{
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+  }
+
+  .user-field {
+    width: 80%;
+  }
+  .optn{
+    width: 80%;
+  }
+
+  #role, #status {
+    width: 80%;
+  }
+
+  .u-box {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sbt-btn {
+    width: 50%;
+  }
 }

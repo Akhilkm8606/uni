@@ -1,7 +1,7 @@
 /* AddProduct.css */
 
 .add-p-row{
- background-color: #e2e1e1;
+ background-color: #3a526d;
  border-radius: 10px;
  padding: 30px;
  width: 60%;
@@ -102,7 +102,7 @@
 border-radius: 8px;
   padding: 20px 10px ;
   margin-bottom: 10px;
-  width: calc(50% - 5px); /* Set the width to 50% minus half of the margin */
+  width: calc(49% - 5px); /* Set the width to 50% minus half of the margin */
   border: 1px solid #ccc; /* Add border */
   outline: none; /* Remove outline */
   transition: border-color 0.3s ease; /* Add transition effect */

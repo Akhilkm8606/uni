@@ -1,0 +1,91 @@
+.edit-prdut{
+    display: grid;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    width: 80%;
+}
+
+.page-hd {
+    box-shadow: 0 4px 8px 0 rgba(158, 152, 152, 0.2), 0 6px 20px 0 rgba(221, 214, 214, 0.19);
+border: 10px;
+    padding: 20px;
+}
+.page-cont{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;/* Align content horizontally in the center */
+
+}
+
+.thumb {
+    width: 300px;
+    height: 350px;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(29 25 25 / 19%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ /* Align content vertically in the center */
+  }
+  
+  .thumb > img {
+    box-shadow: 0 4px 8px 0 rgba(253, 242, 242, 0.2), 0 6px 20px 0 rgba(100, 94, 94, 0.19);
+
+    width: 180px;
+    height: 180px;
+  }
+  .general {
+    width: 80%;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(29 25 25 / 19%);
+   /* Changed to column layout */
+}
+
+.inpt-fld {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    padding: 10px;
+}
+.inpt-fld label{
+    margin-top: 10px;
+}
+.inpt-fld input[name="name"],
+.inpt-fld input[name="features"],
+.inpt-fld input[name="quantity"],
+
+.inpt-fld input[name="Price"] {
+    margin-top: 10px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    /* Add any other styling properties you need */
+}
+.inpt-fld select[name="categoryId"]{
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+}
+.inpt-fld input[name="description"] {
+    margin-top: 10px;
+    width: 100%;
+    padding: 50px 20px;
+    border-radius: 10px;
+    /* Add any other styling properties you need */
+}
+.sum-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.sum-btn>button{
+    width: 250px;
+    padding: 10px;
+    border-radius: 10px;
+    color: rgb(245, 245, 245);
+    background-color: rgb(29, 61, 104);
+    border: none;
+  
+}

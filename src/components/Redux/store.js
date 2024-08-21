@@ -17,6 +17,8 @@ import cartReducer from './Slice/cart';
 import themeReducer from './Slice/themeSlice';
 import categoryReducer from './Slice/category';
 import orderReducer from './Slice/orders';
+
+import sellerReducer from "./Slice/Seller"
 import { combineReducers } from 'redux'; // Import combineReducers
 
 const persistConfig = {
@@ -32,8 +34,8 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   cate: categoryReducer,
   orders: orderReducer,
-  
   theme: themeReducer,
+  seller:sellerReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

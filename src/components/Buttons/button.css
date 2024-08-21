@@ -1,0 +1,10 @@
+.close-btn {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+    width:  fit-content;
+    font-weight: bold;
+}

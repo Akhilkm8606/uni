@@ -1,25 +1,27 @@
+// DashBoard.jsx
 import React, { useState } from 'react';
-import '../adminDashBoard/style.css';
 import Footer from '../UserDashBoard/Layout/Footer/Footer';
 import Header from './Header';
 import PageContent from './PageContent';
 import Sidebar from './Sidebar';
-
-function DashBoard() {
-  const [selectedOption, setSelectedOption] = useState('Admin-dashBoard'); // State to track selected option
+import { useSelector } from 'react-redux';
+function DashBoard() { // Added userRole as a prop
+  const [selectedOption, setSelectedOption] = useState('Admin-dashBoard');
+  const userRole = useSelector(state => state.auth.user?.role); // Access user's role from Redux state
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+    console.log(option);
   };
 
   return (
     <div className="App">
-      <Header handleOptionClick={handleOptionClick} />
-      <div className='sidebarAndPage'>
-        <Sidebar handleOptionClick={handleOptionClick} /> 
-        <PageContent option={selectedOption} />
+      <Header />
+      <div>
+        <Sidebar handleOptionClick={handleOptionClick} userRole={userRole}  />
+        <PageContent option={selectedOption} userRole={userRole} /> {/* Passed userRole to PageContent */}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import '../Profile/Profile.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import instance from '../../../../Instance/axios';
 
 function Profile() {
   const products = useSelector(state => state.data.products);
@@ -17,12 +18,11 @@ function Profile() {
     const fetchOrdersData = async () => {
       try {
         if (isAuthenticated) {
-          const response = await axios.get(`http://localhost:5000/orderlist/${user._id}`, {
+          const response = await instance.get(`/api/v1/orderlist/${user._id}`, {
             withCredentials: true
           });
           setOrders(response.data.orders);
         } else {
-          // Handle not authenticated case, e.g., redirect to login page
           navigate('/login');
         }
       } catch (error) {

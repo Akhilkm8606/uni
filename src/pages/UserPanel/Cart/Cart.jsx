@@ -5,6 +5,7 @@ import './Cart.css';
 import axios from 'axios';
 import { getCart } from '../../../components/Redux/Slice/cart';
 import { MdDelete } from 'react-icons/md';
+import instance from '../../../Instance/axios';
 
 function Cart() {
   const [cart, setCart] = useState([]);
@@ -25,9 +26,11 @@ function Cart() {
           return;
         }
         if (isAuthenticated && user) {
-          const response = await axios.get(`http://localhost:5000/user/carts/${user._id}`, {
+
+          const response = await instance.get(`/api/v1/user/carts/${user._id}`, {
             withCredentials: true
           });
+          console.log(response.data.userCart);
           setCart(response.data.userCart);
        
         }
@@ -44,7 +47,7 @@ function Cart() {
 
   const updateQuantity = useCallback(async (itemId, quantity) => {
     try {
-      const response = await axios.put(`http://localhost:5000/user/cart/edit/${itemId}`, { quantity }, { withCredentials: true });
+      const response = await instance.put(`/api/v1/user/cart/edit/${itemId}`, { quantity }, { withCredentials: true });
       if (response.status === 200) {
         setCart(prevCart => {
           const updatedCart = prevCart.map(item => {
@@ -73,7 +76,7 @@ function Cart() {
 
   const handleRemoveCart = async (itemId) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/user/cart/delete/${itemId}`, {
+      const response = await instance.delete(`/api/v1/user/cart/delete/${itemId}`, {
         withCredentials: true
       });
       if (response.status === 200) {
@@ -101,7 +104,7 @@ function Cart() {
             {Array.isArray(cart) && cart.map((item, index) => (
               <div className='cart-item-div' key={index}>
                 <div className='item-image'>
-                  <Link className='item-link' to={`/product/${item.productId._id}`} >
+                  <Link className='item-link' to={`/product/${item.productId._}`} >
                     <img src={`http://localhost:5000/uploads/${item.productId.images[0]}`} alt={item.productId.name} className="card-img-top" />
                   </Link>
                 </div>

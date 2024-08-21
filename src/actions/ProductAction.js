@@ -15,13 +15,14 @@ import {
 export const clearProducts = () => ({
   type: CLEAR_PRODUCTS
 });
+import instance from "../Instance/axios";
 
 export const getProducts = (keyword) => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCTS_REQUEST });
-    const url = keyword ? `http://localhost:5000/products?keyword=${keyword}` : 'http://localhost:5000/products';
+    const url = keyword ? `/api/v1/products?keyword=${keyword}` : '/api/v1/products';
 
-    const response = await axios.get(url);
+    const response = await instance.get(url);
     dispatch({
       type: ALL_PRODUCTS_SUCCESS,
       payload: response.data,
@@ -42,7 +43,7 @@ export const getProductDetails = (id) => async (dispatch) =>{
       type: PRODUCTS_DETAILS_REQUEST
     });
 
-    const response = await axios.get(`http://localhost:5000/product/${id}`);
+    const response = await  instance.get(`http://localhost:5000/api/v1/product/${id}`);
     dispatch({
       type: PRODUCTS_DETAILS_SUCCESS,
       payload: response.data.product

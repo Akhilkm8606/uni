@@ -9,6 +9,7 @@ import '../form/style.css';
 import UserSignUp from './UserSignUp';
 import { GiJewelCrown, GiLaurelCrown } from "react-icons/gi";
 import Cookies from 'js-cookie'; 
+import instance from '../../../Instance/axios';
 function UserLogin() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -33,12 +34,12 @@ function UserLogin() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/login', {
+            const response = await instance.post('/api/v1/login', {
                 email,
                 password,
             }, { withCredentials: true });
           
-            console.log(Cookies.get('token'));
+           
 
             const { data } = response;
             if (data.success) {

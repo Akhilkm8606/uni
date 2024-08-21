@@ -8,10 +8,12 @@ import './ProductList.css';
 import ReactPaginate from 'react-paginate';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import instance from '../../../../Instance/axios';
 
 function ProductList({ onAddProductClick }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [pageNumber, setPageNumber] = useState(0); // State to manage current page
   const productsPerPage = 8; // Number of products per page
   const data = useSelector(state => state.data);
@@ -32,11 +34,15 @@ function ProductList({ onAddProductClick }) {
   const handlePageClick = ({ selected }) => {
     setPageNumber(selected); // Update current page number when page is clicked
   };
+
+  const handleEdit = (id) =>{
+    navigate(`/admin/products/edit/${id}`);
+  }
   const handelDelet = async (productId) =>{
    try {
     if (window.confirm('Are you sure you want to delete this product?')) {
       // Send DELETE request to the server
-      await axios.delete(`http://localhost:5000/product/${productId}`, { withCredentials: true });
+      await instance.delete(`/api/v1/product/${productId}`, { withCredentials: true });
       
       // Dispatch action to update the store after successful deletion
       dispatch({ type: 'DELETE_PRODUCT', payload: productId });
@@ -60,7 +66,7 @@ function ProductList({ onAddProductClick }) {
     <>
       <div className='pd-container'>
         <h2 className='pd-heading'>PRODUCTS</h2>
-        <div className='seracch-p'>
+        {/* <div className='seracch-p'>
                 <div className='inpu-div'>
                 <input type="text" placeholder='search here' />
                 <button className='s-btn'>serch</button>
@@ -71,7 +77,7 @@ function ProductList({ onAddProductClick }) {
                   Add New</Link>
                 </div>
                
-              </div>
+              </div> */}
         <Row className='pd-row'>
           <div className='p-outer-div'>
             <div className='products-div'>
@@ -116,7 +122,7 @@ function ProductList({ onAddProductClick }) {
                       </div>                      <td className='product-date'>{formatDate(product.createdAt)}</td>
                       <td className='product-actions'>
                        <span>
-                       <MdEdit className='action-edit' />
+                       <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
                        </span>
                        <span>
                        <MdDelete onClick={() =>handelDelet(product._id)} className='action-delete' />

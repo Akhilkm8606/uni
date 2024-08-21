@@ -10,12 +10,12 @@ import axios from 'axios';
 import { getCategory } from '../../../components/Redux/Slice/category'; // Import getCategory action
 import ReactPaginate from 'react-paginate'; // Import ReactPaginate
 import {  MdSkipNext, MdSkipPrevious } from "react-icons/md";
+import instance from '../../../Instance/axios';
 function Products() {
   const { keyword } = useParams();
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector((state) => state.data);
   const categoryList = useSelector((state) => state.cate.category);
-  console.log(categoryList);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
   const [priceRanges, setPriceRanges] = useState([]);
@@ -31,7 +31,7 @@ function Products() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/categorys', { withCredentials: true });
+        const response = await instance.get('/api/v1/categorys', { withCredentials: true });
         dispatch(getCategory(response.data.categorys));
        
       } catch (error) {
@@ -152,9 +152,8 @@ function Products() {
                           {product.name}
                         </p>
                         <div className='price-n-rating'>
-                          <ReactStars
-                            // Add ReactStars props here
-                          />
+                        <ReactStars value={parseFloat(product.rating) || 0} count={5}  isHalf={true}   />
+
                           <span>{`₹ : ${product.price}`}</span>
                         </div>
                       </div>

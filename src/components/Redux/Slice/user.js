@@ -27,11 +27,21 @@ const userSlice = createSlice({
         },
         deleteUser :(state,action) =>{
             const userDelete = action.payload;
+            
             state.users = state.users.filter(users => users._id !== userDelete);
       
-          }
+          },
+          updateUsers: (state, action) => {
+            const updatedUser = action.payload;
+            const index = state.users.findIndex(users => users._id === updatedUser._id);
+            if (index !== -1) {
+              state.users[index] = updatedUser; // Corrected from updateUser to updatedUser
+            }
+          },
+          
+          
     }
 });
 
-export const { userAuthentic, userLogOut, setAllUsers,deleteUser } = userSlice.actions;
+export const { userAuthentic, userLogOut, setAllUsers,deleteUser,updateUsers } = userSlice.actions;
 export default userSlice.reducer;

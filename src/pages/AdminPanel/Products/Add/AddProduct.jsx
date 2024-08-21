@@ -4,7 +4,8 @@ import axios from 'axios';
 import './AddProduct.css'; // Import CSS file for styling
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts } from '../../../../actions/ProductAction';
-
+import instance from '../../../../Instance/axios';
+import { ToastContainer, toast } from 'react-toastify';
 function AddProduct() {
   const user = useSelector(state => state.auth.user);
   const category = useSelector(state => state.cate.category);
@@ -30,44 +31,78 @@ function AddProduct() {
     });
   };
 
-  console.log(formData, 'Form Data');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-    console.log(formData, 'Form Data');
-
+  
+    // Check if any required field is empty, including the image
+    const { name, categoryId, price, quantity, description, features, image } = formData;
+  
+    if (!name || !categoryId || !price || !quantity || !description || !features || !image) {
+      console.log('Missing field:', { name, categoryId, price, quantity, description, features, image });
+      alert('Please fill in all the required fields, including an image.');
+      return;
+    }
+    
+  
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
       try {
         const formDataToSend = new FormData();
-        formDataToSend.append('name', formData.name);
-        formDataToSend.append('categoryId', formData.categoryId);
-        formDataToSend.append('price', formData.price);
-        formDataToSend.append('quantity', formData.quantity);
-        formDataToSend.append('description', formData.description);
-        formDataToSend.append('features', formData.features);
-        formDataToSend.append('image', formData.image);
-
-        const response = await axios.post(`http://localhost:5000/addproduct/${user._id}`, formDataToSend, {
+        formDataToSend.append('name', name);
+        formDataToSend.append('categoryId', categoryId);
+        formDataToSend.append('price', price);
+        formDataToSend.append('quantity', quantity);
+        formDataToSend.append('description', description);
+        formDataToSend.append('features', features);
+        formDataToSend.append('image', image);
+        
+  
+        const response = await instance.post(`/api/v1/addproduct/${user._id}`, formDataToSend, {
           withCredentials: true,
           headers: {
             "Content-Type": "multipart/form-data",
           }
         });
-
-        console.log(response.data.product);
+  
+        if (response.data.success) {
+          // Clear the form and reset form state
+          setFormData({
+            name: '',
+            categoryId: '',
+            price: '',
+            quantity: '',
+            description: '',
+            features: '',
+            image: null,
+          });
+          form.reset();
+          alert('Product added successfully');
+        } 
+        else {
+          // Handle any case where success is false if needed
+          alert('Product could not be added. Please try again.');
+        }
+  
         dispatch(getProducts(response.data.product));
-        setFormData(response.data.product); // Reset form state
-        form.reset();
-        alert('Product added successfully');
       } catch (error) {
         console.error('Error adding product:', error);
-        alert('Failed to add product. Please try again.');
+  
+        // Show a more specific error message if available
+        const errorMessage = error.response?.data?.message || 'Error adding product';
+        toast.error(errorMessage, {
+          autoClose: 3000,
+          position: "top-center"
+        });
       }
     }
   };
+  
+  
+  
+  
 
   return (
     <div className='p-container' >
@@ -176,7 +211,7 @@ function AddProduct() {
           </div>
         </form>
       </Row>
-      
+      <ToastContainer />
     </div>
   );
 }

@@ -5,6 +5,8 @@ import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCategory, removeCategory } from '../../../../components/Redux/Slice/category';
 import '../Categories/categories.css'; // Import your custom CSS file
+import instance from '../../../../Instance/axios';
+import CloseBtn from '../../../../components/Buttons/CloseBtn';
 
 function ProductCategory() {
   const categories = useSelector(state => state.cate.category);
@@ -17,7 +19,7 @@ function ProductCategory() {
   const handleCategories = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/addcategories', {
+      const response = await instance.post('/api/v1/addcategories', {
         name: newCategoryName
       }, {
         withCredentials: true
@@ -31,7 +33,7 @@ function ProductCategory() {
   const handleDeleteCategory = async (categoryId) => {
    
     try {
-      await axios.delete(`http://localhost:5000/categorys/delete/${categoryId}`, {
+      await instance.delete(`/api/v1/categorys/delete/${categoryId}`, {
         withCredentials: true
       });
       dispatch(removeCategory(categoryId)); // Dispatch action to remove deleted category from Redux store
@@ -49,6 +51,7 @@ function ProductCategory() {
 
   return (
     <div className='categoryListing'>
+      <CloseBtn/>
       <Row>
         <h2>PRODUCTS CATEGORY</h2>
         <p>Total Product Category Count: {totalCateCount}</p>

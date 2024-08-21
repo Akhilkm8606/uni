@@ -6,13 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import instance from '../../../Instance/axios';
 
 function ProductOrderForm() {
     const location = useLocation();
     const dispatch = useDispatch()
 
     const { id } = useParams();
-    console.log(id);
     const cartItems = useSelector(state => state.cart.items);
 
     // Find the item with the specified id
@@ -34,13 +34,13 @@ function ProductOrderForm() {
 
     }
     const [formData, setFormData] = useState({
-        user: userID,
-        items: [{
+        user: userID || '',
+        items: selectedItem ? [{
             product: selectedItem.productId._id,
-            name: selectedItem.productId.name, // Add name field
+            name: selectedItem.productId.name,
             quantity: selectedItem.quantity,
-            price: selectedItem.price // Assuming the amount is the price
-        }],
+            price: selectedItem.price
+        }] : [],
         totalPrice: selectedItem ? selectedItem.amount : '',
         status: 'Pending',
         paymentMethod: '',
@@ -54,8 +54,9 @@ function ProductOrderForm() {
             State: '',
             ZipCode: ''
         },
-
     });
+    
+   
     useEffect(() => {
         if (!isAuthenticated) {
             toast.error("Please login", {
@@ -95,28 +96,20 @@ function ProductOrderForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/orders', formData, {
+            const response = await instance.post('/api/v1/orders', formData, {
                 withCredentials: true
             });
-
-
-            // Reset form after successful submission
-            setFormData(response.data.order);
-            console.log(response);
-
+    
             if (response.data.success) {
-                if (formData.paymentMethod === 'Cash on Delivery') { // Corrected comparison
-                    // Display an alert indicating successful order placement for COD
+                if (formData.paymentMethod === 'Cash on Delivery') {
                     alert('Order placed successfully!');
                 } else {
-                    // Proceed with online payment
-                    try {
-
-                        const { success, razorpayOrder } = response.data;
-                        console.log(razorpayOrder);
-
-                        if (success) {
-                            const data = await axios.get('http://localhost:5000/api/razorpay/key');
+                    const { success, razorpayOrder } = response.data;
+                    if (success) {
+                        const data = await instance.get('/api/v1/api/razorpay/key');
+                        
+                        // Check if Razorpay script is loaded
+                        if (typeof window.Razorpay !== 'undefined') {
                             const options = {
                                 "key": data.key_id,
                                 "amount": razorpayOrder.amount,
@@ -125,7 +118,7 @@ function ProductOrderForm() {
                                 "description": "Test Transaction",
                                 "image": "https://example.com/your_logo",
                                 "order_id": razorpayOrder.id,
-                                "callback_url": "http://localhost:5000/api/paymentVerification",
+                                "callback_url": "http://localhost:5000/api/v1/api/paymentVerification",
                                 "prefill": {
                                     "name": "Gaurav Kumar",
                                     "email": "gaurav.kumar@example.com",
@@ -138,13 +131,12 @@ function ProductOrderForm() {
                                     "color": "#3399cc"
                                 }
                             };
-
+    
                             const rzp = new window.Razorpay(options);
                             rzp.open();
-
+                        } else {
+                            console.error('Razorpay SDK is not loaded.');
                         }
-                    } catch (error) {
-                        console.error('Error initiating payment:', error);
                     }
                 }
             }
@@ -152,7 +144,8 @@ function ProductOrderForm() {
             console.error('Error creating order:', error);
         }
     };
-
+    
+    
 
 
 

@@ -7,7 +7,7 @@ function About() {
 
   return (
     <div className="about">
-      <h2>About Us</h2>
+      <h2 id='abt-h2'>About Us</h2>
       <div>
         <p>Welcome to <strong>Unified Cart</strong>, your ultimate destination for online shopping! We are committed to revolutionizing your shopping experience by offering a wide array of high-quality products at unbeatable prices.</p>
         <p>At Unified Cart, we understand the importance of convenience and affordability. That's why we've curated a diverse selection of products ranging from electronics, fashion, home essentials, beauty products, and much more.</p>
@@ -28,7 +28,7 @@ function About() {
           </li>
         </ul>
         <p>Thank you for choosing Unified Cart for all your shopping needs. Start exploring our website today and discover the joy of hassle-free online shopping!</p>
-        <h3>Our Values</h3>
+        <h3 id='abt-h3'>Our Values</h3>
         <p>At Unified Cart, we are guided by our core values:</p>
         <ul>
           <li>Customer Satisfaction: We prioritize the needs and satisfaction of our customers above all else.</li>

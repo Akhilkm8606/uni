@@ -8,10 +8,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { Try } from '@mui/icons-material';
 import { getProductDetails } from '../../../../actions/ProductAction';
+import instance from '../../../../Instance/axios';
   
 
 function ReviewCard({productId}) {
-  console.log(productId,'id');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
@@ -31,8 +31,8 @@ function ReviewCard({productId}) {
     e.preventDefault();
     try {
       if (isAuthenticated) {
-        const response = await axios.post(
-          `http://localhost:5000/addReview/${productId}`,
+        const response = await instance.post(
+          `/api/v1/addReview/${productId}`,
           { 
             comment: comment,
             rating: rating

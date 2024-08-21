@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Profile.css';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector,useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import { userAuthentic } from '../../../Redux/Slice/user';
+import instance from '../../../../Instance/axios';
 
 function EditProfile() {
   const [name, setName] = useState('');
@@ -14,12 +16,15 @@ function EditProfile() {
   const user = useSelector(state => state.auth.user);
   const navigate = useNavigate()
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Populate input fields with user details when component mounts
-    setName(user.username);
-    setEmail(user.email);
-    setPhoneNumber(user.phone);
+    if (user) {
+      setName(user.username || '');
+      setEmail(user.email || '');
+      setPhoneNumber(user.phone || '');
+    }
   }, [user]);
 
   const handleNameChange = (e) => {
@@ -38,14 +43,17 @@ function EditProfile() {
     e.preventDefault();
   
     try {
-      const response = await axios.post(`http://localhost:5000/updateUser/${id}`, {
+      const response = await instance.post(`/api/v1/updateUser/${id}`, {
         name,
         email,
         phone: phoneNumber
       }, { withCredentials: true });
       setMessage(response.data.message); // Set the message state to the response message
-  
+      console.log(response.data.user); // Set the message state to the response message
+      // dispatch(userAuthentic(response.user));
+
       if (response.data.success) {
+        
         toast.success(response.data.message, { // Use response.data.message for success toast
           autoClose: 3000,
           position: "top-center"

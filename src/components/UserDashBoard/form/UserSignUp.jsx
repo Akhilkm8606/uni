@@ -6,10 +6,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import '../form/style.css';
 import { GiLaurelCrown } from 'react-icons/gi';
+import instance from '../../../Instance/axios';
 
 function UserSignUp() {
     
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     const navigate = useNavigate();
     const [input, setInput] = useState({
@@ -41,7 +42,7 @@ function UserSignUp() {
         const { username, email, phone, address, password, confirmPassword } = input;
        
         try {
-            const response = await axios.post("http://localhost:5000/user", {
+            const response = await instance.post("/api/v1/user", {
                 username,
                 email,
                 phone,
@@ -64,7 +65,7 @@ function UserSignUp() {
                     };
                 }
             } 
-            dispatch
+            // dispatch();
         } catch (error) {
             console.error("Error during registration:", error);
             toast.error(error.response.data.message,{

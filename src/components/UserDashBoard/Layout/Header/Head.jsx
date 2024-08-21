@@ -67,7 +67,7 @@ function Home() {
            <span>
            <input type="search" placeholder='Search' onChange={(e) => setkeyword(e.target.value)} />
            </span>
-            <Link className='search_btn'  type='submit'>Search</Link>
+            <Link className='search_btn' onClick={searchSubmitHandler}  type='submit'>Search</Link>
           </form>
           <div to={'/'} className='logo'>
             UNIFIED CART
@@ -77,7 +77,6 @@ function Home() {
               <Link to={"/"} className='icon-text-link'><IoMdHome className='icon-links' /></Link>
       <Theme/>
               <Link to={"/cart"} value={5} className='icon-text-link'><CgShoppingCart className='icon-links' /></Link>
-              <Link className='icon-text-link'><CgHeart className='icon-links' /></Link>
               {isAuthenticated ? (
                 <button className='log-Btn' onClick={handleLogOut}><IoIosLogOut className='icon-links' /></button>
               ) : (

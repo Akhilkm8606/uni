@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {  AiOutlineShop, AiOutlineShoppingCart, AiOutlineUser} from "react-icons/ai";
 
 import { Button, Card, Row } from 'react-bootstrap';
-import '../../components/adminDashBoard/style.css';
+import '../../pages/AdminPanel/style.css';
 import { useSelector } from 'react-redux';
 
 

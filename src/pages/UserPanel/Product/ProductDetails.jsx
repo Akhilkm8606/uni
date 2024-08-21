@@ -10,6 +10,7 @@ import ReviewCard from './Review/ReviewCard';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { getCart } from '../../../components/Redux/Slice/cart';
+import instance from '../../../Instance/axios';
 
 
 function ProductDetails() {
@@ -17,7 +18,6 @@ function ProductDetails() {
   const [cart, setCart] = useState([]);
   const dispatch = useDispatch();
   const { id } = useParams();
-  console.log(id); // Access the product ID from the URL params
   useEffect(() => {
     dispatch(getProductDetails(id));
     dispatch(clearProducts());
@@ -44,9 +44,10 @@ function ProductDetails() {
   }
   const handleAddToCart = async () => {
     try {
-      const response = await axios.post(`http://localhost:5000/product/addCart/${id}`, { quantity }, { withCredentials: true });
+      const response = await instance.post(`/api/v1/product/addCart/${id}`, { quantity }, { withCredentials: true });
       // Update the cart state with the response data
       setCart(response.data.cart);
+      console.log(response.data.cart,'p');
      setQuantity(1); // Reset quantity after adding to cart
       toast.success('Product added to cart successfully');
       
@@ -81,10 +82,10 @@ function ProductDetails() {
           <div className='product-details'>
             <div className='detailsBlock-1'>
               <h2>{product.name}</h2>
-              <p> Product #{product._id}</p>
+              <p> ID #{product._id}</p>
             </div>
             <div className='detailsBlock-2'>
-              <ReactStars value={parseFloat(product.rating) || 0} count={5}  isHalf={true}   />
+              <ReactStars value={parseFloat(product.rating) || 0} count={5}  isHalf={true}    />
               <div>Reviews :({product.reviews.length})</div>
             </div>
             <div className='detailsBlock-3'>

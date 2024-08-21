@@ -16,9 +16,9 @@ function ProductCard() {
     // Fetch products when the component mounts
     dispatch(getProducts());
     // Clear products when the component unmounts to avoid stale data
-    return () => {
-      dispatch(clearProducts());
-    };
+    // return () => {
+    //   dispatch(clearProducts());
+    // };
   }, [dispatch])
    
   const displayedProducts = products.slice(0, 8);

@@ -1,0 +1,119 @@
+
+.ord-section{
+  width: 80%;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-direction: wrap;
+    gap: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+
+}
+.order-detail,.s-n-p-secton {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-direction: wrap;
+  gap: 20px;
+ 
+  margin-bottom: 20px;
+  }
+  .order-form{
+    width: 70%;
+   
+    box-shadow: 0 4px 8px 0 rgba(170, 170, 170, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    padding: 20px;
+    display: inline-block;
+
+  }
+  .customer-details-header,.o-d-h,.product-details-header,.shipping-address-header {
+    width: 100%;
+    box-shadow: 0 0px 0px 0 rgba(234, 232, 232, 0.2), 0 5px 5px 0 rgba(154, 147, 147, 0.19);
+
+    padding: 10px;
+    display: inline-block; /* This ensures that the border is applied correctly */
+  }
+  .c-dtls{
+    width: 40%;
+    
+    box-shadow: 0 4px 8px 0 rgba(170, 170, 170, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 10px;
+  }
+  .shipping-address,.product-details{
+    width: 50%;
+    height: fit-content;
+    box-shadow: 0 4px 8px 0 rgba(170, 170, 170, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 10px;
+  }
+  .c-d{
+    margin: 10px;
+  }
+  .c-top{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    row-gap: 10px;
+    
+  }
+  .c-ul>li,.o-ul>li,.s-a,.p-d{
+    padding: 5px;
+    background-color: rgb(224, 234, 243);
+    margin: 10px;
+    list-style: none;
+    color: rgb(63, 58, 58);
+    font-size: 15px;
+  }
+  .c-ul>li>span{
+    padding: 5px;}
+  
+  .order-stn{
+    width: 50%;
+    padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  }
+  .ordr-btn{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+  }
+  .subt-btn{
+    width: 250px;
+    padding: 10px;
+    border-radius: 10px;
+    color: rgb(245, 245, 245);
+    background-color: rgb(29, 61, 104);
+    border: none;
+  }
+  
+@media (max-width: 768px) {
+  .order-form {
+    width: 100%;
+  }
+
+  .c-dtls {
+    width: 100%;
+  }
+
+  .shipping-address, .product-details {
+    width: 100%;
+  }
+
+  .order-detail, .s-n-p-secton {
+    flex-direction: column;
+  }
+
+  .order-stn {
+    width: 100%;
+  }
+
+  .subt-btn {
+    width: 100%;
+  }
+}
