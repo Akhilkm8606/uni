@@ -10,6 +10,7 @@ import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, 
 import './Users.css';
 import instance from '../../../Instance/axios';
 import { useNavigate } from 'react-router-dom';
+import EditUser from './EditUser'; // Import the EditUser component
 
 function UserList() {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ function UserList() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState('user'); // Default role
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -57,8 +60,9 @@ function UserList() {
     }
   };
 
-  const handleEdit = (userId) => {
-    navigate(`/admin/user/${userId}`);
+  const handleEdit = (user) => {
+    setSelectedUser(user);
+    setOpenEditDialog(true);
   };
 
   const handleDeleteClick = (userId) => {
@@ -131,7 +135,7 @@ function UserList() {
       width: 100,
       renderCell: (params) => (
         <EditNoteOutlinedIcon
-          onClick={() => handleEdit(params.row._id)}
+          onClick={() => handleEdit(params.row)}
           style={{ cursor: 'pointer', margin: 20, fontSize: 24 }}
         />
       )
@@ -163,13 +167,12 @@ function UserList() {
             <option value="admin">Admin</option>
           </select>
         </div>
-        <div className='box' style={{ height: 400, width: '100%', backgroundColor:"transparent" }}>
+        <div className='box'>
           <DataGrid 
             rows={filteredUsers}
             columns={columns}
             pageSize={5}
             disableSelectionOnClick
-            
           />
         </div>
       </div>
@@ -181,6 +184,15 @@ function UserList() {
           <Button onClick={handleDeleteConfirm} color="primary" disabled={loading}>
             {loading ? <CircularProgress size={24} /> : 'Delete'}
           </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openEditDialog} onClose={() => setOpenEditDialog(false)} maxWidth="md" fullWidth>
+        
+        <DialogContent>
+          {selectedUser && <EditUser user={selectedUser} onClose={() => setOpenEditDialog(false)} />}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenEditDialog(false)} color="primary">Close</Button>
         </DialogActions>
       </Dialog>
       <ToastContainer />

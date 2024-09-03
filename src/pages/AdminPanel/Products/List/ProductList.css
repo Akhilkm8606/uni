@@ -1,48 +1,159 @@
 /* ProductList.css */
 
+/* Container Styles */
 .pd-container {
   padding: 20px;
   width: 80%;
   display: flex;
   flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
-
+  margin: 0 auto;
+  background-color: #f9f9f9;
 }
 
-.pd-container h2 {
+.pd-heading {
   font-size: 24px;
   margin-bottom: 20px;
+  text-align: center;
+  color: #333;
 }
 
+/* General Styles */
+.pd-row {
+  display: flex;
+  justify-content: center;
+}
+
+.p-outer-div {
+  width: 100%;
+  max-width: 1200px;
+  background-color: #fff;
+  border: 1px solid rgb(86, 86, 86);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
 
 .products-div {
-
   padding: 30px;
-display: grid;
-place-items: center;
-max-height: 600px; /* Set the maximum height for the container */
-overflow: auto; 
-scroll-behavior: smooth;
+  display: grid;
+  place-items: center;
+  max-height: 600px;
+  overflow: auto;
+  scroll-behavior: smooth;
 }
 
-.p-outer-div{
-border: 1px solid rgb(86, 86, 86);
-width: 100%;
-border-radius: 10px;
-}
+/* Table Styles */
 .custom-p-table {
   width: 100%;
   border-collapse: collapse;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  background-color: #fff;
 }
-
 
 .custom-p-table th,
 .custom-p-table td {
+  padding: 8px;
   text-align: center;
-
+  border: 1px solid #ddd;
 }
-.seracch-p{
+
+.custom-p-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.pdata-row {
+  border-bottom: 10px solid rgb(236, 236, 236) !important;
+  padding: 5px;
+  background-color: rgb(165, 183, 204);
+}
+
+.pdata-row:hover {
+  background-color: #f1f1f1;
+}
+
+/* Product Image Styles */
+.p-imag {
+  max-width: 50px;
+  height: auto;
+  object-fit: cover;
+  margin-top: 15px;
+}
+
+/* Action Icons */
+.custom-p-table .action-icons > * {
+  margin: 0 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.custom-p-table .action-icons > *:hover {
+  color: red;
+}
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pagination-item {
+  margin: 0 5px;
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f4f4f4;
+}
+
+.pagination-item.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.pagination-item.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Buttons */
+.sum-btn {
+  text-align: center;
+}
+
+.sum-btn button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sum-btn button:hover {
+  background-color: #0056b3;
+}
+
+.add-p-btn {
+  display: grid;
+  place-content: center;
+  margin: 10px;
+}
+
+.p-btn {
+  width: 300px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: orangered;
+  color: white;
+}
+
+/* Search and Link Styles */
+.seracch-p {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -51,72 +162,33 @@ border-radius: 10px;
   margin-bottom: 10px;
   border-radius: 8px;
 }
-.link-div{
-  border: 1px solid rgba(91, 9, 9, 0.449);
- padding: 10px;
- border-radius: 8px;
 
+.link-div {
+  border: 1px solid rgba(91, 9, 9, 0.449);
+  padding: 10px;
+  border-radius: 8px;
 }
-.add-link{
+
+.add-link {
   text-decoration: none;
   color: rgb(45, 91, 131);
-
 }
-.inpu-div input{
+
+.inpu-div input {
   width: 300px;
   padding: 10px;
   border-radius: 8px;
-
 }
-.s-btn{
+
+.s-btn {
   padding: 10px;
   border-radius: 8px;
   margin-left: 10px;
   background-color: rgb(46, 166, 46);
   outline: none;
-
-
-
-}
-.pdata-row {
-  border-bottom: 10px solid rgb(236, 236, 236) !important;
-  padding: 5px;
-  background-color: rgb(165, 183, 204);
 }
 
-.p-imag {
-  max-width: 50px;
-  margin-top: 15px;
-}
-
-
-
-.custom-p-table .action-icons > * {
-  margin: 0 5px;
-  cursor: pointer;
-  text-align: center;
-}
-
-.custom-p-table .action-icons > *:hover {
-  
-  color: red;
-}
-.add-p-btn{
-display: grid;
-place-content: center;
-margin: 10px;
-}
-.p-btn{
-  width: 300px;
-  padding: 10px 20px;
-  border-radius: 8px;
-  background-color: orangered;
-  color: white;
-}.custom-p-table .action-icons > *:hover {
-  color: red;
-}
-
-/* Customizing the scrollbar */
+/* Custom Scrollbar */
 .products-div::-webkit-scrollbar {
   width: 10px;
 }
@@ -133,7 +205,88 @@ margin: 10px;
 .products-div::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-.product-actions> span{ 
-  margin-right: 10px;
 
+/* Overlay and Edit Form Styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+
+.edit-prdut {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  z-index: 1000;
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.page-hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-hd h3 {
+  margin: 0;
+}
+
+.thumb {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.thumb img {
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+
+.thumb img:hover {
+  transform: scale(1.05);
+}
+
+.general h3 {
+  margin-top: 0;
+}
+
+.inpt-fld {
+  display: flex;
+  flex-direction: column;
+}
+
+.inpt-fld label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.inpt-fld input,
+.inpt-fld select {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  transition: border-color 0.3s ease;
+}
+
+.inpt-fld input:focus,
+.inpt-fld select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.sum-btn {
+  text-align: center;
 }

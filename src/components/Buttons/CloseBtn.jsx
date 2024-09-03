@@ -1,14 +1,16 @@
-import React from 'react'
-import "./button.css"
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
-function CloseBtn() {
-    const navigate= useNavigate()
+function CloseBtn({ onClick }) {
   return (
-    <div>  <button onClick={() => navigate(-1)} className="close-btn">
-    &larr; 
-</button></div>
-  )
+    <IconButton
+      onClick={onClick}
+      style={{ position: 'absolute', top: 10, right: 10 }}
+    >
+      <CloseIcon />
+    </IconButton>
+  );
 }
 
-export default CloseBtn
+export default CloseBtn;

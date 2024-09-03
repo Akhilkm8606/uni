@@ -1,56 +1,46 @@
-
-
-
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllOrder, removeOrder,  } from '../../../components/Redux/Slice/orders'
-import {  useNavigate } from 'react-router-dom';
+import { getAllOrder, removeOrder } from '../../../components/Redux/Slice/orders';
+import { useNavigate } from 'react-router-dom';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-
-// import { deleteUser, setAllUsers } from '../../../components/Redux/Slice/user';
 import { DataGrid } from '@mui/x-data-grid';
 import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress } from '@mui/material';
 import instance from '../../../Instance/axios';
-
-
-
+import OrderDetails from './OrderDetails';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Orders() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [deleteOrderId, setDeleteOrderId] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const ordersList = useSelector(state => state.orders.orders);
-  console.log(ordersList,'oo');
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
 
-    const [orders,getOrders] =useState([])
-    useEffect(() =>{
-      const fetchOrders = async () =>{
+  const ordersList = useSelector(state => state.orders.orders);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
       try {
-      
-          const response = await instance.get('/api/v1/all_orders',{withCredentials:true})
-          getOrders(response.data.orders)
-       console.log(response.data.orders,'l')
-  
-        dispatch(getAllOrder(response.data.orders))
-        
+        const response = await instance.get('/api/v1/all_orders', { withCredentials: true });
+        if (response) {
+          dispatch(getAllOrder(response.data.orders));
+        }
       } catch (error) {
-        console.log(error);
-        
+        console.error('Error fetching orders:', error);
       }
-    }
-    fetchOrders()
-  
-    },[dispatch])
-    const handleEdit =  (orderId, ) => {
-  
-        navigate(`/admin/order/${orderId}`);
-     
-   
     };
+
+    fetchOrders();
+  }, [dispatch]);
+
+  const handleEdit = (order) => {
+    setSelectedOrder(order);
+    setShowOrderDetails(true);
+  };
 
   const handleDeleteClick = (orderId) => {
     setDeleteOrderId(orderId);
@@ -58,21 +48,17 @@ function Orders() {
   };
 
   const handleDeleteConfirm = async () => {
+    setLoading(true);
     try {
-      setLoading(true); // Set loading to true
-      const orderIdToRemove = deleteOrderId;
-      console.log(orderIdToRemove);
-     // Ensure userIdToRemove is correctly assigned
-     
-      const resospone = await instance.delete(`/api/v1/orders/${orderIdToRemove}`, { withCredentials: true });
+      await instance.delete(`/api/v1/orders/${deleteOrderId}`, { withCredentials: true });
+      dispatch(removeOrder(deleteOrderId)); // Update local state
       setOpenDeleteDialog(false);
-      dispatch(removeOrder(orderIdToRemove)); // Dispatch action to delete user from store
-      console.log('order deleted successfully');
-      console.log(resospone,'order deleted successfully');
+      toast.success('Order deleted successfully');
     } catch (error) {
-      console.error('Error deleting order:');
+      console.error('Error deleting order:', error);
+      toast.error('Failed to delete order');
     } finally {
-      setLoading(false); // Reset loading state regardless of success or failure
+      setLoading(false);
     }
   };
 
@@ -81,71 +67,62 @@ function Orders() {
     setOpenDeleteDialog(false);
   };
 
-
   const columns = [
-  
-   
- {
+    {
       field: 'Product',
       headerName: 'Product',
-      width: 300, // Adjust the width as needed
+      width: 300,
       renderCell: (params) => (
-        <div onClick={() => handleOrderDetails(params.row.id)}>
+        <div>
           {params.row.items.map((item, index) => (
             <div key={index}>{item.name}</div>
           ))}
         </div>
-      )
+      ),
     },
     { field: 'id', headerName: 'Order Id', width: 150 },
-
-   
     {
       field: 'Price',
       headerName: 'Price',
-      width: 150, // Adjust the width as needed
+      width: 150,
       renderCell: (params) => (
         <div>
           {params.row.items.map((item, index) => (
-            <div key={index}>{item.price} </div>
+            <div key={index}>{item.price}</div>
           ))}
         </div>
-      )
+      ),
     },
-
     {
-      field : "Quantity",
-      headerName :"Quantity",
-      width  : 100,
-      renderCell : (params) =>(
+      field: 'Quantity',
+      headerName: 'Quantity',
+      width: 100,
+      renderCell: (params) => (
         <div>
-          {params.row.items.map((items,index)=>(
-            
-          <div  key={index}> {items.quantity}</div>
+          {params.row.items.map((item, index) => (
+            <div key={index}>{item.quantity}</div>
           ))}
         </div>
-      )
+      ),
     },
     {
-      field: "paymentStatus",
-      headerName: "Payment Status",
+      field: 'paymentStatus',
+      headerName: 'Payment Status',
       width: 150,
     },
     {
-      field: "paymentMethod",
-      headerName: "Payment Method",
+      field: 'paymentMethod',
+      headerName: 'Payment Method',
       width: 150,
     },
-    
     {
-      field: "status",
+      field: 'status',
       headerName: 'Status',
       width: 150,
       renderCell: (params) => {
         const status = params.value;
         let cellStyle = {};
-        
-        // Apply styles based on status
+
         switch (status) {
           case 'Pending':
             cellStyle = { color: 'black' };
@@ -154,79 +131,74 @@ function Orders() {
             cellStyle = { color: 'red' };
             break;
           case 'Processing':
-            cellStyle = { color: 'blue' }; // Example color for Processing
+            cellStyle = { color: 'blue' };
             break;
           case 'Shipped':
-            cellStyle = { color: 'orange' }; // Example color for Shipped
+            cellStyle = { color: 'orange' };
             break;
           case 'Delivered':
-            cellStyle = { color: 'green' }; // Example color for Delivered
+            cellStyle = { color: 'green' };
             break;
           default:
-            // Default style
             break;
         }
-        
+
         return (
           <div style={cellStyle}>
             {status}
           </div>
         );
-      }
+      },
     },
     {
       field: 'edit',
       headerName: 'Edit',
       width: 100,
       renderCell: (params) => (
-        <EditNoteOutlinedIcon
-          onClick={() => handleEdit(params.row.id)}
-          style={{ cursor: 'pointer ',margin:20, fontSize:24,  }}
-        />
-      )
+        <IconButton onClick={() => handleEdit(params.row)}>
+          <EditNoteOutlinedIcon style={{ fontSize: 24 }} />
+        </IconButton>
+      ),
     },
     {
       field: 'delete',
       headerName: 'Delete',
       width: 100,
-      renderCell: (params) => {
-        const userId = params.row._id;
-        return (
-          <IconButton onClick={() => handleDeleteClick(userId)}>
-            <DeleteOutlineOutlinedIcon />
-          </IconButton>
-        );
-      }
-    }
-   
+      renderCell: (params) => (
+        <IconButton onClick={() => handleDeleteClick(params.row.id)}>
+          <DeleteOutlineOutlinedIcon style={{ fontSize: 24 }} />
+        </IconButton>
+      ),
+    },
   ];
 
-
-  const ordersWithIds = ordersList.map((order, index) => ({ ...order, id: order._id }));
+  const ordersWithIds = ordersList.map((order) => ({ ...order, id: order._id }));
 
   return (
     <div className='order-container'>
-      <div className='orderList'>
-        <h2>Order List</h2>
-       
-        <div className='od-box' style={{ height: 400, width: '100%',}} >
-          <DataGrid
-            rows={ordersWithIds}
-            columns={columns}
-            pageSize={5}
-        
-           
-            onEditCellChange={(params) => {
-              const newData = { ...params.row, [params.field]: params.props.value };
-              handleEdit(params.id, newData);
-            }}
-          />
-        </div>
+      <h2>Order List</h2>
+      <div className='od-box' style={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={ordersWithIds}
+          columns={columns}
+          pageSize={5}
+        />
       </div>
+
+      {/* Order Details Overlay */}
+      {showOrderDetails && (
+        <Dialog open={showOrderDetails} onClose={() => setShowOrderDetails(false)} fullWidth maxWidth="md">
+          <DialogContent>
+            <OrderDetails order={selectedOrder} onClose={() => setShowOrderDetails(false)} />
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Delete Confirmation Dialog */}
       <Dialog open={openDeleteDialog} onClose={handleDeleteCancel}>
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
-          Are you sure you want to delete this user?
+          Are you sure you want to delete this order?
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteCancel} color="primary">
@@ -237,6 +209,8 @@ function Orders() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <ToastContainer />
     </div>
   );
 }

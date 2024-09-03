@@ -5,7 +5,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import './style.css';
 const allItems = [
   {
@@ -18,7 +18,7 @@ const allItems = [
   {
     label: "Products",
     icons: <AiOutlineShop />,
-    key: 'Products',
+    key: 'products',
     route: "/admin/products",
     roles: ['admin'],
     options: [
@@ -37,7 +37,7 @@ const allItems = [
   {
     label: "Category",
     icons: <AiOutlineShop />,
-    key: 'Category',
+    key: 'category',
     route: "/admin/category",
     roles: ['admin'],
     options: [
@@ -52,7 +52,7 @@ const allItems = [
   {
     label: "Users",
     icons: <AiOutlineUser />,
-    key: 'Users',
+    key: 'users',
     route: "/admin/users",
     roles: ['admin'],
     options: [
@@ -67,7 +67,7 @@ const allItems = [
   {
     label: "Orders",
     icons: <AiOutlineShoppingCart />,
-    key: 'Orders',
+    key: 'orders',
     route: "/admin/orders",
     roles: ['admin'],
     options: [
@@ -107,24 +107,25 @@ const allItems = [
   {
     label: "Orders",
     icons: <AiOutlineShop />,
-    key: 'seller-Products',
+    key: 'seller-Orders',
     route: "/seller/Orders",
     roles: ['seller'],
     options: [
      
       {
         label: "Orders List",
-        key: "seller-Orders",
+        key: "seller-OrdersList",
         route: "/seller/Orders/list",
       }
     ]
   }
 ];
 
-function Sidebar({ handleOptionClick, userRole }) { // Receive handleOptionClick as a prop
+function Sidebar({ handleOptionClick, userRole }) {
   const [open, setOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate(); // Import and use navigate
 
   const toggleSidebar = () => {
     setOpen(!open);
@@ -137,17 +138,11 @@ function Sidebar({ handleOptionClick, userRole }) { // Receive handleOptionClick
       setExpandedItem(key);
     }
 
-    if (key!== 'Products' && key!== 'Orders' && key!== 'Category' && key!== 'Users') {
-      setOpen(false);
+    if (route) {
+      navigate(route); // Use navigate for routing
     }
 
-    if (route) {
-      // If a route is provided, navigate to it
-      navigate(route);
-    } else {
-      // Otherwise, call the prop function with the key
-      handleOptionClick(key);
-    }
+    handleOptionClick(key); // Call handleOptionClick to update the option state
   };
 
   const itemsToRender = allItems.filter((item) => item.roles.includes(userRole));
@@ -165,26 +160,26 @@ function Sidebar({ handleOptionClick, userRole }) { // Receive handleOptionClick
         PaperProps={{ style: { backgroundColor: 'white' } }}
       >
         <List className='sideBar-list' style={{ marginTop: '30px' }}>
-          {itemsToRender.map((item, index) => (
+          {itemsToRender.map((item) => (
             <React.Fragment key={item.label}>
               <ListItem
-button
+                button
                 component={NavLink}
                 to={item.route}
-                onClick={() => handleItemClick(item.key)}
-                className={location.pathname === item.route? 'active' : ''}
+                onClick={() => handleItemClick(item.key, item.route)}
+                className={location.pathname === item.route ? 'active' : ''}
               >
                 <ListItemIcon>{item.icons}</ListItemIcon>
                 <ListItemText primary={item.label} />
               </ListItem>
               {expandedItem === item.key && item.options && (
-                item.options.map((option, optIndex) => (
+                item.options.map((option) => (
                   <ListItem
                     button
                     key={option.label}
                     component={NavLink}
                     to={option.route}
-                    onClick={() => handleItemClick(option.key)}
+                    onClick={() => handleItemClick(option.key, option.route)}
                     style={{ paddingLeft: 32 }}
                   >
                     <ListItemIcon></ListItemIcon>
@@ -199,5 +194,6 @@ button
     </div>
   );
 }
+
 
 export default Sidebar;

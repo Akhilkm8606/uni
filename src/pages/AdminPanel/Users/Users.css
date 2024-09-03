@@ -1,148 +1,120 @@
-.usersList{
+/* General Container Styling */
+.users_container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.usersList {
   width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-
+  margin: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
-.usersList>div,select{
-  margin: 10px;
+
+/* Input and Select Styling */
+.input-div {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
-.input-div input{
-  width: 300px;
-  padding: 10px;
-  border-radius: 8px;
 
+.input-div h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
 }
-.s-btn{
-  padding: 10px;
-  border-radius: 8px;
-  margin-left: 10px;
-  background-color: rgb(46, 166, 46);
-  outline: none;
-}
-.select{
 
-  width: 100px;
+.select {
+  width: 120px; /* Adjusted width for better alignment */
   padding: 10px;
   border-radius: 8px;
-  margin-left: 10px;
-  color: white;
   background-color: rgb(70, 137, 139);
-  outline: none;
+  color: white;
   text-align: center;
+  border: none;
+  outline: none;
 }
 
-.box{
+/* Data Grid Container Styling */
+.box {
+  height: 400px;
+  width: 100%;
   background-color: rgb(255, 255, 255);
   border-radius: 4px;
   border: 2px solid rgb(4, 28, 113);
- padding: 20px;
+  padding: 20px;
+  margin: 0 auto; /* Center align the box */
+  display: flex;
+  justify-content: center; /* Center align the content horizontally */
+  align-items: center; /* Center align the content vertically */
 }
-.rle,.sts{
-padding: 2px 5px;
-border-radius: 10px;
-text-align: center;
-}
-/* useredit */
 
+/* Select Options */
+.sts, .rle {
+  padding: 5px 10px; /* Increased padding for better alignment */
+  border-radius: 4px;
+  text-align: center;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+/* Button Styling */
+.s-btn {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgb(46, 166, 46);
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 0; /* Ensure no extra margin */
+}
+
+/* User Details and Form */
 .user-detail {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 20px;
   width: 80%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
   margin-bottom: 20px;
 }
-/* .u-box{
-  margin-left: 20px;
-  margin-right: auto;
-} */
-.user-form{
-  width: 100%;
 
+.user-form {
+  width: 100%;
 }
-.hd{
+
+.hd {
   background-color: blue;
   color: white;
   padding: 10px;
   border-radius: 5px;
+  text-align: center;
+  margin-bottom: 20px; /* Ensure consistent spacing below */
 }
-  
-#hdn{
+
+#hdn {
   font-size: 28px;
   font-weight: bolder;
   padding: 10px;
 }
-.u-box{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  gap: 3px;
-  padding: 10px;
-}
-.user-field{
-  width: 45%;
-padding: 10px;
-border-radius: 10px;
 
-}
-.optn{
-  display: flex;
-  width: 45%;
-padding: 10px;
-border-radius: 10px;
-
-}
-#role,#status{
-  width: 40%;
-  padding: 10px;
-border-radius: 10px;
-text-align: center;
-}
-.u-btn{
-  margin-top: 15px;
-  display: grid;
-  place-items: center;
-}
-.sbt-btn{
- width: 250px;
- padding: 10px;
- border-radius: 10px;
- color: rgb(245, 245, 245);
- background-color: rgb(28, 28, 255);
- border: none;
-
-}
-
-
+/* Responsive Styles */
 @media (max-width: 768px) {
   .user-detail {
     flex-direction: column;
     width: 80%;
-   
   }
-  .hd{
-    margin-left: auto;
-    margin-right: auto;
+
+  .hd {
     width: 80%;
   }
 
-  .user-field {
-    width: 80%;
-  }
-  .optn{
-    width: 80%;
-  }
-
-  #role, #status {
+  .user-field, .optn, #role, #status {
     width: 80%;
   }
 
@@ -154,4 +126,170 @@ text-align: center;
   .sbt-btn {
     width: 50%;
   }
+}
+
+/* Data Grid Specific Styling */
+.MuiDataGrid-root {
+  border: none;
+}
+
+.MuiDataGrid-cell {
+  font-size: 16px;
+  padding: 8px; /* Adjusted padding to reduce space */
+}
+
+.MuiDataGrid-columnHeader {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.MuiDataGrid-footerContainer {
+  border-top: 1px solid #ddd;
+}
+
+/* Dialog Styling */
+.dialog-content {
+  font-size: 16px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.MuiDialogActions-root {
+  padding: 16px;
+}
+
+.MuiButton-root {
+  text-transform: none;
+}
+
+/* Action Button Styling */
+.MuiDataGrid-cell .MuiIconButton-root {
+  margin: 0; /* Remove extra margin around icons */
+  padding: 0; /* Remove extra padding around icons */
+  min-width: 0; /* Remove minimum width constraint */
+}
+
+.user-detail {
+  width: 100%;
+  max-width: 800px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.hd {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#hdn {
+  font-size: 24px;
+  color: #333;
+}
+
+.pp {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.pp img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
+
+.u-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-field {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.optn {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.u-btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.sbt-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sbt-btn:hover {
+  background-color: #0056b3;
+}
+
+.sbt-btn:disabled {
+  background-color: #ccc;
+}
+/* EditUser.css */
+
+/* Existing styles... */
+
+.profile-image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.profile-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
+
+.placeholder-image {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  color: #999;
+  font-size: 16px;
+  background-color: #f5f5f5;
 }

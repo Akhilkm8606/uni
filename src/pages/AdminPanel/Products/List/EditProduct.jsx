@@ -1,27 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../../../../components/adminDashBoard/Header';
-import Sidebar from '../../../../components/adminDashBoard/Sidebar';
-import Footer from '../../../../components/UserDashBoard/Layout/Footer/Footer';
-import './Editprdt.css';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import instance from '../../../../Instance/axios';
-import { getProducts } from '../../../../actions/ProductAction';
 import CloseBtn from '../../../../components/Buttons/CloseBtn';
+import './Editprdt.css';
+import { updateProduct } from '../../../../actions/ProductAction'; // Adjust the import path
 
-function EditProduct() {
-  const { id } = useParams();
+function EditProduct({ productId, onClose }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const products = useSelector(state => state.data.products);
-  const categories = useSelector(state => state.cate.category);
-  const user = useSelector(state => state.auth.user);
-
-  const [selectedOption, setSelectedOption] = useState('Admin-dashBoard');
+  const products = useSelector((state) => state.data.products);
+  const categories = useSelector((state) => state.cate.category);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [categoryOptions, setCategoryOptions] = useState([]);
-
   const [formData, setFormData] = useState({
     name: '',
     categoryId: '',
@@ -32,13 +21,14 @@ function EditProduct() {
     image: null,
     imagePreview: ''
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (products && categories) {
-      const categoryNames = categories.map(category => category.name);
+    if (products.length && categories.length) {
+      const categoryNames = categories.map((category) => category.name);
       setCategoryOptions(categoryNames);
 
-      const fetchProduct = products.find(prd => prd._id === id);
+      const fetchProduct = products.find((prd) => prd._id === productId);
       if (fetchProduct) {
         setSelectedProduct(fetchProduct);
         setFormData({
@@ -53,13 +43,7 @@ function EditProduct() {
         });
       }
     }
-  }, [id, products, categories]);
-
-  
-
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-  };
+  }, [productId, products, categories]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -80,6 +64,7 @@ function EditProduct() {
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
+      setLoading(true);
       try {
         console.log('Form Data state:', formData);
 
@@ -94,94 +79,83 @@ function EditProduct() {
           formDataToSend.append('image', formData.image);
         }
 
-              
-        const response = await instance.post(`/api/v1/product/update/${id}`, formDataToSend, {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          }
-        });
+        // Dispatch the updateProduct action
+        await dispatch(updateProduct(productId, formDataToSend));
 
-
-        if (response.data.success) {
-          toast.success('Product updated successfully');
-          setSelectedProduct(response.data.updatedProduct);
-          
-        } else {
-          toast.error('Failed to update product. Please try again.');
-        }
+        // Optionally handle UI feedback if needed
+        toast.success('Product updated successfully');
+        onClose(); // Close the form after successful update
       } catch (error) {
         console.error('Error updating product:', error);
         toast.error('Failed to update product. Please try again.');
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   return (
-    <div className="App">
-      <Header />
-      <div className="edit-prdut">
-      <CloseBtn/>
-        <div >
-       
-          <div className="page-hd">
-            <h3>Edit Product</h3>
-            
-          </div>
-          <div>
-         
-            <form onSubmit={handleSubmit} className="page-cont">
-              {selectedProduct && (
-                <>
-                  <div className="thumb">
-                    <img
-                      src={formData.imagePreview}
-                      alt={selectedProduct.name}
-                      onClick={() => document.getElementById('imageInput').click()}
-                      style={{ cursor: 'pointer' }}
-                    />
-                    <input
-                      type="file"
-                      id="imageInput"
-                      name="image"
-                      onChange={handleChange}
-                      style={{ display: 'none' }}
-                    />
+    <div className="edit-prdut">
+      <CloseBtn onClick={onClose} />
+      <div>
+        <div className="page-hd">
+          <h3>Edit Product</h3>
+        </div>
+        <div>
+          <form onSubmit={handleSubmit} className="page-cont">
+            {selectedProduct && (
+              <>
+                <div className="thumb">
+                  <img
+                    src={formData.imagePreview}
+                    alt={selectedProduct.name}
+                    onClick={() => document.getElementById('imageInput').click()}
+                    style={{ cursor: 'pointer' }}
+                  />
+                  <input
+                    type="file"
+                    id="imageInput"
+                    name="image"
+                    onChange={handleChange}
+                    style={{ display: 'none' }}
+                  />
+                </div>
+                <div className="general">
+                  <h3>General</h3>
+                  <div className="inpt-fld">
+                    <label htmlFor="name">Product Name *</label>
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                    <label htmlFor="categoryId">Category</label>
+                    {categoryOptions.length > 0 && (
+                      <select name="categoryId" value={formData.categoryId} onChange={handleChange} required>
+                        <option value="">Select a category</option>
+                        {categoryOptions.map((category, index) => (
+                          <option key={index} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    <label htmlFor="description">Description *</label>
+                    <input type="text" name="description" value={formData.description} onChange={handleChange} required />
+                    <label htmlFor="features">Features</label>
+                    <input type="text" name="features" value={formData.features} onChange={handleChange} />
+                    <label htmlFor="quantity">Stock</label>
+                    <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} required />
+                    <label htmlFor="price">Price</label>
+                    <input type="number" name="price" value={formData.price} onChange={handleChange} required />
                   </div>
-                  <div className="general">
-                    <h3>General</h3>
-                    <div className="inpt-fld">
-                      <label htmlFor="name">Product Name *</label>
-                      <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-                      <label htmlFor="categoryId">Category</label>
-                      {categoryOptions && (
-                        <select name="categoryId" value={formData.categoryId} onChange={handleChange} required>
-                          <option value="">Select a category</option>
-                          {categoryOptions.map((category, index) => (
-                            <option key={index} value={category}>{category}</option>
-                          ))}
-                        </select>
-                      )}
-                      <label htmlFor="description">Description*</label>
-                      <input type="text" name="description" value={formData.description} onChange={handleChange} required />
-                      <label htmlFor="features">Features</label>
-                      <input type="text" name="features" value={formData.features} onChange={handleChange} required />
-                      <label htmlFor="quantity">Stock</label>
-                      <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} required />
-                      <label htmlFor="price">Price</label>
-                      <input type="number" name="price" value={formData.price} onChange={handleChange} required />
-                    </div>
-                    <div className="sum-btn">
-                      <button type="submit">Submit</button>
-                    </div>
+                  <div className="sum-btn">
+                    <button type="submit" disabled={loading}>
+                      {loading ? 'Updating...' : 'Submit'}
+                    </button>
                   </div>
-                </>
-              )}
-            </form>
-          </div>
+                </div>
+              </>
+            )}
+          </form>
         </div>
       </div>
-      <Footer />
       <ToastContainer />
     </div>
   );

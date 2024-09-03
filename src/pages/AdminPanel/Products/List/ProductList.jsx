@@ -1,63 +1,79 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Row, Table } from 'react-bootstrap';
 import { MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
-import { getProducts } from '../../../../actions/ProductAction';
+import { getProducts, deleteProduct } from '../../../../actions/ProductAction'; 
 import { useDispatch, useSelector } from 'react-redux';
 import './ProductList.css';
 import ReactPaginate from 'react-paginate';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link, useNavigate } from 'react-router-dom';
+import EditProduct from './EditProduct';
+import { DELETE_PRODUCT } from '../../../../Constants/ProductConstants';
 import instance from '../../../../Instance/axios';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
-function ProductList({ onAddProductClick }) {
+function ProductList() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [pageNumber, setPageNumber] = useState(0); // State to manage current page
-  const productsPerPage = 8; // Number of products per page
-  const data = useSelector(state => state.data);
-  const user = useSelector(state => state.auth.user);
-
-  const products = useSelector(state => state.data.products);
-  const pageCount = Math.ceil(products.length / productsPerPage); // Calculate total number of pages
+  const [pageNumber, setPageNumber] = useState(0);
+  const productsPerPage = 8;
+  const products = useSelector((state) => state.data.products);
+  const pageCount = Math.ceil(products.length / productsPerPage);
+  const [editingProductId, setEditingProductId] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString(); // Returns date in 'mm/dd/yyyy' format
-  };
-
   const handlePageClick = ({ selected }) => {
-    setPageNumber(selected); // Update current page number when page is clicked
+    setPageNumber(selected);
   };
 
-  const handleEdit = (id) =>{
-    navigate(`/admin/products/edit/${id}`);
-  }
-  const handelDelet = async (productId) =>{
-   try {
-    if (window.confirm('Are you sure you want to delete this product?')) {
-      // Send DELETE request to the server
-      await instance.delete(`/api/v1/product/${productId}`, { withCredentials: true });
-      
-      // Dispatch action to update the store after successful deletion
-      dispatch({ type: 'DELETE_PRODUCT', payload: productId });
-      
-      // Show success message
-      toast.success('Product deleted successfully');
-    }
-  }catch (error) {
-    console.error('Error deleting product:', error);
-    // Show error message
-    toast.error('Failed to delete product');
-    
-   }
+  const handleEdit = (id) => {
+    setEditingProductId(id);
+  };
 
-  }
+  const handleCloseEdit = () => {
+    setEditingProductId(null);
+  };
+
+  const handleDeleteClick = (productId) => {
+    setProductIdToDelete(productId);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setOpenDeleteDialog(false);
+    setProductIdToDelete(null);
+  };
+
+  const handleDeleteConfirm = async () => {
+    setLoading(true);
+    try {
+      const response = await instance.delete(`/api/v1/product/${productIdToDelete}`, { withCredentials: true });
+      console.log('Server response:', response);
+      
+      dispatch({
+        type: DELETE_PRODUCT,
+        payload: productIdToDelete
+      });
+      
+      toast.success('Product deleted successfully');
+      setOpenDeleteDialog(false);
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      toast.error('Failed to delete product');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const startIndex = pageNumber * productsPerPage;
   const displayedProducts = products.slice(startIndex, startIndex + productsPerPage);
@@ -66,24 +82,23 @@ function ProductList({ onAddProductClick }) {
     <>
       <div className='pd-container'>
         <h2 className='pd-heading'>PRODUCTS</h2>
-        {/* <div className='seracch-p'>
-                <div className='inpu-div'>
-                <input type="text" placeholder='search here' />
-                <button className='s-btn'>serch</button>
-              
-                </div>
-                <div className='link-div'>
-                  <Link className='add-link'>
-                  Add New</Link>
-                </div>
-               
-              </div> */}
+
+        {editingProductId && (
+          <>
+            <div className="overlay" onClick={handleCloseEdit}></div>
+            <EditProduct
+              productId={editingProductId}
+              onClose={handleCloseEdit}
+            />
+          </>
+        )}
+
         <Row className='pd-row'>
           <div className='p-outer-div'>
             <div className='products-div'>
-            <ReactPaginate
-                previousLabel={<MdSkipPrevious/>}
-                nextLabel={<MdSkipNext/>}
+              <ReactPaginate
+                previousLabel={<MdSkipPrevious />}
+                nextLabel={<MdSkipNext />}
                 breakLabel={'...'}
                 pageCount={pageCount}
                 marginPagesDisplayed={2}
@@ -93,13 +108,11 @@ function ProductList({ onAddProductClick }) {
                 activeClassName={'active'}
               />
 
-
-             
               <Table striped bordered hover className='custom-p-table'>
                 <thead>
                   <tr>
                     <th className='product-name'>Product Name</th>
-                    <th className='product-name'>category</th>
+                    <th className='product-name'>Category</th>
                     <th className='product-price'>Price</th>
                     <th className='product-stock'>Stock</th>
                     <th className='product-image'>Image</th>
@@ -114,30 +127,42 @@ function ProductList({ onAddProductClick }) {
                       <td className='product-category'>{product.category}</td>
                       <td className='product-price'>{product.price}</td>
                       <td className='product-stock'>{product.quantity}</td>
-                      <div>
                       <td className='product-image'>
                         <img className='p-imag' src={`http://localhost:5000/uploads/${product.images}`} alt={product.name} />
-                        </td>
-
-                      </div>                      <td className='product-date'>{formatDate(product.createdAt)}</td>
+                      </td>
+                      <td className='product-date'>{new Date(product.createdAt).toLocaleDateString()}</td>
                       <td className='product-actions'>
-                       <span>
-                       <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
-                       </span>
-                       <span>
-                       <MdDelete onClick={() =>handelDelet(product._id)} className='action-delete' />
-                       </span>
+                       
+                          <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
+                                     
+                      </td>
+                      <td className='product-actions'>
+                    
+                          <MdDelete onClick={() => handleDeleteClick(product._id)} className='action-delete' />
+                      
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
-            
             </div>
-           
           </div>
         </Row>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={openDeleteDialog} onClose={handleDeleteCancel}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this product?</DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
+          <Button onClick={handleDeleteConfirm} color="primary" disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : 'Delete'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <ToastContainer />
     </>
   );
 }

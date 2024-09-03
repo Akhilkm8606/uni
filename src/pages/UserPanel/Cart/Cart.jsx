@@ -101,41 +101,46 @@ function Cart() {
             <h2>Your Shopping Cart</h2>
           </div>
           <div className='cartdiv'>
-            {Array.isArray(cart) && cart.map((item, index) => (
-              <div className='cart-item-div' key={index}>
-                <div className='item-image'>
-                  <Link className='item-link' to={`/product/${item.productId._}`} >
-                    <img src={`http://localhost:5000/uploads/${item.productId.images[0]}`} alt={item.productId.name} className="card-img-top" />
-                  </Link>
-                </div>
-                <div className='cart-text'>
-                  {item && item.productId && item.productId.name && (
-                    <h5>{item.productId.name}</h5>
-                  )}
-                  <p>{item.productId.description}</p>
-                  <div className='pqr-div'>
-                    <div className='cpr'>
-                      <span id={item.productId}><h5>Price : {item.productId.price}/-</h5></span>
-                    </div>
-                    <div className='cart-product-quantity'>
-                      <button onClick={() => updateQuantity(item._id, item.quantity - 1)}>-</button>
-                      <input type="text" value={item.quantity} readOnly />
-                      <button onClick={() => updateQuantity(item._id, item.quantity + 1)}>+</button>
-                    </div>
-                    <div className='remove-btn'>
-                      <button onClick={() => handleRemoveCart(item._id)}>
-                        <MdDelete />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className='buy-div'>
-                <Link className='buy-button' to={`/Order/${item._id}`}>
-                  Buy
-                </Link>
-                </div>
-              </div>
-            ))}
+          {Array.isArray(cart) && cart.map((item, index) => (
+  <div className='cart-item-div' key={index}>
+    <div className='item-image'>
+      <Link className='item-link' to={`/product/${item?.productId?._id}`}>
+        <img 
+          src={item?.productId?.images?.[0] ? `http://localhost:5000/uploads/${item.productId.images[0]}` : '/placeholder.jpg'} 
+          alt={item?.productId?.name || 'Product Image'} 
+          className="card-img-top" 
+        />
+      </Link>
+    </div>
+    <div className='cart-text'>
+      {item?.productId?.name && (
+        <h5>{item.productId.name}</h5>
+      )}
+      <p>{item?.productId?.description}</p>
+      <div className='pqr-div'>
+        <div className='cpr'>
+          <span id={item?.productId?._id}><h5>Price : {item?.productId?.price}/-</h5></span>
+        </div>
+        <div className='cart-product-quantity'>
+          <button onClick={() => updateQuantity(item._id, item.quantity - 1)}>-</button>
+          <input type="text" value={item.quantity} readOnly />
+          <button onClick={() => updateQuantity(item._id, item.quantity + 1)}>+</button>
+        </div>
+        <div className='remove-btn'>
+          <button onClick={() => handleRemoveCart(item._id)}>
+            <MdDelete />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div className='buy-div'>
+      <Link className='buy-button' to={`/Order/${item?._id}`}>
+        Buy
+      </Link>
+    </div>
+  </div>
+))}
+
           </div>
          
         </div>

@@ -9,14 +9,20 @@ import {
   PRODUCTS_DETAILS_SUCCESS,
   PRODUCTS_DETAILS_FAILURE,
 
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_FAILURE,
 
   CLEAR_ERRORS,
 } from "../Constants/ProductConstants";
+import instance from '../Instance/axios';
+
+// Action to clear products from state
 export const clearProducts = () => ({
   type: CLEAR_PRODUCTS
 });
-import instance from "../Instance/axios";
 
+// Action to get products
 export const getProducts = (keyword) => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCTS_REQUEST });
@@ -37,20 +43,17 @@ export const getProducts = (keyword) => async (dispatch) => {
     });
   }
 };
-export const getProductDetails = (id) => async (dispatch) =>{
-  try {
-    dispatch({
-      type: PRODUCTS_DETAILS_REQUEST
-    });
 
-    const response = await  instance.get(`http://localhost:5000/api/v1/product/${id}`);
+// Action to get product details
+export const getProductDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCTS_DETAILS_REQUEST });
+
+    const response = await instance.get(`/api/v1/product/${id}`);
     dispatch({
       type: PRODUCTS_DETAILS_SUCCESS,
-      payload: response.data.product
-    
+      payload: response.data.product,
     });
-    
-    
   } catch (error) {
     dispatch({
       type: PRODUCTS_DETAILS_FAILURE,
@@ -58,16 +61,44 @@ export const getProductDetails = (id) => async (dispatch) =>{
         error: {
           message: error.message,
           status: error.status,
-        }}
+        },
+      },
     });
   }
-}
+};
 
+// Action to clear errors
+export const clearError = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
+};
 
+// Action to update a product
+export const updateProduct = (id, formData) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
-export const clearError = () => async (dispatch) =>{
-  dispatch({
-    type: CLEAR_ERRORS
-  });
-}
+    const response = await instance.post(`/api/v1/product/update/${id}`, formData, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
+    if (response.data.success) {
+      dispatch({
+        type: UPDATE_PRODUCT_SUCCESS,
+        payload: response.data.updatedProduct,
+      });
+    } else {
+      dispatch({
+        type: UPDATE_PRODUCT_FAILURE,
+        payload: response.data.message || 'Failed to update product.',
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PRODUCT_FAILURE,
+      payload: error.response?.data?.message || error.message,
+    });
+  }
+};

@@ -2,7 +2,7 @@
   import './App.css';
   import { Link, Route, Routes, useLocation, useParams } from 'react-router-dom';
   import DashBoard from './components/adminDashBoard/AdminDashBoard';
-  import SellerDashBoard from './components/SellerDashBoard/DashBoadr';
+  import SellerDashBoard from './pages/SellerPanel/DashBord';
   import PageContent from './components/adminDashBoard/PageContent';
   import OrderList from './pages/AdminPanel/Order/Orders';
   import MDashBoard from './pages/AdminPanel/Dashboard';
@@ -30,7 +30,6 @@
   import Contact from './components/UserDashBoard/Layout/Contact/Contact';
   import MyAccount from './components/UserDashBoard/Layout/Profile/Profile';
   import EditProfile from './components/UserDashBoard/Layout/Profile/EditProfile';
-import SideMenu from './components/SellerDashBoard/SideMenu';
 import Sidebar from './components/adminDashBoard/Sidebar';
 import OrderDetails from './pages/AdminPanel/Order/OrderDetails';
 import UserList from './pages/AdminPanel/Users/UserList';
@@ -77,10 +76,11 @@ import EditProduct from './pages/AdminPanel/Products/List/EditProduct';
         {/* admin */}
             <Route path="/seller" element={<DashBoard />}>
             <Route element={<Sidebar />} />
-  <Route path="/seller/*" element={<PageContentRouter />} />
-  
+            <Route path="/seller/*" element={<PageContentRouter />} />
 
-            </Route>
+              </Route>
+              <Route path="/seller/products/edit/:id" element={< EditProduct/>} />
+
 
         <Route path="/admin" element={<DashBoard />}>
   <Route element={<Sidebar />} />

@@ -33,8 +33,10 @@ function ProductOrderForm() {
         navigate('/login')
 
     }
+    
     const [formData, setFormData] = useState({
         user: userID || '',
+        sellerId: selectedItem ? selectedItem.productId.userId : '',
         items: selectedItem ? [{
             product: selectedItem.productId._id,
             name: selectedItem.productId.name,

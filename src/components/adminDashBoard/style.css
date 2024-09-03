@@ -133,7 +133,23 @@ background-color: rgb(6, 25, 60);
       
     }
     
-   
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .card-link:hover {
+      text-decoration: none;
+    }
+    
+    .card-body {
+      cursor: pointer;
+    }
+    
+    .card-body:hover {
+      background-color: #f1f1f1;
+    }
+    
     
     @media  (max-width: 768px) {
       .toggleButton{  
