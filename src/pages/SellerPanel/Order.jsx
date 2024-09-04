@@ -9,7 +9,7 @@ import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, 
 import instance from '../../Instance/axios';
 import OrderDetails from '../AdminPanel/Order/OrderDetails';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';x
+import 'react-toastify/dist/ReactToastify.css';
 
 function Orders() {
   const navigate = useNavigate();
