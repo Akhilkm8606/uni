@@ -1,4 +1,4 @@
-import React, { useState,useDispatch } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,8 +9,6 @@ import { GiLaurelCrown } from 'react-icons/gi';
 import instance from '../../../Instance/axios';
 
 function UserSignUp() {
-    
-    // const dispatch = useDispatch();
 
     const navigate = useNavigate();
     const [input, setInput] = useState({
@@ -28,7 +26,7 @@ function UserSignUp() {
         setInput({ ...input, [name]: value });
     }
 
-    const [focus, setFocus] = useState({    
+    const [focus, setFocus] = useState({
         errName: false,
         errEmail: false,
         errAddress: false,
@@ -53,23 +51,22 @@ function UserSignUp() {
             if (response && response.data) {
                 if (response.data.success) {
                     toast.success(response.data.message, {
-                        autoClose: 3000,position:"top-center"
+                        autoClose: 3000, position: "top-center"
                     });
                     await new Promise((resolve) => {
                         setTimeout(resolve, 1000)
                     })
                     navigate("/login")
                 } else {
-                    toast.error(response.data.msg),{
-                        autoClose: 3000,position:"top-center"
-                    };
+                    toast.error(response.data.msg, {
+                        autoClose: 3000, position: "top-center"
+                    });
                 }
             } 
-            // dispatch();
         } catch (error) {
             console.error("Error during registration:", error);
-            toast.error(error.response.data.message,{
-                autoClose: 3000,position:"top-center"
+            toast.error(error.response.data.message, {
+                autoClose: 3000, position: "top-center"
             });
         }
     }
@@ -102,7 +99,7 @@ function UserSignUp() {
                             type="email"
                             name="email"
                             id='email'
-                            placeholder='email'
+                            placeholder='Email'
                             className='form-control'
                             onChange={handleChange}
                             onBlur={() => setFocus({ ...focus, errEmail: true })}
@@ -114,7 +111,7 @@ function UserSignUp() {
                         <span className='error'>{focus.errName && !input.username.match(/^(?=.*[A-Za-z])[A-Za-z\d]{4,16}$/) ? 'Username should have 4-16 characters.' : ''}</span>
                         <span className='error'>{focus.errEmail && !input.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ? 'Enter a valid email address.' : ''}</span>
                     </div>
-                    
+
                     <span>
                         <input
                             type="text"
@@ -144,7 +141,6 @@ function UserSignUp() {
                         <span className='error'>{focus.errAddress && !input.address.match(/^(?=.*[A-Za-z])[A-Za-z\d]{4,16}$/) ? 'Address is required.' : ''}</span>
                         <span className='error'>{focus.errphone && !input.phone.match(/^[0-9]{10}$/) ? 'Enter a valid phone number.' : ''}</span>
                     </div>
-                  
 
                     <span>
                         <input
