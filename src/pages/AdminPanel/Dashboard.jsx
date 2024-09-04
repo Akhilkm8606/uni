@@ -23,98 +23,102 @@ function Dashboard() {
   const [orderData, setOrderData] = useState({ labels: [], values: [] });
   const [productData, setProductData] = useState({ labels: [], values: [] });
 
-  useEffect(() => {
-    if (orders) {
-      let totalCount = 0;
-      Object.values(orders).forEach(items => {
-        totalCount += items.length;
+  // Fetch dashboard data
+  const fetchDashboard = async () => {
+    try {
+      const res = await instance.get('/api/v1/viewDashboard', {
+        headers: {
+          'Authorization': `Bearer ${yourToken}`, // Replace with actual token or remove if not needed
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
       });
-      setOrderCount(totalCount);
+
+      const dashboardData = res.data.dashboard;
+      console.log(dashboardData);
+
+      const orders = dashboardData.orders;
+      const products = dashboardData.products;
+      const monthlyData = dashboardData.monthlyData; // Adjust based on your API response
+
+      setOrderCount(orders.length);
+      setProductCount(products.length);
+
+      const chartLabels = monthlyData.map(item => item.month);
+      const chartValues = monthlyData.map(item => item.value);
+
+      setSalesData({ labels: chartLabels, values: chartValues });
+
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      toast.error('Failed to fetch dashboard data');
     }
+  };
 
-    const simulatedSalesData = [
-      { month: 'January', value: 5000 },
-      { month: 'February', value: 6000 },
-      { month: 'March', value: 7000 },
-      { month: 'April', value: 8000 },
-      { month: 'May', value: 7500 },
-      { month: 'June', value: 8500 },
-      { month: 'July', value: 9000 },
-      { month: 'August', value: 9500 },
-      { month: 'September', value: 10000 },
-      { month: 'October', value: 11000 },
-      { month: 'November', value: 12000 },
-      { month: 'December', value: 13000 }
-    ];
-
-    const simulatedOrderData = [
-      { month: 'January', count: 150 },
-      { month: 'February', count: 170 },
-      { month: 'March', count: 200 },
-      { month: 'April', count: 180 },
-      { month: 'May', count: 190 },
-      { month: 'June', count: 210 },
-      { month: 'July', count: 230 },
-      { month: 'August', count: 250 },
-      { month: 'September', count: 270 },
-      { month: 'October', count: 290 },
-      { month: 'November', count: 310 },
-      { month: 'December', count: 330 }
-    ];
-
-    const simulatedProductData = [
-      { month: 'January', count: 100 },
-      { month: 'February', count: 120 },
-      { month: 'March', count: 150 },
-      { month: 'April', count: 130 },
-      { month: 'May', count: 140 },
-      { month: 'June', count: 160 },
-      { month: 'July', count: 180 },
-      { month: 'August', count: 200 },
-      { month: 'September', count: 220 },
-      { month: 'October', count: 240 },
-      { month: 'November', count: 260 },
-      { month: 'December', count: 280 }
-    ];
-
-    const salesLabels = simulatedSalesData.map(item => item.month);
-    const salesValues = simulatedSalesData.map(item => item.value);
-
-    const orderLabels = simulatedOrderData.map(item => item.month);
-    const orderValues = simulatedOrderData.map(item => item.count);
-
-    const productLabels = simulatedProductData.map(item => item.month);
-    const productValues = simulatedProductData.map(item => item.count);
-
-    setSalesData({ labels: salesLabels, values: salesValues });
-    setOrderData({ labels: orderLabels, values: orderValues });
-    setProductData({ labels: productLabels, values: productValues });
-
-    const fetchDashboard = async () => {
-      try {
-        const res = await instance.get('/api/v1/viewDashboard', { withCredentials: true });
-        const dashboardData = res.data.dashboard;
-        console.log(dashboardData);
-
-        const orders = dashboardData.orders;
-        const products = dashboardData.products;
-        const monthlyData = dashboardData.monthlyData; // Adjust based on your API response
-
-        setOrderCount(orders.length);
-        setProductCount(products.length);
-
-        const chartLabels = monthlyData.map(item => item.month);
-        const chartValues = monthlyData.map(item => item.value);
-
-        setSalesData({ labels: chartLabels, values: chartValues });
-
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-        toast.error('Failed to fetch dashboard data');
-      }
-    };
+  // Call fetchDashboard when component mounts
+  useEffect(() => {
     fetchDashboard();
-  }, [orders, products]);
+  }, []);
+
+  // Simulated data (can be removed if API data is reliable)
+  const simulatedSalesData = [
+    { month: 'January', value: 5000 },
+    { month: 'February', value: 6000 },
+    { month: 'March', value: 7000 },
+    { month: 'April', value: 8000 },
+    { month: 'May', value: 7500 },
+    { month: 'June', value: 8500 },
+    { month: 'July', value: 9000 },
+    { month: 'August', value: 9500 },
+    { month: 'September', value: 10000 },
+    { month: 'October', value: 11000 },
+    { month: 'November', value: 12000 },
+    { month: 'December', value: 13000 }
+  ];
+
+  const simulatedOrderData = [
+    { month: 'January', count: 150 },
+    { month: 'February', count: 170 },
+    { month: 'March', count: 200 },
+    { month: 'April', count: 180 },
+    { month: 'May', count: 190 },
+    { month: 'June', count: 210 },
+    { month: 'July', count: 230 },
+    { month: 'August', count: 250 },
+    { month: 'September', count: 270 },
+    { month: 'October', count: 290 },
+    { month: 'November', count: 310 },
+    { month: 'December', count: 330 }
+  ];
+
+  const simulatedProductData = [
+    { month: 'January', count: 100 },
+    { month: 'February', count: 120 },
+    { month: 'March', count: 150 },
+    { month: 'April', count: 130 },
+    { month: 'May', count: 140 },
+    { month: 'June', count: 160 },
+    { month: 'July', count: 180 },
+    { month: 'August', count: 200 },
+    { month: 'September', count: 220 },
+    { month: 'October', count: 240 },
+    { month: 'November', count: 260 },
+    { month: 'December', count: 280 }
+  ];
+
+  // Use simulated data if no API data is available
+  const salesLabels = (salesData.labels.length ? salesData.labels : simulatedSalesData.map(item => item.month));
+  const salesValues = (salesData.values.length ? salesData.values : simulatedSalesData.map(item => item.value));
+
+  const orderLabels = (orderData.labels.length ? orderData.labels : simulatedOrderData.map(item => item.month));
+  const orderValues = (orderData.values.length ? orderData.values : simulatedOrderData.map(item => item.count));
+
+  const productLabels = (productData.labels.length ? productData.labels : simulatedProductData.map(item => item.month));
+  const productValues = (productData.values.length ? productData.values : simulatedProductData.map(item => item.count));
+
+  setSalesData({ labels: salesLabels, values: salesValues });
+  setOrderData({ labels: orderLabels, values: orderValues });
+  setProductData({ labels: productLabels, values: productValues });
 
   const items = [
     {
