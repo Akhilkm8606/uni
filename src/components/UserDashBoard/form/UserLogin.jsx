@@ -99,6 +99,10 @@ function UserLogin() {
 
     return (
         <div className='login-container'>
+            <meta
+        http-equiv="Content-Security-Policy"
+        content="default-src 'self'; font-src https://fonts.gstatic.com; style-src-elem https://fonts.googleapis.com;"
+      />
             <div className='login'>  
                  
                  <div className='log-head'>
