@@ -38,7 +38,8 @@ function UserLogin() {
                 email,
                 password,
             }, { withCredentials: true });
-          
+        
+            console.log(response.data); 
            
 
             const { data } = response;
@@ -59,12 +60,12 @@ function UserLogin() {
                     autoClose: 3000,position:"top-center"
                 });
             }
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error during login:", error);
-            toast.error(error.response?.data?.message || "An error occurred while logging in.",{
-                autoClose: 3000,position:"top-center"
-            });
+            toast.error(error.response?.data?.message || "An error occurred while logging in.", { autoClose: 3000, position: "top-center" });
         }
+        
     };
 
     useEffect(() => {
