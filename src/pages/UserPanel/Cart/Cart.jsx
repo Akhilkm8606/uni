@@ -106,7 +106,7 @@ function Cart() {
     <div className='item-image'>
       <Link className='item-link' to={`/product/${item?.productId?._id}`}>
         <img 
-          src={item?.productId?.images?.[0] ? `http://localhost:5000/uploads/${item.productId.images[0]}` : '/placeholder.jpg'} 
+          src={item?.productId?.images?.[0] ? `https://unified-cart-client.vercel.app/uploads/${item.productId.images[0]}` : '/placeholder.jpg'} 
           alt={item?.productId?.name || 'Product Image'} 
           className="card-img-top" 
         />

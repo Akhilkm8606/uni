@@ -145,7 +145,7 @@ function Products() {
                   <Link className='link' to={`/product/${product._id}`}>
                     <Card className='cards'>
                     <div className='media-img'>
-                        <img className='p-img' src={`http://localhost:5000/uploads/${product.images[0]}`}alt={product.name}/>
+                        <img className='p-img' src={`https://unified-cart-client.vercel.app/uploads/${product.images[0]}`}alt={product.name}/>
                     </div>
                       <div className='content'>
                         <p component="div">

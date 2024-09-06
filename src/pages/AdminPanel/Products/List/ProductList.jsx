@@ -128,7 +128,7 @@ function ProductList() {
                       <td className='product-price'>{product.price}</td>
                       <td className='product-stock'>{product.quantity}</td>
                       <td className='product-image'>
-                        <img className='p-imag' src={`http://localhost:5000/uploads/${product.images}`} alt={product.name} />
+                        <img className='p-imag' src={`https://unified-cart-client.vercel.app/uploads/${product.images}`} alt={product.name} />
                       </td>
                       <td className='product-date'>{new Date(product.createdAt).toLocaleDateString()}</td>
                       <td className='product-actions'>

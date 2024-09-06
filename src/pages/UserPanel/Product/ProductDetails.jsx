@@ -75,7 +75,7 @@ function ProductDetails() {
           <div className='product-content'>
             <Carousel className='media'>
               {product.images.map((image, index) => (
-                <img key={index + 1} src={`http://localhost:5000/uploads/${image}`} alt={product.name} />
+                <img key={index + 1} src={`https://unified-cart-client.vercel.app/uploads/${image}`} alt={product.name} />
               ))}
             </Carousel>
           </div>
