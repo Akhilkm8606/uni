@@ -27,10 +27,7 @@ function Dashboard() {
   const fetchDashboard = async () => {
     try {
       const res = await instance.get('/api/v1/viewDashboard', {
-        headers: {
-          'Authorization': `Bearer ${yourToken}`, // Replace with actual token or remove if not needed
-          'Content-Type': 'application/json'
-        },
+       
         withCredentials: true
       });
 
