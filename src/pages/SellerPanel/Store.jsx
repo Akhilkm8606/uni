@@ -22,7 +22,7 @@ function Store({ onAddProductClick }) {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await instance.get('/api/v1/seller/products', { withCredentials: true });
+        const response = await instance.get('/api/v1/products', { withCredentials: true });
         setProducts(response.data.products);
       } catch (error) {
         console.error('Error fetching products:', error);

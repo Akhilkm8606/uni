@@ -19,7 +19,7 @@ function ProductCategory() {
   const handleCategories = async (e) => {
     e.preventDefault();
     try {
-      const response = await instance.post('/api/v1/addcategories', {
+      const response = await instance.post('/api/v1/category', {
         name: newCategoryName
       }, {
         withCredentials: true
@@ -33,7 +33,7 @@ function ProductCategory() {
   const handleDeleteCategory = async (categoryId) => {
    
     try {
-      await instance.delete(`/api/v1/categorys/delete/${categoryId}`, {
+      await instance.delete(`/api/v1/category/${categoryId}`, {
         withCredentials: true
       });
       dispatch(removeCategory(categoryId)); // Dispatch action to remove deleted category from Redux store

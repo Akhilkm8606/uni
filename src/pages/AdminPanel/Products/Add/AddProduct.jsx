@@ -60,7 +60,7 @@ function AddProduct() {
         formDataToSend.append('image', image);
         
   
-        const response = await instance.post(`/api/v1/addproduct/${user._id}`, formDataToSend, {
+        const response = await instance.post(`/api/v1/product/${user._id}`, formDataToSend, {
           withCredentials: true,
           headers: {
             "Content-Type": "multipart/form-data",

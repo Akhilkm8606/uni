@@ -32,7 +32,7 @@ function ReviewCard({productId}) {
     try {
       if (isAuthenticated) {
         const response = await instance.post(
-          `/api/v1/addReview/${productId}`,
+          `/api/v1/review/${productId}`,
           { 
             comment: comment,
             rating: rating

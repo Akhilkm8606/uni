@@ -35,11 +35,11 @@ function UserLogin() {
         e.preventDefault();
         try {
             const response = await instance.post('/api/v1/login', {
-                email,
-                password,
-            }, { withCredentials: true });
-        
-            console.log(response.data); 
+        email,
+        password,
+    }, { withCredentials: true });
+
+    console.log(response.data); 
            
 
             const { data } = response;

@@ -31,7 +31,7 @@ function Products() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await instance.get('/api/v1/categorys', { withCredentials: true });
+        const response = await instance.get('/api/v1/categories', { withCredentials: true });
         dispatch(getCategory(response.data.categorys));
        
       } catch (error) {
