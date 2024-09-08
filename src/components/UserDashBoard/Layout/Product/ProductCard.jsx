@@ -37,7 +37,7 @@ function ProductCard() {
                         {/* Display image from Cloudinary */}
                         <img
                           className='p-img'
-                          src={`https://res.cloudinary.com/dbyfurx53/image/upload/v1725727931/cyvopa480wwv3q96xuwz.jpg`}
+                          src={`https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`}
                           alt={product.name}
                         />
                       </div>
