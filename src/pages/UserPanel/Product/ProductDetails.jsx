@@ -5,11 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Carousel from 'react-material-ui-carousel';
 import './ProductDetails.css';
 import ReactStars from 'react-rating-stars-component';
-import { Row, Col, Button } from 'react-bootstrap';
-import ReviewCard from './Review/ReviewCard';
 import { ToastContainer, toast } from 'react-toastify';
-import { getCart } from '../../../components/Redux/Slice/cart';
 import instance from '../../../Instance/axios';
+import ReviewCard from './Review/ReviewCard';
 
 function ProductDetails() {
   const navigate = useNavigate();
@@ -26,7 +24,7 @@ function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
 
   const increaseQuantity = () => {
-    if (product.quantity > quantity) {
+    if (product?.quantity > quantity) {
       setQuantity(quantity + 1);
     }
   };
@@ -102,7 +100,7 @@ function ProductDetails() {
             </div>
             <div className='detailsBlock-2'>
               <ReactStars value={parseFloat(product.rating) || 0} count={5} isHalf={true} />
-              <div>Reviews: ({product.reviews.length})</div>
+              <div>Reviews: ({product.reviews ? product.reviews.length : 0})</div> {/* Safeguard */}
             </div>
             <div className='detailsBlock-3'>
               <p><span>₹</span> {product.price}</p>
@@ -135,6 +133,5 @@ function ProductDetails() {
     </>
   );
 }
-
 
 export default ProductDetails;
