@@ -44,7 +44,7 @@ function ProductCard() {
                       <CardMedia
                         component="img"
                         className='media-img'
-                        image={`https://unified-cart-client.vercel.app/uploads/${product.images[0]}`}
+                        image={`https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`}
                         alt={product.name}
                       />
                       <CardContent className='content'>
