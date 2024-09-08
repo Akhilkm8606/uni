@@ -9,7 +9,7 @@ import './ProductCard.css';
 function ProductCard() {
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector(state => state.data);
-    
+
   useEffect(() => {
     dispatch(getProducts());
     // Clear products when the component unmounts to avoid stale data
@@ -17,8 +17,15 @@ function ProductCard() {
       dispatch(clearProducts());
     };
   }, [dispatch]);
-   
+
   const displayedProducts = products.slice(0, 8);
+
+  // Helper function to extract public ID from a full Cloudinary URL
+  const getImagePublicId = (imageUrl) => {
+    // Assuming Cloudinary URLs end with the public ID
+    const urlParts = imageUrl.split('/');
+    return urlParts[urlParts.length - 1];
+  };
 
   return (
     <>
@@ -34,10 +41,15 @@ function ProductCard() {
                   <Link className='link' to={`/product/${product._id}`}>
                     <Card className='cards'>
                       <div className='media-img'>
-                        {/* Display image from Cloudinary */}
                         <img
                           className='p-img'
-                          src={`https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`}
+                          src={
+                            product.images[0]
+                              ? product.images[0].startsWith('http')
+                                ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
+                                : `https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`
+                              : 'https://via.placeholder.com/150' // Fallback image
+                          }
                           alt={product.name}
                         />
                       </div>
