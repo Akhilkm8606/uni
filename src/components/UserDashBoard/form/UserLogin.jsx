@@ -51,6 +51,8 @@ function UserLogin() {
                 toast.success(data.msg,{
                     autoClose: 3000,position:"top-center"
                 });
+                console.log('Token:', token);
+
                 handleRedirect(user.role);
                 // Clear form fields after successful submission
                 setEmail('');
