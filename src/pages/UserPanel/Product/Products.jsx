@@ -9,8 +9,9 @@ import ReactStars from 'react-rating-stars-component';
 import axios from 'axios';
 import { getCategory } from '../../../components/Redux/Slice/category'; // Import getCategory action
 import ReactPaginate from 'react-paginate'; // Import ReactPaginate
-import {  MdSkipNext, MdSkipPrevious } from "react-icons/md";
+import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import instance from '../../../Instance/axios';
+
 function Products() {
   const { keyword } = useParams();
   const dispatch = useDispatch();
@@ -25,7 +26,6 @@ function Products() {
 
   useEffect(() => {
     dispatch(getProducts(keyword));
-    
   }, [dispatch, keyword]);
 
   useEffect(() => {
@@ -33,7 +33,6 @@ function Products() {
       try {
         const response = await instance.get('/api/v1/categories', { withCredentials: true });
         dispatch(getCategory(response.data.categorys));
-       
       } catch (error) {
         console.log(error);
       }
@@ -105,27 +104,27 @@ function Products() {
 
           <div className='filters'>
             <div className='categoryList'>
-            {categoryList ? (
-      categoryList.map((item) => (
-        <div className='category' key={item._id}>
-          <p className='cateitems'>
-            <input
-              type="checkbox"
-              checked={selectedCategories.includes(item._id)}
-              onChange={() => handleCategoryClick(item._id)}
-            />
-            <span>{item.name}</span>
-          </p>
-        </div>
-      ))
-    ) : (
-      <p>Loading categories...</p>
-    )}
+              {categoryList ? (
+                categoryList.map((item) => (
+                  <div className='category' key={item._id}>
+                    <p className='cateitems'>
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.includes(item._id)}
+                        onChange={() => handleCategoryClick(item._id)}
+                      />
+                      <span>{item.name}</span>
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p>Loading categories...</p>
+              )}
             </div>
             <div className='price-filter'>
               {priceRanges.map((range, index) => (
                 <div key={index}>
-                  <p className='cateitems' >
+                  <p className='cateitems'>
                     <input
                       type="checkbox"
                       checked={selectedPriceRanges.some(r => r.min === range.min && r.max === range.max)}
@@ -137,50 +136,49 @@ function Products() {
               ))}
             </div>
           </div>
-          <div className='products-container'>
-  {products && currentProducts.length > 0 ? (
-    currentProducts.map((product, index) => (
-      <div className='product-card' key={index}>
-        <Link className='link' to={`/product/${product._id}`}>
-          <Card className='cards'>
-            <div className='media-img'>
-              {/* Handle Cloudinary URLs and local images correctly */}
-              <img
-                className='p-img'
-                src={
-                  product.images && product.images[0]
-                    ? product.images[0].startsWith('http')
-                      ? product.images[0] // Cloudinary or full URLs
-                      : `https://unified-cart-client.vercel.app/uploads/${product.images[0]}` // Local images
-                    : 'https://via.placeholder.com/150' // Fallback image
-                }
-                alt={product.name}
-              />
-            </div>
-            <div className='content'>
-              <p>{product.name}</p>
-              <div className='price-n-rating'>
-                <ReactStars
-                  value={parseFloat(product.rating) || 0}
-                  count={5}
-                  isHalf={true}
-                />
-                <span>{`₹ : ${product.price}`}</span>
-              </div>
-            </div>
-          </Card>
-        </Link>
-      </div>
-    ))
-  ) : (
-    <p>No products available for the selected category and price range</p>
-  )}
-</div>
 
+          <div className='products-container'>
+            {products && currentProducts.length > 0 ? (
+              currentProducts.map((product, index) => (
+                <div className='product-card' key={index}>
+                  <Link className='link' to={`/product/${product._id}`}>
+                    <Card className='cards'>
+                      <div className='media-img'>
+                        <img
+                          className='p-img'
+                          src={
+                            product.images && product.images[0]
+                              ? product.images[0].startsWith('http')
+                                ? product.images[0] // Cloudinary or full URLs
+                                : `https://unified-cart-client.vercel.app/uploads/${product.images[0]}` // Local images
+                              : 'https://via.placeholder.com/150' // Fallback image
+                          }
+                          alt={product.name}
+                        />
+                      </div>
+                      <div className='content'>
+                        <p>{product.name}</p>
+                        <div className='price-n-rating'>
+                          <ReactStars
+                            value={parseFloat(product.rating) || 0}
+                            count={5}
+                            isHalf={true}
+                          />
+                          <span>{`₹ : ${product.price}`}</span>
+                        </div>
+                      </div>
+                    </Card>
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <p>No products available for the selected category and price range</p>
+            )}
+          </div>
 
           <ReactPaginate
-            previousLabel={<MdSkipPrevious/>}
-            nextLabel={<MdSkipNext/>}
+            previousLabel={<MdSkipPrevious />}
+            nextLabel={<MdSkipNext />}
             pageCount={Math.ceil(filteredProducts.length / productsPerPage)}
             onPageChange={({ selected }) => setPageNumber(selected)}
             containerClassName={'pagination'}
