@@ -91,7 +91,16 @@ function Products() {
   const indexOfLastProduct = (pageNumber + 1) * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-
+  const getImagePublicId = (imageUrl) => {
+    // Assuming Cloudinary URLs are in the format:
+    // https://res.cloudinary.com/{cloud_name}/image/upload/{public_id}.{extension}
+    // We need to extract {public_id} from the URL
+    const urlParts = imageUrl.split('/');
+    const fileNameWithExtension = urlParts[urlParts.length - 1];
+    const [publicId] = fileNameWithExtension.split('.'); // Split by dot and take the first part
+    return publicId;
+  };
+  
   return (
     <>
       {loading ? (
