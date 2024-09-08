@@ -73,12 +73,12 @@ function ProductDetails() {
       {product && (
         <div className='productdetail-container'>
           <div className='product-content'>
-            <Carousel className='media'>
-              {product.images.map((image, index) => (
-                <img key={index + 1} src={`https://res.cloudinary.com/[dbyfurx53]/image/upload/v1234/${image}`} alt={product.name} />
-              ))}
-            </Carousel>
-          </div>
+        <Carousel className='media'>
+          {product.images.map((image, index) => (
+            <img key={index} src={image} alt={product.name} />
+          ))}
+        </Carousel>
+      </div>
           <div className='product-details'>
             <div className='detailsBlock-1'>
               <h2>{product.name}</h2>
