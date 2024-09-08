@@ -139,32 +139,39 @@ function Products() {
           </div>
 
           <div className='products-container'>
-            {products && currentProducts.length > 0 ? (
-              currentProducts.map((product, index) => (
-                <div className='product-card' key={index}>
-                  <Link className='link' to={`/product/${product._id}`}>
-                    <Card className='cards'>
-                    <div className='media-img'>
-                        <img className='p-img' src={`https://unified-cart-client.vercel.app/uploads/${product.images[0]}`}alt={product.name}/>
-                    </div>
-                      <div className='content'>
-                        <p component="div">
-                          {product.name}
-                        </p>
-                        <div className='price-n-rating'>
-                        <ReactStars value={parseFloat(product.rating) || 0} count={5}  isHalf={true}   />
+  {products && currentProducts.length > 0 ? (
+    currentProducts.map((product, index) => (
+      <div className='product-card' key={index}>
+        <Link className='link' to={`/product/${product._id}`}>
+          <Card className='cards'>
+            <div className='media-img'>
+              {/* Use Cloudinary URL or fallback to a placeholder image */}
+              <img
+                className='p-img'
+                src={product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/150'}
+                alt={product.name}
+              />
+            </div>
+            <div className='content'>
+              <p>{product.name}</p>
+              <div className='price-n-rating'>
+                <ReactStars
+                  value={parseFloat(product.rating) || 0}
+                  count={5}
+                  isHalf={true}
+                />
+                <span>{`₹ : ${product.price}`}</span>
+              </div>
+            </div>
+          </Card>
+        </Link>
+      </div>
+    ))
+  ) : (
+    <p>No products available for the selected category and price range</p>
+  )}
+</div>
 
-                          <span>{`₹ : ${product.price}`}</span>
-                        </div>
-                      </div>
-                    </Card>
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <p>No products available for the selected category and price range</p>
-            )}
-          </div>
 
           <ReactPaginate
             previousLabel={<MdSkipPrevious/>}
