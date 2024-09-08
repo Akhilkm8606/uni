@@ -58,6 +58,13 @@ function ProductDetails() {
     dispatch(getCart(cart)); // Dispatch the action without logging the cart state
   }, [dispatch, cart]);
 
+  // Helper function to extract public ID from a full Cloudinary URL
+  const getImagePublicId = (imageUrl) => {
+    // Assuming Cloudinary URLs end with the public ID
+    const urlParts = imageUrl.split('/');
+    return urlParts[urlParts.length - 1];
+  };
+
   return (
     <>
       {product && (
@@ -66,9 +73,16 @@ function ProductDetails() {
             <Carousel className='media'>
               {product.images.map((image, index) => (
                 <img
-                  key={index}
-                  src={`https://res.cloudinary.com/dbyfurx53/image/upload/v1725727700/${image}`}
+                  className='p-img'
+                  src={
+                    image
+                      ? image.startsWith('http')
+                        ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(image)}`
+                        : `https://res.cloudinary.com/dbyfurx53/image/upload/${image}`
+                      : 'https://via.placeholder.com/150' // Fallback image
+                  }
                   alt={product.name}
+                  key={index}
                 />
               ))}
             </Carousel>
