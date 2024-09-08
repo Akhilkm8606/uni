@@ -30,6 +30,14 @@ function ReviewCard({productId}) {
   const reviewHandler = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem('token');
+      console.log(token, 'token');
+      
+      if (!token) {
+        toast.error('No authentication token found');
+        return;
+      }
+      
       if (isAuthenticated) {
         const response = await instance.post(
           `/api/v1/review/${productId}`,
@@ -38,27 +46,25 @@ function ReviewCard({productId}) {
             rating: rating
           },
           {
+            headers: { Authorization: `Bearer ${token}` }, // Include token in headers
             withCredentials: true
           }
         );
+        
         if (response.status === 200) {
           const newReview = response.data.product.reviews;
-          setReviews(newReview)
-          dispatch(getProductDetails(productId)); 
-        
+          setReviews(newReview);
+          dispatch(getProductDetails(productId));
+          
           setComment('');
           setRating(0);
           toast.success("Review added", { autoClose: 1000 });
         } else {
           toast.error('Failed to add review');
         }
-
-      }
-      else{
+      } else {
         toast.error("Please login to add a review", { autoClose: 1000 });
-
       }
-     
     } catch (error) {
       console.error('Error adding review:', error);
       toast.error('Failed to add review');
