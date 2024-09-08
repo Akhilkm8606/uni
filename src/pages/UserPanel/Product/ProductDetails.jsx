@@ -38,6 +38,14 @@ function ProductDetails() {
   };
 
   const handleAddToCart = async () => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    
+    if (!token) {
+      toast.error('No authentication token found');
+      return;
+    }
+  
     try {
       const response = await instance.post(
         `/api/v1/product/addCart/${id}`,
@@ -56,6 +64,7 @@ function ProductDetails() {
       toast.error('Failed to add product to cart');
     }
   };
+  
 
   useEffect(() => {
     dispatch(getCart());
