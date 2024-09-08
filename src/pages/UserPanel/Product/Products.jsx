@@ -137,7 +137,6 @@ function Products() {
               ))}
             </div>
           </div>
-
           <div className='products-container'>
   {products && currentProducts.length > 0 ? (
     currentProducts.map((product, index) => (
@@ -145,10 +144,16 @@ function Products() {
         <Link className='link' to={`/product/${product._id}`}>
           <Card className='cards'>
             <div className='media-img'>
-              {/* Use Cloudinary URL or fallback to a placeholder image */}
+              {/* Handle Cloudinary URLs and local images correctly */}
               <img
                 className='p-img'
-                src={product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/150'}
+                src={
+                  product.images && product.images[0]
+                    ? product.images[0].startsWith('http')
+                      ? product.images[0] // Cloudinary or full URLs
+                      : `https://unified-cart-client.vercel.app/uploads/${product.images[0]}` // Local images
+                    : 'https://via.placeholder.com/150' // Fallback image
+                }
                 alt={product.name}
               />
             </div>
