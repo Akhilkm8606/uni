@@ -17,7 +17,7 @@ function ProductDetails() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const product = useSelector(state => state.product.product);
-  
+
   useEffect(() => {
     dispatch(getProductDetails(id));
     dispatch(clearProducts());
@@ -67,24 +67,32 @@ function ProductDetails() {
 
   return (
     <>
-      {product && (
+      {product ? (
         <div className='productdetail-container'>
           <div className='product-content'>
             <Carousel className='media'>
-              {product.images.map((image, index) => (
+              {product.images && product.images.length > 0 ? (
+                product.images.map((image, index) => (
+                  <img
+                    className='p-img'
+                    src={
+                      image
+                        ? image.startsWith('http')
+                          ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(image)}`
+                          : `https://res.cloudinary.com/dbyfurx53/image/upload/${image}`
+                        : 'https://via.placeholder.com/150' // Fallback image
+                    }
+                    alt={product.name}
+                    key={index}
+                  />
+                ))
+              ) : (
                 <img
                   className='p-img'
-                  src={
-                    image
-                      ? image.startsWith('http')
-                        ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(image)}`
-                        : `https://res.cloudinary.com/dbyfurx53/image/upload/${image}`
-                      : 'https://via.placeholder.com/150' // Fallback image
-                  }
-                  alt={product.name}
-                  key={index}
+                  src='https://via.placeholder.com/150'
+                  alt='Placeholder'
                 />
-              ))}
+              )}
             </Carousel>
           </div>
           <div className='product-details'>
@@ -103,7 +111,7 @@ function ProductDetails() {
                 <div>
                   <button onClick={decreaseQuantity}>-</button>
                   <input
-                    onChange={(e) => setQuantity(parseInt(e.target.value))}
+                    onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
                     value={quantity}
                     type='number'
                   />
@@ -119,11 +127,14 @@ function ProductDetails() {
             </div>
           </div>
         </div>
+      ) : (
+        <p>Loading product details...</p>
       )}
       <ReviewCard productId={id} />
       <ToastContainer />
     </>
   );
 }
+
 
 export default ProductDetails;
