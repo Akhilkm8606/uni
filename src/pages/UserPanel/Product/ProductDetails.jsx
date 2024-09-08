@@ -100,7 +100,7 @@ function ProductDetails() {
             </div>
             <div className='detailsBlock-2'>
               <ReactStars value={parseFloat(product.rating) || 0} count={5} isHalf={true} />
-              <div>Reviews: ({product.reviews ? product.reviews.length : 0})</div> {/* Safeguard */}
+              {/* <div>Reviews: ({product.reviews ? product.reviews.length : 0})</div>  */}
             </div>
             <div className='detailsBlock-3'>
               <p><span>₹</span> {product.price}</p>
