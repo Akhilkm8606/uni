@@ -8,6 +8,8 @@ import ReactStars from 'react-rating-stars-component';
 import { ToastContainer, toast } from 'react-toastify';
 import instance from '../../../Instance/axios';
 import ReviewCard from './Review/ReviewCard';
+import { getCart } from '../../../components/Redux/Slice/cart'; // Adjust the path as necessary
+
 
 function ProductDetails() {
   const navigate = useNavigate();
