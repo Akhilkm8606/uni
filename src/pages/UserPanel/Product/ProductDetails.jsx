@@ -10,7 +10,6 @@ import instance from '../../../Instance/axios';
 import ReviewCard from './Review/ReviewCard';
 import { getCart } from '../../../components/Redux/Slice/cart'; // Adjust the path as necessary
 
-
 function ProductDetails() {
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
@@ -55,8 +54,8 @@ function ProductDetails() {
   };
 
   useEffect(() => {
-    dispatch(getCart(cart)); // Dispatch the action without logging the cart state
-  }, [dispatch, cart]);
+    dispatch(getCart()); // No need to pass `cart` here
+  }, [dispatch]);
 
   // Helper function to extract public ID from a full Cloudinary URL
   const getImagePublicId = (imageUrl) => {
