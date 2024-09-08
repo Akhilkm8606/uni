@@ -2,59 +2,49 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearProducts, getProducts } from '../../../../actions/ProductAction';
 import { Link } from 'react-router-dom';
-import { Card, CardMedia, CardContent, Typography } from '@mui/material';
-import ReactStars from "react-rating-stars-component";
-import './ProductCard.css';
+import { Card } from '@mui/material';
 import Loader from '../Loader/Loader';
-import { Row } from 'react-bootstrap';
+import './ProductCard.css';
 
 function ProductCard() {
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector(state => state.data);
-
+    
   useEffect(() => {
-    // Fetch products when the component mounts
     dispatch(getProducts());
-
     // Clear products when the component unmounts to avoid stale data
     return () => {
       dispatch(clearProducts());
     };
   }, [dispatch]);
-
+   
   const displayedProducts = products.slice(0, 8);
 
   return (
     <>
       {loading ? (
         <Loader />
-      ) : error ? (
-        <div className="error-message">Failed to load products. Please try again later.</div>
       ) : (
         <div className='container'>
-          <Row>
-            <h3>FEATURED PRODUCTS</h3>
-          </Row>
+          <h3>FEATURED PRODUCTS</h3>
           <div className="products-container">
             {Array.isArray(displayedProducts) && displayedProducts.length > 0 ? (
               displayedProducts.map((product, index) => (
                 <div className="product-card" key={index}>
                   <Link className='link' to={`/product/${product._id}`}>
                     <Card className='cards'>
-                      <CardMedia
-                        component="img"
-                        className='media-img'
-                        image={`https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`}
-                        alt={product.name}
-                      />
-                      <CardContent className='content'>
-                        <Typography variant="h6" component="div">
-                          {product.name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {`Price : ${product.price}/-`}
-                        </Typography>
-                      </CardContent>
+                      <div className='media-img'>
+                        {/* Display image from Cloudinary */}
+                        <img
+                          className='p-img'
+                          src={`https://res.cloudinary.com/dbyfurx53/image/upload/v1725727700/${product.images[0]}`}
+                          alt={product.name}
+                        />
+                      </div>
+                      <div className='content'>
+                        <p>{product.name}</p>
+                        <span>{`Price : ₹${product.price}`}</span>
+                      </div>
                     </Card>
                   </Link>
                 </div>

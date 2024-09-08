@@ -7,26 +7,23 @@ import './ProductDetails.css';
 import ReactStars from 'react-rating-stars-component';
 import { Row, Col, Button } from 'react-bootstrap';
 import ReviewCard from './Review/ReviewCard';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { getCart } from '../../../components/Redux/Slice/cart';
 import instance from '../../../Instance/axios';
 
 function ProductDetails() {
   const navigate = useNavigate();
+  const [cart, setCart] = useState([]);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [quantity, setQuantity] = useState(1);
-
-  // Fetch product details
+  const product = useSelector(state => state.product.product);
+  
   useEffect(() => {
     dispatch(getProductDetails(id));
-    // Clear products from Redux store if needed
-    // dispatch(clearProducts()); 
+    dispatch(clearProducts());
   }, [dispatch, id]);
 
-  const product = useSelector(state => state.product.product);
-  console.log(product);
+  const [quantity, setQuantity] = useState(1);
 
   const increaseQuantity = () => {
     if (product.quantity > quantity) {
@@ -42,9 +39,12 @@ function ProductDetails() {
 
   const handleAddToCart = async () => {
     try {
-      const response = await instance.post(`/api/v1/product/addCart/${id}`, { quantity }, { withCredentials: true });
-      // Update the cart in Redux store
-      dispatch(getCart()); // Assuming this updates cart state
+      const response = await instance.post(
+        `/api/v1/product/addCart/${id}`,
+        { quantity },
+        { withCredentials: true }
+      );
+      setCart(response.data.cart);
       setQuantity(1); // Reset quantity after adding to cart
       toast.success('Product added to cart successfully');
       navigate('/cart');
@@ -54,6 +54,10 @@ function ProductDetails() {
     }
   };
 
+  useEffect(() => {
+    dispatch(getCart(cart)); // Dispatch the action without logging the cart state
+  }, [dispatch, cart]);
+
   return (
     <>
       {product && (
@@ -61,7 +65,11 @@ function ProductDetails() {
           <div className='product-content'>
             <Carousel className='media'>
               {product.images.map((image, index) => (
-                <img key={index} src={image} alt={product.name} />
+                <img
+                  key={index}
+                  src={`https://res.cloudinary.com/dbyfurx53/image/upload/v1725727700/${image}`}
+                  alt={product.name}
+                />
               ))}
             </Carousel>
           </div>
@@ -79,17 +87,16 @@ function ProductDetails() {
               <p><span>Availability:</span> {product.quantity === 0 ? 'Out of Stock' : 'In Stock'}</p>
               <div className='detailsBlock-3-1'>
                 <div>
-                  <Button variant="outline-primary" onClick={decreaseQuantity}>-</Button>
+                  <button onClick={decreaseQuantity}>-</button>
                   <input
-                    onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+                    onChange={(e) => setQuantity(parseInt(e.target.value))}
                     value={quantity}
                     type='number'
-                    min='1'
                   />
-                  <Button variant="outline-primary" onClick={increaseQuantity}>+</Button>
+                  <button onClick={increaseQuantity}>+</button>
                 </div>
                 <div className='detailsBlock-3-1-1'>
-                  <Button variant="primary" onClick={handleAddToCart}>ADD TO CART</Button>
+                  <Link className='addToCart' onClick={handleAddToCart}>ADD TO CART</Link>
                 </div>
               </div>
             </div>
