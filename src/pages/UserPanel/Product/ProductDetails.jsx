@@ -16,6 +16,7 @@ function ProductDetails() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const product = useSelector(state => state.product.product);
+  const token = localStorage.getItem('token'); // Replace with actual method to get token
 
   useEffect(() => {
     dispatch(getProductDetails(id));
@@ -41,7 +42,10 @@ function ProductDetails() {
       const response = await instance.post(
         `/api/v1/product/addCart/${id}`,
         { quantity },
-        { withCredentials: true }
+        { 
+          headers: { Authorization: `Bearer ${token}` }, 
+          withCredentials: true 
+        }
       );
       setCart(response.data.cart);
       setQuantity(1); // Reset quantity after adding to cart
@@ -54,12 +58,10 @@ function ProductDetails() {
   };
 
   useEffect(() => {
-    dispatch(getCart()); // No need to pass `cart` here
+    dispatch(getCart());
   }, [dispatch]);
 
-  // Helper function to extract public ID from a full Cloudinary URL
   const getImagePublicId = (imageUrl) => {
-    // Assuming Cloudinary URLs end with the public ID
     const urlParts = imageUrl.split('/');
     return urlParts[urlParts.length - 1];
   };
@@ -101,7 +103,6 @@ function ProductDetails() {
             </div>
             <div className='detailsBlock-2'>
               <ReactStars value={parseFloat(product.rating) || 0} count={5} isHalf={true} />
-              {/* <div>Reviews: ({product.reviews ? product.reviews.length : 0})</div>  */}
             </div>
             <div className='detailsBlock-3'>
               <p><span>₹</span> {product.price}</p>
