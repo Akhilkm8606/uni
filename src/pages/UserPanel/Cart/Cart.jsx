@@ -6,7 +6,7 @@ import axios from 'axios';
 import { getCart } from '../../../components/Redux/Slice/cart';
 import { MdDelete } from 'react-icons/md';
 import instance from '../../../Instance/axios';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 function Cart() {
   const [cart, setCart] = useState([]);
