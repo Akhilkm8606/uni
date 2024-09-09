@@ -28,7 +28,7 @@ function Cart() {
         }
 
       
-          const response = await instance.get(`/api/v1/user/carts/${user._id}`, {
+          const response = await instance.get(`/api/v1/carts/${user._id}`, {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true
           });
