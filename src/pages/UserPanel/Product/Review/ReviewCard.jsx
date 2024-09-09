@@ -1,11 +1,14 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import '../Review/Review.css';
+import ReactStars from 'react-rating-stars-component';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import './Cart.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-import { getCart } from '../../../components/Redux/Slice/cart';
-import { MdDelete } from 'react-icons/md';
-import instance from '../../../Instance/axios';
+import { Try } from '@mui/icons-material';
+import { getProductDetails } from '../../../../actions/ProductAction';
+import instance from '../../../../Instance/axios';
 
 function Cart() {
   const [cart, setCart] = useState([]);
