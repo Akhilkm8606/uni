@@ -1,127 +1,187 @@
-import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
-import '../Review/Review.css';
-import ReactStars from 'react-rating-stars-component';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Link, useNavigate } from 'react-router-dom';
+import './Cart.css';
 import axios from 'axios';
-import { Try } from '@mui/icons-material';
-import { getProductDetails } from '../../../../actions/ProductAction';
-import instance from '../../../../Instance/axios';
-  
+import { getCart } from '../../../components/Redux/Slice/cart';
+import { MdDelete } from 'react-icons/md';
+import instance from '../../../Instance/axios';
 
-function ReviewCard({productId}) {
-  const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(0);
+function Cart() {
+  const [cart, setCart] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector(state => state.auth.user);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  const product = useSelector(state => state.product.product);
 
+  // Fetch cart when component mounts
+  useEffect(() => {
+    const fetchCartData = async () => {
+      try {
+        const token = localStorage.getItem('token');
 
-  const [reviews, setReviews] = useState([])
-  const ratingHandler = (value) => {
-    setRating(value);
+        if (!token) {
+          toast.error('No authentication token found. Please log in.');
+          navigate('/login');
+          return;
+        }
+
+        if (isAuthenticated && user) {
+          const response = await instance.get(`/api/v1/user/carts/${user._id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true
+          });
+          console.log(response.data.userCart);
+          setCart(response.data.userCart);
+        }
+      } catch (error) {
+        console.error('Error fetching cart data:', error);
+        toast.error('Failed to fetch cart. Please try again later.');
+      }
+    };
+
+    fetchCartData();
+  }, [dispatch, isAuthenticated, user, navigate]);
+
+  // Update cart in Redux store
+  useEffect(() => {
+    dispatch(getCart(cart));
+  }, [dispatch, cart]);
+
+  // Calculate total price for each item
+  const calculateTotalPrice = (item) => {
+    return item.quantity * item.productId.price;
   };
 
-   
-  
-  const reviewHandler = async (e) => {
-    e.preventDefault();
+  // Update item quantity in the cart
+  const updateQuantity = useCallback(async (itemId, quantity) => {
     try {
       const token = localStorage.getItem('token');
-      console.log(token, 'token');
-      
+
       if (!token) {
-        toast.error('No authentication token found');
+        toast.error('No authentication token found.');
         return;
       }
-      
-      if (isAuthenticated) {
-        const response = await instance.post(
-          `/api/v1/review/${productId}`,
-          { 
-            comment: comment,
-            rating: rating
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` }, // Include token in headers
-            withCredentials: true
-          }
-        );
-        
-        if (response.status === 200) {
-          const newReview = response.data.product.reviews;
-          setReviews(newReview);
-          dispatch(getProductDetails(productId));
-          
-          setComment('');
-          setRating(0);
-          toast.success("Review added", { autoClose: 1000 });
-        } else {
-          toast.error('Failed to add review');
-        }
-      } else {
-        toast.error("Please login to add a review", { autoClose: 1000 });
+
+      const response = await instance.put(`/api/v1/user/cart/edit/${itemId}`, 
+        { quantity }, 
+        { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        setCart(prevCart => {
+          const updatedCart = prevCart.map(item => {
+            if (item._id === itemId) {
+              const updatedItem = { ...item, quantity };
+              updatedItem.amount = calculateTotalPrice(updatedItem);
+              return updatedItem;
+            }
+            return item;
+          });
+          return updatedCart;
+        });
       }
     } catch (error) {
-      console.error('Error adding review:', error);
-      toast.error('Failed to add review');
+      console.error('Error updating item quantity:', error);
+      toast.error('Failed to update quantity.');
+    }
+  }, [setCart]);
+
+  // Calculate total price for the cart
+  const calculateTotalCartPrice = () => {
+    let total = 0;
+    Array.isArray(cart) && cart.forEach(item => {
+      total += calculateTotalPrice(item);
+    });
+    return total;
+  };
+
+  // Handle removing item from cart
+  const handleRemoveCart = async (itemId) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        toast.error('No authentication token found.');
+        return;
+      }
+
+      const response = await instance.delete(`/api/v1/user/cart/delete/${itemId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true
+      });
+
+      if (response.status === 200) {
+        const updatedCart = cart.filter(item => item._id !== itemId);
+        setCart(updatedCart);
+      }
+    } catch (error) {
+      console.error('Error removing item from cart:', error);
+      toast.error('Failed to remove item from cart.');
     }
   };
-  
-  return (
-    <div className="review-container">
-      <Row>
-        <h2 className="review-header">REVIEWS</h2>
-      </Row>
-      <Row className="review-row">
-        <Col className="review-Col" md={6}>
-          <p>Please rate the product and leave your review below:</p>
-          <ReactStars
-            value={rating}
-            onChange={(value) => ratingHandler(value)}
-            count={5}
-            size={24}
-           
-          />
-          <form className="add_review" onSubmit={reviewHandler}>
-            <input
-              type="text"
-              placeholder="Enter your comment"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <button type="submit">Add Review</button>
-          </form>
-        </Col>
-      </Row>
-     <Row>
-  <div className="reviews">
-    {product && product.reviews && product.reviews.map((review, index) => (
-      <Col key={index} md={6}>
-        <div className="review-item">
-          <div className="user-info">
-            <h4>{review.username}</h4>
-          
-            <ReactStars
-              value={review.rating}
-              count={5}
-              size={24}
-              color="white"
-              edit={false}
-            />
-          </div>
-          <p>{review.comment}</p>
-        </div>
-      </Col>
-    ))}
-  </div>
-</Row>
 
+  return (
+    <div className="cart-container">
+      {cart == null || cart.length === 0 ? (
+        <div className="empty-cart">
+          <h1>Your Shopping Cart is Empty</h1>
+          <button className="btn-shop-now" onClick={() => navigate('/')}>
+            Start Shopping Now
+          </button>
+        </div>
+      ) : (
+        <div className='cart-container'>
+          <div className="cart-header">
+            <h2>Your Shopping Cart</h2>
+          </div>
+          <div className='cartdiv'>
+            {Array.isArray(cart) && cart.map((item, index) => (
+              <div className='cart-item-div' key={index}>
+                <div className='item-image'>
+                  <Link className='item-link' to={`/product/${item?.productId?._id}`}>
+                    <img 
+                      src={item?.productId?.images?.[0] ? 
+                      `https://unified-cart-client.vercel.app/uploads/${item.productId.images[0]}` 
+                      : '/placeholder.jpg'} 
+                      alt={item?.productId?.name || 'Product Image'} 
+                      className="card-img-top" 
+                    />
+                  </Link>
+                </div>
+                <div className='cart-text'>
+                  {item?.productId?.name && (
+                    <h5>{item.productId.name}</h5>
+                  )}
+                  <p>{item?.productId?.description}</p>
+                  <div className='pqr-div'>
+                    <div className='cpr'>
+                      <span id={item?.productId?._id}><h5>Price: {item?.productId?.price}/-</h5></span>
+                    </div>
+                    <div className='cart-product-quantity'>
+                      <button onClick={() => updateQuantity(item._id, item.quantity - 1)}>-</button>
+                      <input type="text" value={item.quantity} readOnly />
+                      <button onClick={() => updateQuantity(item._id, item.quantity + 1)}>+</button>
+                    </div>
+                    <div className='remove-btn'>
+                      <button onClick={() => handleRemoveCart(item._id)}>
+                        <MdDelete />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className='buy-div'>
+                  <Link className='buy-button' to={`/Order/${item?._id}`}>
+                    Buy
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export default ReviewCard;
+export default Cart;
