@@ -27,14 +27,14 @@ function Cart() {
           return;
         }
 
-        if (isAuthenticated && user) {
+      
           const response = await instance.get(`/api/v1/user/carts/${user._id}`, {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true
           });
           console.log(response.data.userCart);
           setCart(response.data.userCart);
-        }
+
       } catch (error) {
         console.error('Error fetching cart data:', error);
         toast.error('Failed to fetch cart. Please try again later.');
