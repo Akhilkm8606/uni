@@ -68,6 +68,7 @@ function Cart() {
         { quantity }, 
         { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
       );
+      
 
       if (response.status === 200) {
         setCart(prevCart => {
