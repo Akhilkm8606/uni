@@ -93,6 +93,12 @@ function EditProduct({ productId, onClose }) {
       }
     }
   };
+  const getImagePublicId = (imageUrl) => {
+    const urlParts = imageUrl.split('/');
+    const fileNameWithExtension = urlParts[urlParts.length - 1];
+    const [publicId] = fileNameWithExtension.split('.');
+    return publicId;
+  };
 
   return (
     <div className="edit-prdut">
