@@ -77,7 +77,7 @@ export const updateProduct = (productId, formData) => async (dispatch) => {
   console.log(formData,productId, "action");
 
   try {
-    const response = await axios.post(`/api/v1/product/${productId}`, formData, {
+    const response = await axios.put(`/api/v1/product/${productId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data', // Ensure correct headers for file uploads
       },
