@@ -59,7 +59,7 @@ function Cart() {
         return;
       }
 
-      const response = await instance.put(`/api/v1/user/cart/edit/${itemId}`,
+      const response = await instance.put(`/api/v1/cart/edit/${itemId}`,
         { quantity },
         { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
       );
@@ -101,7 +101,7 @@ function Cart() {
         return;
       }
 
-      const response = await instance.delete(`/api/v1/user/cart/delete/${itemId}`, {
+      const response = await instance.delete(`/api/v1/user/cart/${itemId}`, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true
       });
