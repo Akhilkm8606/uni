@@ -33,71 +33,52 @@ function AddProduct() {
       [name]: newValue
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.currentTarget;
-
-    // Check if any required field is empty, including the image
+  
     const { name, categoryId, price, quantity, description, features, image } = formData;
-
     if (!name || !categoryId || !price || !quantity || !description || !features || !image) {
-      console.log('Missing field:', { name, categoryId, price, quantity, description, features, image });
       alert('Please fill in all the required fields, including an image.');
       return;
     }
-
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        const formDataToSend = new FormData();
-        formDataToSend.append('name', name);
-        formDataToSend.append('categoryId', categoryId);
-        formDataToSend.append('price', price);
-        formDataToSend.append('quantity', quantity);
-        formDataToSend.append('description', description);
-        formDataToSend.append('features', features);
-        formDataToSend.append('image', image);
-
-        const response = await instance.post(`/api/v1/product/${user._id}`, formDataToSend, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          }
+  
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', name);
+      formDataToSend.append('categoryId', categoryId);
+      formDataToSend.append('price', price);
+      formDataToSend.append('quantity', quantity);
+      formDataToSend.append('description', description);
+      formDataToSend.append('features', features);
+      formDataToSend.append('images', image); // Ensure this matches backend
+  
+      const response = await instance.post(`/api/v1/product/${user._id}`, formDataToSend, {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+  
+      if (response.data.success) {
+        setFormData({
+          name: '',
+          categoryId: '',
+          price: '',
+          quantity: '',
+          description: '',
+          features: '',
+          image: null,
         });
-
-        if (response.data.success) {
-          // Clear the form and reset form state
-          setFormData({
-            name: '',
-            categoryId: '',
-            price: '',
-            quantity: '',
-            description: '',
-            features: '',
-            image: null,
-          });
-          form.reset();
-          alert('Product added successfully');
-        } else {
-          // Handle any case where success is false if needed
-          alert('Product could not be added. Please try again.');
-        }
-
-        dispatch(getProducts(response.data.product));
-      } catch (error) {
-        console.error('Error adding product:', error);
-
-        // Show a more specific error message if available
-        const errorMessage = error.response?.data?.message || 'Error adding product';
-        toast.error(errorMessage, {
-          autoClose: 3000,
-          position: "top-center"
-        });
+        form.reset();
+        alert('Product added successfully');
+      } else {
+        alert('Product could not be added. Please try again.');
       }
+    } catch (error) {
+      console.error('Error adding product:', error);
+      const errorMessage = error.response?.data?.message || 'Error adding product';
+      toast.error(errorMessage, { autoClose: 3000, position: "top-center" });
     }
   };
+  
 
   return (
     <div className='p-container'>
