@@ -144,7 +144,7 @@ function Cart() {
                   <Link className='item-link' to={`/product/${item?.productId?._id}`}>
                     <img 
                       src={item?.productId?.images?.[0] ? 
-                      `https://unified-cart-client.vercel.app/uploads/${item.productId.images[0]}` 
+                      `https://res.cloudinary.com/dbyfurx53/image/upload/${item.productId.images[0]}` 
                       : '/placeholder.jpg'} 
                       alt={item?.productId?.name || 'Product Image'} 
                       className="card-img-top" 
