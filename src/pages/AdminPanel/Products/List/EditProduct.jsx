@@ -39,7 +39,7 @@ function EditProduct({ productId, onClose }) {
           description: fetchProduct.description,
           features: fetchProduct.features,
           image: null,
-          imagePreview: fetchProduct.images ? `http://localhost:5000/uploads/${fetchProduct.images}` : ''
+          imagePreview: fetchProduct.images ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(fetchProduct.images[0])}` : ''
         });
       }
     }
@@ -107,7 +107,7 @@ function EditProduct({ productId, onClose }) {
               <>
                 <div className="thumb">
                   <img
-                    src={formData.imagePreview}
+                    src={formData.imagePreview || 'https://via.placeholder.com/150'} // Fallback image
                     alt={selectedProduct.name}
                     onClick={() => document.getElementById('imageInput').click()}
                     style={{ cursor: 'pointer' }}

@@ -17,6 +17,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 
+// Function to extract the public ID from a Cloudinary image URL
+const getImagePublicId = (imageUrl) => {
+  const urlParts = imageUrl.split('/');
+  const fileNameWithExtension = urlParts[urlParts.length - 1];
+  const [publicId] = fileNameWithExtension.split('.');
+  return publicId;
+};
+
 function ProductList() {
   const dispatch = useDispatch();
   const [pageNumber, setPageNumber] = useState(0);
@@ -128,18 +136,22 @@ function ProductList() {
                       <td className='product-price'>{product.price}</td>
                       <td className='product-stock'>{product.quantity}</td>
                       <td className='product-image'>
-                        <img className='p-imag' src={`https://unified-cart-client.vercel.app/uploads/${product.images}`} alt={product.name} />
+                        <img
+                          className='p-imag'
+                          src={
+                            product.images[0]
+                              ? product.images[0].startsWith('http')
+                                ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
+                                : `https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`
+                              : 'https://via.placeholder.com/150' // Fallback image
+                          }
+                          alt={product.name}
+                        />
                       </td>
                       <td className='product-date'>{new Date(product.createdAt).toLocaleDateString()}</td>
                       <td className='product-actions'>
-                       
-                          <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
-                                     
-                      </td>
-                      <td className='product-actions'>
-                    
-                          <MdDelete onClick={() => handleDeleteClick(product._id)} className='action-delete' />
-                      
+                        <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
+                        <MdDelete onClick={() => handleDeleteClick(product._id)} className='action-delete' />
                       </td>
                     </tr>
                   ))}
