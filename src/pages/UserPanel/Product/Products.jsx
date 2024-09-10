@@ -21,7 +21,7 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 10; // Number of products per page
-
+  console.log(categoryList,'redux');
   useEffect(() => {
     dispatch(getProducts(keyword));
   }, [dispatch, keyword]);
