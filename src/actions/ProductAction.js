@@ -77,7 +77,7 @@ export const updateProduct = (id, formData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
-    const response = await instance.put(`/api/v1/product/${id}`, formData, {
+    const response = await instance.post(`/api/v1/product/${id}`, formData, {
       withCredentials: true,
       headers: {
         'Content-Type': 'multipart/form-data',
