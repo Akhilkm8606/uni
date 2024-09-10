@@ -85,7 +85,9 @@ function EditProduct({ productId, onClose }) {
         }
 
         // Dispatch the updateProduct action
-        await dispatch(updateProduct(productId, formDataToSend));
+      dispatch(updateProduct(productId, formDataToSend));
+        console.log(productId, formDataToSend);
+        
 
         toast.success('Product updated successfully');
         onClose();
