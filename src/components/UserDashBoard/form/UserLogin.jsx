@@ -9,7 +9,6 @@ import '../form/style.css';
 import { GiJewelCrown, GiLaurelCrown } from "react-icons/gi";
 import Cookies from 'js-cookie'; 
 import instance from '../../../Instance/axios';
-
 function UserLogin() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -68,19 +67,6 @@ function UserLogin() {
         }
     };
 
-    useEffect(() => {
-        // Check for token on component mount
-        const token = localStorage.getItem('token');
-        const userString = localStorage.getItem('user');
-        const user = userString ? JSON.parse(userString) : null;
-        if (token && user) {
-            // Dispatch userAuthentic action with token
-            dispatch(userAuthentic({ user, token }));
-            console.log('Redirecting based on role:', user.role);
-            handleRedirect(user.role);
-        }
-    }, [dispatch]);
-
     const handleRedirect = (role) => {
         switch (role) {
             case "admin":
@@ -97,6 +83,7 @@ function UserLogin() {
                 break;
         }
     };
+
 
     return (
         <div className='login-container'>
