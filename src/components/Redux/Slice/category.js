@@ -8,10 +8,9 @@ const categorySlice = createSlice({
   name: 'category',
   initialState,
   reducers: {
-    
-    getCategory:(state, action) => {
+    getCategory: (state, action) => {
       state.category = action.payload;
-      },
+    },
       addCategory: (state, action) => {
         state.category.push(action.payload); // Assuming the payload is the new category object
       },

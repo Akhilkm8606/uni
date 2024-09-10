@@ -23,6 +23,7 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 10; // Number of products per page
+  console.log("Categories from Redux state:", categoryList);
 
   useEffect(() => {
     dispatch(getProducts(keyword));
@@ -32,15 +33,15 @@ function Products() {
     const fetchData = async () => {
       try {
         const response = await instance.get('/api/v1/categories', { withCredentials: true });
-        console.log(response);
-        
         dispatch(getCategory(response.data.categorys));
       } catch (error) {
-        console.log(error);
+        console.error('Error fetching categories:', error);
       }
     };
     fetchData();
   }, [dispatch]);
+  
+  
 
   useEffect(() => {
     // Find min and max prices
@@ -114,24 +115,25 @@ function Products() {
           </Row>
 
           <div className='filters'>
-            <div className='categoryList'>
-              {categoryList ? (
-                categoryList.map((item) => (
-                  <div className='category' key={item._id}>
-                    <p className='cateitems'>
-                      <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(item._id)}
-                        onChange={() => handleCategoryClick(item._id)}
-                      />
-                      <span>{item.name}</span>
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p>Loading categories...</p>
-              )}
-            </div>
+          <div className='categoryList'>
+  {categoryList.length > 0 ? (
+    categoryList.map((item) => (
+      <div className='category' key={item._id}>
+        <p className='cateitems'>
+          <input
+            type="checkbox"
+            checked={selectedCategories.includes(item._id)}
+            onChange={() => handleCategoryClick(item._id)}
+          />
+          <span>{item.name}</span>
+        </p>
+      </div>
+    ))
+  ) : (
+    <p>Loading categories...</p>
+  )}
+</div>
+
             <div className='price-filter'>
               {priceRanges.map((range, index) => (
                 <div key={index}>
