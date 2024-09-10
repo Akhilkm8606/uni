@@ -88,6 +88,7 @@ function Cart() {
       total += calculateTotalPrice(item);
     });
     return total;
+
   };
 
   const handleRemoveCart = async (itemId) => {
@@ -185,4 +186,4 @@ function Cart() {
 export default Cart;
 
 
-export default Cart;
+
