@@ -73,33 +73,21 @@ export const clearError = () => async (dispatch) => {
 };
 
 // Action to update a product
-export const updateProduct = (id, formData) => async (dispatch) => {
+export const updateProduct = (productId, formData) => async (dispatch) => {
   try {
-    dispatch({ type: UPDATE_PRODUCT_REQUEST });
-console.log(id, formData,'id, formData');
-
-    const response = await instance.post(`/api/v1/product/${id}`, formData, {
-      withCredentials: true,
+    const response = await axios.put(`/api/v1/product/${productId}`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data', // Ensure correct headers for file uploads
       },
     });
-
-    if (response.data.success) {
-      dispatch({
-        type: UPDATE_PRODUCT_SUCCESS,
-        payload: response.data.updatedProduct,
-      });
-    } else {
-      dispatch({
-        type: UPDATE_PRODUCT_FAILURE,
-        payload: response.data.message || 'Failed to update product.',
-      });
-    }
+    dispatch({
+      type: UPDATE_PRODUCT_SUCCESS,
+      payload: response.data,
+    });
   } catch (error) {
     dispatch({
-      type: UPDATE_PRODUCT_FAILURE,
-      payload: error.response?.data?.message || error.message,
+      type: UPDATE_PRODUCT_FAIL,
+      payload: error.response.data.message || error.message,
     });
   }
 };
