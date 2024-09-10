@@ -113,9 +113,9 @@ function UserLogin() {
                     </p>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <input id='email' type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder='Email' />
-                    <input id='password' type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} placeholder='Password' />
-                    <button className='btn' type="submit">Log In</button>
+                <input id='email' type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder='Email' autoComplete="email" />
+<input id='password' type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder='Password' autoComplete="current-password" />
+            <button className='btn' type="submit">Log In</button>
                     <div className='bottom'>
                         <p>Don't have an account? </p>
                         <Link className='btn' to="/signup">Sign up</Link>
