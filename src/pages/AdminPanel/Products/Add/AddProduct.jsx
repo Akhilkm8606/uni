@@ -56,7 +56,7 @@ function AddProduct() {
       formDataToSend.append('features', features);
 
       // Append each image file to the FormData object
-      Array.from(images).forEach(image => formDataToSend.append('images', image));
+      Array.from(images).forEach(images => formDataToSend.append('images', images));
 
       const response = await instance.post(`/api/v1/product/${user._id}`, formDataToSend, {
         withCredentials: true,
