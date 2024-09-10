@@ -60,7 +60,7 @@ function ProductDetails() {
       if (response.status === 200) {
         setCart(response.data.cart);
         setQuantity(1); // Reset quantity after adding to cart
-        toast.success('Product added to cart successfully');
+        toast.success("Product added to cart successfullyd", { autoClose: 1000 });
         navigate('/cart');
       } else {
         toast.error('Failed to add product to cart');
