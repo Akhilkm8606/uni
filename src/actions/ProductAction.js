@@ -56,7 +56,7 @@ export const getProductDetails = (id) => async (dispatch) => {
     });
   } catch (error) {
     dispatch({
-      type: PRODUCTS_DETAILS_FAILURE,
+      type: UPDATE_PRODUCT_FAILURE,
       payload: {
         error: {
           message: error.message,
@@ -74,7 +74,10 @@ export const clearError = () => async (dispatch) => {
 
 // Action to update a product
 export const updateProduct = (productId, formData) => async (dispatch) => {
+  console.log(formData,"action");
+  
   try {
+
     const response = await axios.put(`/api/v1/product/${productId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data', // Ensure correct headers for file uploads
@@ -86,7 +89,7 @@ export const updateProduct = (productId, formData) => async (dispatch) => {
     });
   } catch (error) {
     dispatch({
-      type: UPDATE_PRODUCT_FAIL,
+      type: UPDATE_PRODUCT_FAILURE,
       payload: error.response.data.message || error.message,
     });
   }
