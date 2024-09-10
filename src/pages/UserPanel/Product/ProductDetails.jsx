@@ -38,7 +38,7 @@ function ProductDetails() {
 
   const handleAddToCart = async () => {
     const token = localStorage.getItem('token');
-    console.log(token,'token');
+    console.log(token, 'token');
     
     if (!token) {
       toast.error('No authentication token found');
@@ -54,10 +54,15 @@ function ProductDetails() {
           withCredentials: true 
         }
       );
-      setCart(response.data.cart);
-      setQuantity(1); // Reset quantity after adding to cart
-      toast.success('Product added to cart successfully');
-      navigate('/cart');
+      
+      if (response.status === 200) {
+        setCart(response.data.cart);
+        setQuantity(1); // Reset quantity after adding to cart
+        toast.success('Product added to cart successfully');
+        navigate('/cart');
+      } else {
+        toast.error('Failed to add product to cart');
+      }
     } catch (error) {
       console.error('Error adding product to cart:', error);
       toast.error('Failed to add product to cart');
