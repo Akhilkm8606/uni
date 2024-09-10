@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Row } from 'react-bootstrap';
 import axios from 'axios';
 import './AddProduct.css'; // Import CSS file for styling
-import { useSelector, useDispatch } from 'react-redux';
-import { getProducts } from '../../../../actions/ProductAction';
+import { useSelector } from 'react-redux';
 import instance from '../../../../Instance/axios';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -13,8 +12,6 @@ function AddProduct() {
   // Provide a default fallback if category is undefined
   const category = useSelector(state => state.category?.category || []);
 
-  const dispatch = useDispatch();
-
   const [formData, setFormData] = useState({
     name: "",
     categoryId: "",
@@ -22,26 +19,33 @@ function AddProduct() {
     quantity: "",
     description: "",
     features: "",
-    image: null
+    images: [] // Update to handle multiple images
   });
 
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
-    const newValue = type === 'file' ? e.target.files[0] : value;
-    setFormData({
-      ...formData,
-      [name]: newValue
-    });
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      setFormData({
+        ...formData,
+        [name]: files // Update to handle multiple files
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const { name, categoryId, price, quantity, description, features, image } = formData;
-    if (!name || !categoryId || !price || !quantity || !description || !features || !image) {
-      alert('Please fill in all the required fields, including an image.');
+
+    const { name, categoryId, price, quantity, description, features, images } = formData;
+    if (!name || !categoryId || !price || !quantity || !description || !features || images.length === 0) {
+      alert('Please fill in all the required fields, including at least one image.');
       return;
     }
-  
+
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('name', name);
@@ -50,14 +54,17 @@ function AddProduct() {
       formDataToSend.append('quantity', quantity);
       formDataToSend.append('description', description);
       formDataToSend.append('features', features);
-      formDataToSend.append('images', image); // Ensure the field name matches backend
-  
+
+      // Append each image file to the FormData object
+      Array.from(images).forEach(image => formDataToSend.append('images', image));
+
       const response = await instance.post(`/api/v1/product/${user._id}`, formDataToSend, {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" }
       });
-  
+
       if (response.data.success) {
+        // Handle success
         setFormData({
           name: '',
           categoryId: '',
@@ -65,12 +72,13 @@ function AddProduct() {
           quantity: '',
           description: '',
           features: '',
-          image: null,
+          images: [] // Reset images
         });
-        form.reset();
-        alert('Product added successfully');
+        e.target.reset(); // Clear the form
+        toast.success('Product added successfully', { autoClose: 3000, position: "top-center" });
       } else {
-        alert('Product could not be added. Please try again.');
+        // Handle specific errors
+        toast.error('Product could not be added. Please try again.', { autoClose: 3000, position: "top-center" });
       }
     } catch (error) {
       console.error('Error adding product:', error);
@@ -78,8 +86,6 @@ function AddProduct() {
       toast.error(errorMessage, { autoClose: 3000, position: "top-center" });
     }
   };
-  
-  
 
   return (
     <div className='p-container'>
@@ -122,19 +128,20 @@ function AddProduct() {
                   id="file-input"
                   className="file-input"
                   type="file"
-                  name="image"
+                  name="images" // Ensure this matches the name used in multer configuration
+                  multiple // Allow multiple file uploads
                   onChange={handleChange}
                   required
                 />
                 <div className="file-upload-box">
-                  <h5>Drag & drop product image here</h5>
+                  <h5>Drag & drop product images here</h5>
                   <div className="divider">
                     <span>OR</span>
                   </div>
                   <label htmlFor="file-input" className="select-files-button">
                     Select files
                   </label>
-                  <small>Upload 280*280 image</small>
+                  <small>Upload images (multiple allowed)</small>
                 </div>
               </div>
             </div>
