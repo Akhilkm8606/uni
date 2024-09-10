@@ -103,7 +103,7 @@ function Cart() {
         return;
       }
 
-      const response = await instance.delete(`/api/v1/user/cart/${itemId}`, {
+      const response = await instance.delete(`/api/v1/cart/${itemId}`, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true
       });
