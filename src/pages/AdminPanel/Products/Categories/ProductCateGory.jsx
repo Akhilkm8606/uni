@@ -13,6 +13,8 @@ function ProductCategory() {
   const categories = useSelector(state => state.cate.category || []);
   const dispatch = useDispatch();
 
+  console.log(categories,'r');
+  
   const [totalCateCount, setTotalCateCount] = useState(0);
   const [newCategoryName, setNewCategoryName] = useState('');
 

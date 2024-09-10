@@ -32,6 +32,8 @@ function Products() {
     const fetchData = async () => {
       try {
         const response = await instance.get('/api/v1/categories', { withCredentials: true });
+        console.log(response);
+        
         dispatch(getCategory(response.data.categorys));
       } catch (error) {
         console.log(error);

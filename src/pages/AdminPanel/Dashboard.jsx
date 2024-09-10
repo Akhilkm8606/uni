@@ -29,27 +29,28 @@ function Dashboard() {
       const res = await instance.get('/api/v1/viewDashboard', {
         withCredentials: true
       });
-
+  
       const dashboardData = res.data.dashboard;
       console.log(dashboardData);
-
+  
       const orders = dashboardData.orders;
       const products = dashboardData.products;
-      const monthlyData = dashboardData.monthlyData; // Adjust based on your API response
-
+      const monthlyData = dashboardData.monthlyData;
+  
       setOrderCount(orders.length);
       setProductCount(products.length);
-
+  
       const chartLabels = monthlyData.map(item => item.month);
       const chartValues = monthlyData.map(item => item.value);
-
+  
       setSalesData({ labels: chartLabels, values: chartValues });
-
+  
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
       toast.error('Failed to fetch dashboard data');
     }
   };
+  
 
   // Call fetchDashboard when component mounts
   useEffect(() => {
