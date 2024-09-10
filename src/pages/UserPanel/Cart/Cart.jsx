@@ -27,13 +27,13 @@ function Cart() {
           return;
         }
 
-      
-          const response = await instance.get(`/api/v1/carts/${user._id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-            withCredentials: true
-          });
-          console.log(response.data.userCart);
-          setCart(response.data.userCart);
+
+        const response = await instance.get(`/api/v1/carts/${user._id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true
+        });
+        console.log(response.data.userCart);
+        setCart(response.data.userCart);
 
       } catch (error) {
         console.error('Error fetching cart data:', error);
@@ -64,11 +64,11 @@ function Cart() {
         return;
       }
 
-      const response = await instance.put(`/api/v1/user/cart/edit/${itemId}`, 
-        { quantity }, 
+      const response = await instance.put(`/api/v1/user/cart/edit/${itemId}`,
+        { quantity },
         { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
       );
-      
+
 
       if (response.status === 200) {
         setCart(prevCart => {
@@ -142,15 +142,16 @@ function Cart() {
               <div className='cart-item-div' key={index}>
                 <div className='item-image'>
                   <Link className='item-link' to={`/product/${item?.productId?._id}`}>
-                  <img 
-  className='p-img'
-  src={item?.productId?.images?.[0] 
-    ? `https://res.cloudinary.com/dbyfurx53/image/upload/${item?.productId?.images?.[0]}` 
-    : 'https://via.placeholder.com/150'} // Fallback image
-  alt={item?.productId?.name || 'Product Image'}
-  key={index}
-/>
+                    <img
+                      className='p-img'
+                      src={item?.productId?.images?.[0]
+                        ? `https://res.cloudinary.com/dbyfurx53/image/upload/${item?.productId?.images?.[0]}`
+                        : 'https://via.placeholder.com/150'} // Fallback image
+                      alt={item?.productId?.name || 'Product Image'}
+                      key={index}
+                    />
 
+                  </Link>
                 </div>
                 <div className='cart-text'>
                   {item?.productId?.name && (
@@ -183,7 +184,7 @@ function Cart() {
           </div>
         </div>
       )}
-        <ToastContainer />
+      <ToastContainer />
     </div>
   );
 }
