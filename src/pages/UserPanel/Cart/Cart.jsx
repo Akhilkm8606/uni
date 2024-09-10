@@ -15,7 +15,6 @@ function Cart() {
   const user = useSelector(state => state.auth.user);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
-  // Fetch cart when component mounts
   useEffect(() => {
     const fetchCartData = async () => {
       try {
@@ -27,14 +26,12 @@ function Cart() {
           return;
         }
 
-
         const response = await instance.get(`/api/v1/carts/${user._id}`, {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true
         });
         console.log(response.data.userCart);
         setCart(response.data.userCart);
-
       } catch (error) {
         console.error('Error fetching cart data:', error);
         toast.error('Failed to fetch cart. Please try again later.');
@@ -44,17 +41,14 @@ function Cart() {
     fetchCartData();
   }, [dispatch, isAuthenticated, user, navigate]);
 
-  // Update cart in Redux store
   useEffect(() => {
     dispatch(getCart(cart));
   }, [dispatch, cart]);
 
-  // Calculate total price for each item
   const calculateTotalPrice = (item) => {
     return item.quantity * item.productId.price;
   };
 
-  // Update item quantity in the cart
   const updateQuantity = useCallback(async (itemId, quantity) => {
     try {
       const token = localStorage.getItem('token');
@@ -68,7 +62,6 @@ function Cart() {
         { quantity },
         { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
       );
-
 
       if (response.status === 200) {
         setCart(prevCart => {
@@ -89,7 +82,6 @@ function Cart() {
     }
   }, [setCart]);
 
-  // Calculate total price for the cart
   const calculateTotalCartPrice = () => {
     let total = 0;
     Array.isArray(cart) && cart.forEach(item => {
@@ -98,7 +90,6 @@ function Cart() {
     return total;
   };
 
-  // Handle removing item from cart
   const handleRemoveCart = async (itemId) => {
     try {
       const token = localStorage.getItem('token');
@@ -134,9 +125,12 @@ function Cart() {
         </div>
       ) : (
         <div className='cart-container'>
-          <div className="cart-header">
-            <h2>Your Shopping Cart</h2>
-          </div>
+          {/* Conditionally render the cart header only if cart has items */}
+          {cart.length > 0 && (
+            <div className="cart-header">
+              <h2>Your Shopping Cart</h2>
+            </div>
+          )}
           <div className='cartdiv'>
             {Array.isArray(cart) && cart.map((item, index) => (
               <div className='cart-item-div' key={index}>
@@ -150,7 +144,6 @@ function Cart() {
                       alt={item?.productId?.name || 'Product Image'}
                       key={index}
                     />
-
                   </Link>
                 </div>
                 <div className='cart-text'>
@@ -188,5 +181,8 @@ function Cart() {
     </div>
   );
 }
+
+export default Cart;
+
 
 export default Cart;
