@@ -50,7 +50,7 @@ function AddProduct() {
       formDataToSend.append('quantity', quantity);
       formDataToSend.append('description', description);
       formDataToSend.append('features', features);
-      formDataToSend.append('images', image); // Ensure this matches backend
+      formDataToSend.append('images', image); // Ensure the field name matches backend
   
       const response = await instance.post(`/api/v1/product/${user._id}`, formDataToSend, {
         withCredentials: true,
@@ -78,6 +78,7 @@ function AddProduct() {
       toast.error(errorMessage, { autoClose: 3000, position: "top-center" });
     }
   };
+  
   
 
   return (
