@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Table } from 'react-bootstrap';
 import { MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
-import { getProducts, deleteProduct } from '../../../../actions/ProductAction'; 
 import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from '../../../../actions/ProductAction';
 import './ProductList.css';
 import ReactPaginate from 'react-paginate';
 import { ToastContainer, toast } from 'react-toastify';
@@ -65,14 +65,13 @@ function ProductList() {
   const handleDeleteConfirm = async () => {
     setLoading(true);
     try {
-      const response = await instance.delete(`/api/v1/product/${productIdToDelete}`, { withCredentials: true });
-      console.log('Server response:', response);
+      await instance.delete(`/api/v1/product/${productIdToDelete}`, { withCredentials: true });
       
       dispatch({
         type: DELETE_PRODUCT,
         payload: productIdToDelete
       });
-      
+
       toast.success('Product deleted successfully');
       setOpenDeleteDialog(false);
     } catch (error) {
@@ -120,7 +119,7 @@ function ProductList() {
                 <thead>
                   <tr>
                     <th className='product-name'>Product Name</th>
-                    <th className='product-name'>Category</th>
+                    <th className='product-category'>Category</th>
                     <th className='product-price'>Price</th>
                     <th className='product-stock'>Stock</th>
                     <th className='product-image'>Image</th>
@@ -129,8 +128,8 @@ function ProductList() {
                   </tr>
                 </thead>
                 <tbody>
-                  {displayedProducts.map((product, index) => (
-                    <tr className='pdata-row' key={index}>
+                  {displayedProducts.map((product) => (
+                    <tr className='pdata-row' key={product._id}>
                       <td className='product-name'>{product.name}</td>
                       <td className='product-category'>{product.category}</td>
                       <td className='product-price'>{product.price}</td>
@@ -140,9 +139,7 @@ function ProductList() {
                           className='p-imag'
                           src={
                             product.images[0]
-                              ? product.images[0].startsWith('http')
-                                ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
-                                : `https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`
+                              ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
                               : 'https://via.placeholder.com/150' // Fallback image
                           }
                           alt={product.name}
