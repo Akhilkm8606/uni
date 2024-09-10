@@ -25,15 +25,19 @@ function EditProduct({ productId, onClose }) {
 
   useEffect(() => {
     if (products.length && categories.length) {
-      const categoryNames = categories.map((category) => category.name);
-      setCategoryOptions(categoryNames);
+      const categoryOptions = categories.map((category) => ({
+        id: category._id,
+        name: category.name
+      }));
+      setCategoryOptions(categoryOptions);
 
       const fetchProduct = products.find((prd) => prd._id === productId);
       if (fetchProduct) {
+        const categoryObj = categoryOptions.find(cat => cat.name === fetchProduct.category);
         setSelectedProduct(fetchProduct);
         setFormData({
           name: fetchProduct.name,
-          categoryId: fetchProduct.category,
+          categoryId: categoryObj ? categoryObj.id : '', // Store actual category ID
           price: fetchProduct.price,
           quantity: fetchProduct.quantity,
           description: fetchProduct.description,
@@ -61,44 +65,32 @@ function EditProduct({ productId, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.currentTarget;
+    setLoading(true);
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('categoryId', formData.categoryId);
+      formDataToSend.append('price', formData.price);
+      formDataToSend.append('quantity', formData.quantity);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('features', formData.features);
 
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      setLoading(true);
-      try {
-        const formDataToSend = new FormData();
-        formDataToSend.append('name', formData.name);
-        formDataToSend.append('categoryId', formData.categoryId);
-        formDataToSend.append('price', formData.price);
-        formDataToSend.append('quantity', formData.quantity);
-        formDataToSend.append('description', formData.description);
-        formDataToSend.append('features', formData.features);
-
-        // Append the image only if it's selected
-        if (formData.images) {
-          formDataToSend.append('images', formData.images);
-        }
-
-        // Log the formData contents to ensure it's populated correctly
-        for (let [key, value] of formDataToSend.entries()) {
-          console.log(`${key}:`, value);
-        }
-
-        // Dispatch the updateProduct action
-        dispatch(updateProduct(productId, formDataToSend));
-        console.log(productId, formDataToSend,'productId, formDataToSend');
-        
-
-        toast.success('Product updated successfully');
-        onClose();
-      } catch (error) {
-        console.error('Error updating product:', error);
-        toast.error('Failed to update product. Please try again.');
-      } finally {
-        setLoading(false);
+      if (formData.images) {
+        formDataToSend.append('images', formData.images);
       }
+
+      for (let [key, value] of formDataToSend.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      dispatch(updateProduct(productId, formDataToSend));
+
+      toast.success('Product updated successfully');
+      onClose();
+    } catch (error) {
+      toast.error('Failed to update product. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,9 +147,9 @@ function EditProduct({ productId, onClose }) {
                         required
                       >
                         <option value="">Select a category</option>
-                        {categoryOptions.map((category, index) => (
-                          <option key={index} value={category}>
-                            {category}
+                        {categoryOptions.map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
                           </option>
                         ))}
                       </select>
