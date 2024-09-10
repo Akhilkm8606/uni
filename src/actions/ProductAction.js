@@ -74,13 +74,13 @@ export const clearError = () => async (dispatch) => {
 
 
 export const updateProduct = (productId, formData) => async (dispatch) => {
-  console.log(formData, "action");
-  console.log(productId, "productId");
-
   try {
-    const response = await axios.put(`/api/v1/product/edit/${productId}`, formData, {
+    dispatch({ type: UPDATE_PRODUCT_REQUEST });
+
+    // Make the API request
+    const response = await axios.post(`/api/v1/product/edit/${productId}`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data', // Ensure correct headers for file uploads
+        'Content-Type': 'multipart/form-data',
       },
     });
 
@@ -95,3 +95,5 @@ export const updateProduct = (productId, formData) => async (dispatch) => {
     });
   }
 };
+
+// Action to clear errors
