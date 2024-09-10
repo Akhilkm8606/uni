@@ -74,7 +74,8 @@ export const clearError = () => async (dispatch) => {
 
 
 export const updateProduct = (productId, formData) => async (dispatch) => {
-  console.log(formData,productId, "action");
+  console.log(formData, "action");
+  console.log(productId, "productId");
 
   try {
     const response = await axios.put(`/api/v1/product/edit/${productId}`, formData, {
