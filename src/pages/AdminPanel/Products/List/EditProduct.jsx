@@ -8,7 +8,7 @@ import { updateProduct } from '../../../../actions/ProductAction'; // Adjust the
 function EditProduct({ productId, onClose }) {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.data.products);
-  const categories = useSelector((state) => state.cate.category);
+  const categories = useSelector((state) => state.category.category);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ function EditProduct({ productId, onClose }) {
     quantity: '',
     description: '',
     features: '',
-    image: null,
+    images: null,
     imagePreview: ''
   });
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ function EditProduct({ productId, onClose }) {
           quantity: fetchProduct.quantity,
           description: fetchProduct.description,
           features: fetchProduct.features,
-          image: null,
+          images: null,
           imagePreview: fetchProduct.images ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(fetchProduct.images[0])}` : ''
         });
       }
@@ -75,8 +75,8 @@ function EditProduct({ productId, onClose }) {
         formDataToSend.append('quantity', formData.quantity);
         formDataToSend.append('description', formData.description);
         formDataToSend.append('features', formData.features);
-        if (formData.image) {
-          formDataToSend.append('image', formData.image);
+        if (formData.images) {
+          formDataToSend.append('images', formData.images);
         }
 
         // Dispatch the updateProduct action
