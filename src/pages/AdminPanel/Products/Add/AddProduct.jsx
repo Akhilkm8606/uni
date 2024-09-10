@@ -6,11 +6,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getProducts } from '../../../../actions/ProductAction';
 import instance from '../../../../Instance/axios';
 import { ToastContainer, toast } from 'react-toastify';
+
 function AddProduct() {
   const user = useSelector(state => state.auth.user);
-  const category = useSelector(state => state.cate.category);
-
-  const dispatch = useDispatch()
+  
+  // Provide a default fallback if category is undefined
+  const category = useSelector(state => state.cate.category || []);
+  
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -31,7 +34,6 @@ function AddProduct() {
     });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -45,7 +47,6 @@ function AddProduct() {
       return;
     }
     
-  
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
@@ -59,7 +60,6 @@ function AddProduct() {
         formDataToSend.append('features', features);
         formDataToSend.append('image', image);
         
-  
         const response = await instance.post(`/api/v1/product/${user._id}`, formDataToSend, {
           withCredentials: true,
           headers: {
@@ -99,10 +99,6 @@ function AddProduct() {
       }
     }
   };
-  
-  
-  
-  
 
   return (
     <div className='p-container' >
@@ -128,37 +124,41 @@ function AddProduct() {
                 required
               >
                 <option value="">Select a category</option>
-                {category.map(cat => (
-                  <option key={cat._id} value={cat._id}>{cat.name}</option>
-                ))}
+                {/* Use the default empty array fallback */}
+                {category.length > 0 ? (
+                  category.map(cat => (
+                    <option key={cat._id} value={cat._id}>{cat.name}</option>
+                  ))
+                ) : (
+                  <option disabled>No categories available</option>
+                )}
               </select>
             </div>
             <div className="form-row-file">
-            <div className="file-upload-container">
-  <input
-    id="file-input"
-    className="file-input"
-    type="file"
-    name="image"
-    onChange={handleChange}
-    required
-  />
-  <div className="file-upload-box">
-    <h5>Drag &amp; drop product image here</h5>
-    <div className="divider">
-      <span>OR</span>
-    </div>
-    <label htmlFor="file-input" className="select-files-button">
-      Select files
-    </label>
-    <small>Upload 280*280 image</small>
-  </div>
-</div>
-
-</div>
+              <div className="file-upload-container">
+                <input
+                  id="file-input"
+                  className="file-input"
+                  type="file"
+                  name="image"
+                  onChange={handleChange}
+                  required
+                />
+                <div className="file-upload-box">
+                  <h5>Drag & drop product image here</h5>
+                  <div className="divider">
+                    <span>OR</span>
+                  </div>
+                  <label htmlFor="file-input" className="select-files-button">
+                    Select files
+                  </label>
+                  <small>Upload 280*280 image</small>
+                </div>
+              </div>
+            </div>
 
             <div className="form-d-row">
-            <input
+              <input
                 className="form-input"
                 placeholder='Description'
                 type="text"
@@ -167,11 +167,8 @@ function AddProduct() {
                 onChange={handleChange}
                 required
               />
-            
-
-
-              </div>
-              <div className='form-f-row'>
+            </div>
+            <div className='form-f-row'>
               <input
                 className="form-input"
                 placeholder='Features'
@@ -183,7 +180,6 @@ function AddProduct() {
               />
             </div>
             <div className="form-row">
-          
               <input
                 className="form-input"
                 placeholder='Stock'
@@ -193,7 +189,7 @@ function AddProduct() {
                 onChange={handleChange}
                 required
               />
-               <input
+              <input
                 className="form-input"
                 placeholder='Price'
                 type="number"
@@ -202,9 +198,7 @@ function AddProduct() {
                 onChange={handleChange}
                 required
               />
-            
             </div>
-          
           </div>
           <div className='save-p-btn'>
             <button className="submit-button" type="submit">Save Product</button>

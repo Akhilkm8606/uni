@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Row, Table } from 'react-bootstrap';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdDelete } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCategory, removeCategory } from '../../../../components/Redux/Slice/category';
 import '../Categories/categories.css'; // Import your custom CSS file
@@ -9,9 +9,9 @@ import instance from '../../../../Instance/axios';
 import CloseBtn from '../../../../components/Buttons/CloseBtn';
 
 function ProductCategory() {
-  const categories = useSelector(state => state.cate.category);
+  // Fallback to empty array to avoid undefined errors
+  const categories = useSelector(state => state.cate.category || []);
   const dispatch = useDispatch();
-  
 
   const [totalCateCount, setTotalCateCount] = useState(0);
   const [newCategoryName, setNewCategoryName] = useState('');
@@ -25,13 +25,13 @@ function ProductCategory() {
         withCredentials: true
       });
       dispatch(addCategory(response.data.categorys));
-      setNewCategoryName("")
+      setNewCategoryName(""); // Reset the input field
     } catch (error) {
       console.error('Error adding category:', error);
     }
   };
+
   const handleDeleteCategory = async (categoryId) => {
-   
     try {
       await instance.delete(`/api/v1/category/${categoryId}`, {
         withCredentials: true
@@ -43,28 +43,27 @@ function ProductCategory() {
   };
 
   useEffect(() => {
- if (categories !== null) { // Check if categories is not null
-      setTotalCateCount(categories.length);
-    }
-
+    // Now it will work even if categories is undefined initially
+    setTotalCateCount(categories.length);
   }, [categories]);
 
   return (
     <div className='categoryListing'>
-      <CloseBtn/>
+      <CloseBtn />
       <Row>
         <h2>PRODUCTS CATEGORY</h2>
         <p>Total Product Category Count: {totalCateCount}</p>
-   
-    
+
         <div className='products custom-table-wrapper'>
           <Table striped bordered hover className='custom-table'>
             <tbody>
-              {categories && categories.map(category => (
-               <tr className='tabel-row' key={category._id}>
-               <td className='c-td'>{category.name}</td>
-               <td className='c-td'><MdDelete onClick={() => handleDeleteCategory(category._id)}/></td>
-             </tr>
+              {categories.map(category => (
+                <tr className='tabel-row' key={category._id}>
+                  <td className='c-td'>{category.name}</td>
+                  <td className='c-td'>
+                    <MdDelete onClick={() => handleDeleteCategory(category._id)} />
+                  </td>
+                </tr>
               ))}
             </tbody>
           </Table>
