@@ -11,6 +11,7 @@ import Loader from '../../../components/UserDashBoard/Layout/Loader/Loader';
 
 function Cart() {
   const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(true); // Added loading state
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(state => state.auth.user);
@@ -33,9 +34,11 @@ function Cart() {
         });
         console.log(response.data.userCart);
         setCart(response.data.userCart);
+        setLoading(false); // Set loading to false when data is fetched
       } catch (error) {
         console.error('Error fetching cart data:', error);
         toast.error('Failed to fetch cart. Please try again later.');
+        setLoading(false); // Ensure loading is set to false even on error
       }
     };
 
@@ -89,7 +92,6 @@ function Cart() {
       total += calculateTotalPrice(item);
     });
     return total;
-
   };
 
   const handleRemoveCart = async (itemId) => {
@@ -116,18 +118,26 @@ function Cart() {
     }
   };
 
+  // Function to get the public ID from the image URL
+  const getImagePublicId = (imageUrl) => {
+    const urlParts = imageUrl.split('/');
+    const fileNameWithExtension = urlParts[urlParts.length - 1];
+    const [publicId] = fileNameWithExtension.split('.'); // Split by dot and take the first part
+    return publicId;
+  };
+
   return (
     <div className="cart-container">
-    {loading ? (
-      <Loader />  // Render Loader while loading is true
-    ) : cart == null || cart.length === 0 ? (
-      <div className="empty-cart">
-        <h1>Your Shopping Cart is Empty</h1>
-        <button className="btn-shop-now" onClick={() => navigate('/')}>
-          Start Shopping Now
-        </button>
-      </div>
-    ) : (
+      {loading ? (
+        <Loader />  // Render Loader while loading is true
+      ) : cart == null || cart.length === 0 ? (
+        <div className="empty-cart">
+          <h1>Your Shopping Cart is Empty</h1>
+          <button className="btn-shop-now" onClick={() => navigate('/')}>
+            Start Shopping Now
+          </button>
+        </div>
+      ) : (
         <div className='cart-container'>
           {/* Conditionally render the cart header only if cart has items */}
           {cart.length > 0 && (
@@ -140,19 +150,18 @@ function Cart() {
               <div className='cart-item-div' key={index}>
                 <div className='item-image'>
                   <Link className='item-link' to={`/product/${item?.productId?._id}`}>
-                  <img
-  className='p-img'
-  src={
-    item?.productId?.images?.[0]
-      ? item?.productId?.images?.[0].startsWith('http')
-        ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(item?.productId?.images?.[0])}`
-        : `https://res.cloudinary.com/dbyfurx53/image/upload/${item?.productId?.images?.[0]}`
-      : 'https://via.placeholder.com/150' // Fallback image
-  }
-  alt={item?.productId?.name || 'Product Image'}
-  key={index}
-/>
-
+                    <img
+                      className='p-img'
+                      src={
+                        item?.productId?.images?.[0]
+                          ? item?.productId?.images?.[0].startsWith('http')
+                            ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(item?.productId?.images?.[0])}`
+                            : `https://res.cloudinary.com/dbyfurx53/image/upload/${item?.productId?.images?.[0]}`
+                          : 'https://via.placeholder.com/150' // Fallback image
+                      }
+                      alt={item?.productId?.name || 'Product Image'}
+                      key={index}
+                    />
                   </Link>
                 </div>
                 <div className='cart-text'>
@@ -192,6 +201,3 @@ function Cart() {
 }
 
 export default Cart;
-
-
-
