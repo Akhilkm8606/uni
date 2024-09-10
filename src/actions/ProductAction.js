@@ -76,6 +76,7 @@ export const clearError = () => async (dispatch) => {
 export const updateProduct = (id, formData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
+console.log(id, formData,'id, formData');
 
     const response = await instance.post(`/api/v1/product/${id}`, formData, {
       withCredentials: true,
