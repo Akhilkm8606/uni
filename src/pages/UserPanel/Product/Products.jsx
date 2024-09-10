@@ -14,7 +14,7 @@ function Products() {
   const { keyword } = useParams();
   const dispatch = useDispatch();
   const { loading, products } = useSelector((state) => state.data);
-  const categoryList = useSelector((state) => state.category.category || []); // Ensure default value is an empty array
+  const categoryList = useSelector((state) => state.category?.category || []); // Ensure default value is an empty array
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
   const [priceRanges, setPriceRanges] = useState([]);

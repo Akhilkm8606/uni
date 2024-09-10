@@ -10,7 +10,7 @@ import CloseBtn from '../../../../components/Buttons/CloseBtn';
 
 function ProductCategory() {
   // Fallback to empty array to avoid undefined errors
-  const categoryList = useSelector((state) => state.category.category || []); // Ensure default value is an empty array
+  const categoryList = useSelector((state) => state.category?.category || []); // Ensure default value is an empty array
   const dispatch = useDispatch();
 
   console.log(categories,'r');
