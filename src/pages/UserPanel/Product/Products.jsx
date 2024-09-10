@@ -32,7 +32,7 @@ function Products() {
         const response = await instance.get('/api/v1/categories', { withCredentials: true });
         console.log(response.data,'kkk');
         
-        dispatch(getCategory(response.data.categorys || []));
+        dispatch(getCategory(response.data.categories || []));
       } catch (error) {
         console.error('Error fetching categories:', error);
         // Optionally set some error state here
