@@ -1,12 +1,28 @@
-import React from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import animationData from '../../../assets/successfully-done.json'; // Import the animation data
 import Lottie from 'react-lottie-player';
 
 function PaymentSuccess() {
     const searchParams = useSearchParams()[0];
     const referenceNum = searchParams.toString();
-    
+    const navigate = useNavigate();
+    const [countdown, setCountdown] = useState(5); // Initialize countdown to 5 seconds
+
+    // Redirect to /products after countdown reaches 0
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (countdown > 0) {
+                setCountdown(countdown - 1); // Decrease countdown every second
+            } else {
+                navigate('/products'); // Redirect to /products when countdown reaches 0
+            }
+        }, 1000);
+
+        // Clean up the timeout on component unmount
+        return () => clearTimeout(timer);
+    }, [countdown, navigate]);
+
     const style = `
         .payment-success-container {
             height: 100vh;
@@ -43,6 +59,7 @@ function PaymentSuccess() {
                 />
                 <h3>Payment completed successfully</h3>
                 <p>Reference Number: {referenceNum}</p>
+                <p>You will be redirected to the products page in {countdown} seconds...</p>
             </div>
         </div>
     );
