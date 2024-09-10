@@ -86,7 +86,7 @@ function ProductDetails() {
                     src={
                       image
                         ? image.startsWith('http')
-                          ? `${getImagePublicId(image)}`
+                          ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(image)}`
                           : `https://res.cloudinary.com/dbyfurx53/image/upload/${image}`
                         : 'https://via.placeholder.com/150' // Fallback image
                     }
