@@ -7,6 +7,7 @@ import { getCart } from '../../../components/Redux/Slice/cart';
 import { MdDelete } from 'react-icons/md';
 import instance from '../../../Instance/axios';
 import { toast, ToastContainer } from 'react-toastify';
+import Loader from '../../../components/UserDashBoard/Layout/Loader/Loader';
 
 function Cart() {
   const [cart, setCart] = useState([]);
@@ -117,14 +118,16 @@ function Cart() {
 
   return (
     <div className="cart-container">
-      {cart == null || cart.length === 0 ? (
-        <div className="empty-cart">
-          <h1>Your Shopping Cart is Empty</h1>
-          <button className="btn-shop-now" onClick={() => navigate('/')}>
-            Start Shopping Now
-          </button>
-        </div>
-      ) : (
+    {loading ? (
+      <Loader />  // Render Loader while loading is true
+    ) : cart == null || cart.length === 0 ? (
+      <div className="empty-cart">
+        <h1>Your Shopping Cart is Empty</h1>
+        <button className="btn-shop-now" onClick={() => navigate('/')}>
+          Start Shopping Now
+        </button>
+      </div>
+    ) : (
         <div className='cart-container'>
           {/* Conditionally render the cart header only if cart has items */}
           {cart.length > 0 && (
@@ -137,14 +140,19 @@ function Cart() {
               <div className='cart-item-div' key={index}>
                 <div className='item-image'>
                   <Link className='item-link' to={`/product/${item?.productId?._id}`}>
-                    <img
-                      className='p-img'
-                      src={item?.productId?.images?.[0]
-                        ? `https://res.cloudinary.com/dbyfurx53/image/upload/${item?.productId?.images?.[0]}`
-                        : 'https://via.placeholder.com/150'} // Fallback image
-                      alt={item?.productId?.name || 'Product Image'}
-                      key={index}
-                    />
+                  <img
+  className='p-img'
+  src={
+    item?.productId?.images?.[0]
+      ? item?.productId?.images?.[0].startsWith('http')
+        ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(item?.productId?.images?.[0])}`
+        : `https://res.cloudinary.com/dbyfurx53/image/upload/${item?.productId?.images?.[0]}`
+      : 'https://via.placeholder.com/150' // Fallback image
+  }
+  alt={item?.productId?.name || 'Product Image'}
+  key={index}
+/>
+
                   </Link>
                 </div>
                 <div className='cart-text'>
