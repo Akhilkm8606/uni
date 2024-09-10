@@ -27,7 +27,6 @@ function Dashboard() {
   const fetchDashboard = async () => {
     try {
       const res = await instance.get('/api/v1/viewDashboard', {
-       
         withCredentials: true
       });
 
@@ -57,7 +56,7 @@ function Dashboard() {
     fetchDashboard();
   }, []);
 
-  // Simulated data (can be removed if API data is reliable)
+  // Simulated data (for fallback if API data is not reliable)
   const simulatedSalesData = [
     { month: 'January', value: 5000 },
     { month: 'February', value: 6000 },
@@ -113,10 +112,6 @@ function Dashboard() {
   const productLabels = (productData.labels.length ? productData.labels : simulatedProductData.map(item => item.month));
   const productValues = (productData.values.length ? productData.values : simulatedProductData.map(item => item.count));
 
-  setSalesData({ labels: salesLabels, values: salesValues });
-  setOrderData({ labels: orderLabels, values: orderValues });
-  setProductData({ labels: productLabels, values: productValues });
-
   const items = [
     {
       icon: <AiOutlineShoppingCart style={{ color: "red" }} />,
@@ -160,9 +155,9 @@ function Dashboard() {
         </Row>
       </Row>
       <div>
-        <BarChart title="Sales Data" data={salesData} />
-        <BarChart title="Order Data" data={orderData} />
-        <BarChart title="Product Data" data={productData} />
+        <BarChart title="Sales Data" data={{ labels: salesLabels, values: salesValues }} />
+        <BarChart title="Order Data" data={{ labels: orderLabels, values: orderValues }} />
+        <BarChart title="Product Data" data={{ labels: productLabels, values: productValues }} />
       </div>
     </div>
   );
