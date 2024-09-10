@@ -13,8 +13,6 @@ function ProductCategory() {
   const categories = useSelector(state => state.category?.category || []);
   const dispatch = useDispatch();
 
-  console.log(categories,'r');
-  
   const [totalCateCount, setTotalCateCount] = useState(0);
   const [newCategoryName, setNewCategoryName] = useState('');
 
@@ -59,14 +57,23 @@ function ProductCategory() {
         <div className='products custom-table-wrapper'>
           <Table striped bordered hover className='custom-table'>
             <tbody>
-              {categories.map(category => (
-                <tr className='tabel-row' key={category._id}>
-                  <td className='c-td'>{category.name}</td>
-                  <td className='c-td'>
-                    <MdDelete onClick={() => handleDeleteCategory(category._id)} />
-                  </td>
+              {categories.length > 0 ? (
+                categories.map(category => (
+                  // Add a defensive check to ensure category is defined
+                  category && category._id ? (
+                    <tr className='tabel-row' key={category._id}>
+                      <td className='c-td'>{category.name || 'Unnamed'}</td>
+                      <td className='c-td'>
+                        <MdDelete onClick={() => handleDeleteCategory(category._id)} />
+                      </td>
+                    </tr>
+                  ) : null
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="2">No categories available</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </Table>
         </div>
