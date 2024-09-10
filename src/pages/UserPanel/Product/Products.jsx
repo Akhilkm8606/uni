@@ -21,7 +21,10 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 10; // Number of products per page
-  console.log(categoryList,'redux');
+  
+  console.log('Category List:', categoryList);
+  console.log('Products:', products);
+
   useEffect(() => {
     dispatch(getProducts(keyword));
   }, [dispatch, keyword]);
@@ -30,7 +33,7 @@ function Products() {
     const fetchData = async () => {
       try {
         const response = await instance.get('/api/v1/categories', { withCredentials: true });
-        console.log(response.data,'kkk');
+        console.log('Categories response:', response.data);
         
         dispatch(getCategory(response.data.categories || []));
       } catch (error) {
@@ -40,7 +43,6 @@ function Products() {
     };
     fetchData();
   }, [dispatch]);
-  
 
   useEffect(() => {
     if (products.length === 0) return;
@@ -112,16 +114,18 @@ function Products() {
             <div className='categoryList'>
               {categoryList.length > 0 ? (
                 categoryList.map((item) => (
-                  <div className='category' key={item._id}>
-                    <p className='cateitems'>
-                      <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(item._id)}
-                        onChange={() => handleCategoryClick(item._id)}
-                      />
-                      <span>{item.name}</span>
-                    </p>
-                  </div>
+                  item._id ? ( // Check if item._id exists
+                    <div className='category' key={item._id}>
+                      <p className='cateitems'>
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories.includes(item._id)}
+                          onChange={() => handleCategoryClick(item._id)}
+                        />
+                        <span>{item.name}</span>
+                      </p>
+                    </div>
+                  ) : null
                 ))
               ) : (
                 <p>Loading categories...</p>
@@ -147,32 +151,34 @@ function Products() {
           <div className='products-container'>
             {currentProducts.length > 0 ? (
               currentProducts.map((product, index) => (
-                <div className='product-card' key={index}>
-                  <Link className='link' to={`/product/${product._id}`}>
-                    <Card className='cards'>
-                      <div className='media-img'>
-                        <img
-                          className='p-img'
-                          src={
-                            product.images[0]
-                              ? product.images[0].startsWith('http')
-                                ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
-                                : `https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`
-                              : 'https://via.placeholder.com/150' // Fallback image
-                          }
-                          alt={product.name}
-                        />
-                      </div>
-                      <div className='content'>
-                        <p>{product.name}</p>
-                        <div className='price-n-rating'>
-                          <ReactStars value={parseFloat(product.rating) || 0} count={5} isHalf={true} />
-                          <span>{`₹${product.price}`}</span>
+                product._id ? ( // Check if product._id exists
+                  <div className='product-card' key={index}>
+                    <Link className='link' to={`/product/${product._id}`}>
+                      <Card className='cards'>
+                        <div className='media-img'>
+                          <img
+                            className='p-img'
+                            src={
+                              product.images[0]
+                                ? product.images[0].startsWith('http')
+                                  ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
+                                  : `https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`
+                                : 'https://via.placeholder.com/150' // Fallback image
+                            }
+                            alt={product.name}
+                          />
                         </div>
-                      </div>
-                    </Card>
-                  </Link>
-                </div>
+                        <div className='content'>
+                          <p>{product.name}</p>
+                          <div className='price-n-rating'>
+                            <ReactStars value={parseFloat(product.rating) || 0} count={5} isHalf={true} />
+                            <span>{`₹${product.price}`}</span>
+                          </div>
+                        </div>
+                      </Card>
+                    </Link>
+                  </div>
+                ) : null
               ))
             ) : (
               <p>No products available for the selected category and price range</p>

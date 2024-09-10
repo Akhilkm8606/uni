@@ -24,7 +24,7 @@ function ProductCategory() {
       }, {
         withCredentials: true
       });
-      dispatch(addCategory(response.data.categorys));
+      dispatch(addCategory(response.data.category));
       setNewCategoryName(""); // Reset the input field
     } catch (error) {
       console.error('Error adding category:', error);
