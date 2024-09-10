@@ -32,7 +32,7 @@ const rootReducer = combineReducers({
   data: productReducer,
   product: productDetailsReducer,
   cart: cartReducer,
-  cate: categoryReducer,
+  category: categoryReducer,
   orders: orderReducer,
   theme: themeReducer,
   seller:sellerReducer

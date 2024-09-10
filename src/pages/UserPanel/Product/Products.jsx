@@ -3,27 +3,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../../../actions/ProductAction';
 import { Card, Row } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
-import { CardMedia } from '@mui/material';
 import Loader from '../../../components/UserDashBoard/Layout/Loader/Loader';
 import ReactStars from 'react-rating-stars-component';
-import axios from 'axios';
+import instance from '../../../Instance/axios';
 import { getCategory } from '../../../components/Redux/Slice/category'; // Import getCategory action
 import ReactPaginate from 'react-paginate'; // Import ReactPaginate
 import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
-import instance from '../../../Instance/axios';
 
 function Products() {
   const { keyword } = useParams();
   const dispatch = useDispatch();
-  const { loading, error, products } = useSelector((state) => state.data);
-  const categoryList = useSelector((state) => state.cate.category);
+  const { loading, products } = useSelector((state) => state.data);
+  const categoryList = useSelector((state) => state.category.category);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
   const [priceRanges, setPriceRanges] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 10; // Number of products per page
-  console.log("Categories from Redux state:", categoryList);
 
   useEffect(() => {
     dispatch(getProducts(keyword));
@@ -33,22 +30,19 @@ function Products() {
     const fetchData = async () => {
       try {
         const response = await instance.get('/api/v1/categories', { withCredentials: true });
-        dispatch(getCategory(response.data.categorys));
+        console.log(response.data); // Log response to verify data structure
+        dispatch(getCategory(response.data.categorys || []));
       } catch (error) {
         console.error('Error fetching categories:', error);
       }
     };
     fetchData();
   }, [dispatch]);
-  
-  
 
   useEffect(() => {
-    // Find min and max prices
     const minProductPrice = Math.min(...products.map(product => product.price));
     const maxProductPrice = Math.max(...products.map(product => product.price));
 
-    // Create price ranges
     const ranges = [];
     for (let i = minProductPrice; i <= maxProductPrice; i += 1000) {
       ranges.push({ min: i, max: i + 1000 });
@@ -59,12 +53,10 @@ function Products() {
   useEffect(() => {
     let filtered = products;
 
-    // Filter by selected categories
     if (selectedCategories.length > 0) {
       filtered = filtered.filter(product => selectedCategories.includes(product.categoryId));
     }
 
-    // Filter by selected price ranges
     if (selectedPriceRanges.length > 0) {
       filtered = filtered.filter(product => {
         return selectedPriceRanges.some(range => product.price >= range.min && product.price <= range.max);
@@ -90,20 +82,17 @@ function Products() {
     }
   };
 
-  // Paginate your filtered products
   const indexOfLastProduct = (pageNumber + 1) * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
   const getImagePublicId = (imageUrl) => {
-    // Assuming Cloudinary URLs are in the format:
-    // https://res.cloudinary.com/{cloud_name}/image/upload/{public_id}.{extension}
-    // We need to extract {public_id} from the URL
     const urlParts = imageUrl.split('/');
     const fileNameWithExtension = urlParts[urlParts.length - 1];
-    const [publicId] = fileNameWithExtension.split('.'); // Split by dot and take the first part
+    const [publicId] = fileNameWithExtension.split('.');
     return publicId;
   };
-  
+
   return (
     <>
       {loading ? (
@@ -115,24 +104,24 @@ function Products() {
           </Row>
 
           <div className='filters'>
-          <div className='categoryList'>
-  {categoryList.length > 0 ? (
-    categoryList.map((item) => (
-      <div className='category' key={item._id}>
-        <p className='cateitems'>
-          <input
-            type="checkbox"
-            checked={selectedCategories.includes(item._id)}
-            onChange={() => handleCategoryClick(item._id)}
-          />
-          <span>{item.name}</span>
-        </p>
-      </div>
-    ))
-  ) : (
-    <p>Loading categories...</p>
-  )}
-</div>
+            <div className='categoryList'>
+              {categoryList.length > 0 ? (
+                categoryList.map((item) => (
+                  <div className='category' key={item._id}>
+                    <p className='cateitems'>
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.includes(item._id)}
+                        onChange={() => handleCategoryClick(item._id)}
+                      />
+                      <span>{item.name}</span>
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p>Loading categories...</p>
+              )}
+            </div>
 
             <div className='price-filter'>
               {priceRanges.map((range, index) => (
