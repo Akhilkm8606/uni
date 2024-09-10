@@ -14,7 +14,7 @@ function Products() {
   const { keyword } = useParams();
   const dispatch = useDispatch();
   const { loading, products } = useSelector((state) => state.data);
-  const categoryList = useSelector((state) => state.category.category);
+  const categoryList = useSelector((state) => state.category.category || []); // Ensure default value is an empty array
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
   const [priceRanges, setPriceRanges] = useState([]);
@@ -30,16 +30,21 @@ function Products() {
     const fetchData = async () => {
       try {
         const response = await instance.get('/api/v1/categories', { withCredentials: true });
-        console.log(response.data); // Log response to verify data structure
+        console.log(response.data,'kkk');
+        
         dispatch(getCategory(response.data.categorys || []));
       } catch (error) {
         console.error('Error fetching categories:', error);
+        // Optionally set some error state here
       }
     };
     fetchData();
   }, [dispatch]);
+  
 
   useEffect(() => {
+    if (products.length === 0) return;
+
     const minProductPrice = Math.min(...products.map(product => product.price));
     const maxProductPrice = Math.max(...products.map(product => product.price));
 
