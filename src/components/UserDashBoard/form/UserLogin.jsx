@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userAuthentic } from '../../Redux/Slice/user';
 import axios from 'axios';
 import '../form/style.css';
-import UserSignUp from './UserSignUp';
 import { GiJewelCrown, GiLaurelCrown } from "react-icons/gi";
 import Cookies from 'js-cookie'; 
 import instance from '../../../Instance/axios';
+
 function UserLogin() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -35,40 +35,37 @@ function UserLogin() {
         e.preventDefault();
         try {
             const response = await instance.post('/api/v1/login', {
-        email,
-        password,
-    }, { withCredentials: true });
+                email,
+                password,
+            }, { withCredentials: true });
 
-    console.log(response.data); 
-           
+            console.log('Login Response:', response.data);
 
             const { data } = response;
             if (data.success) {
                 const { user, token } = data;
                 dispatch(userAuthentic({ user, token }));
-                toast.success(data.msg,{
-                    autoClose: 3000,position:"top-center"
-                });
+                toast.success(data.msg, { autoClose: 3000, position: "top-center" });
                 localStorage.setItem('token', token); // Storing token in localStorage
                 localStorage.setItem('user', JSON.stringify(user)); 
                
                 console.log('Token:', token);
-
+                
+                // Check user role before redirecting
+                console.log('User Role:', user.role);
                 handleRedirect(user.role);
+
                 // Clear form fields after successful submission
                 setEmail('');
                 setPassword('');
             } else {
-                toast.error(data.msg,{
-                    autoClose: 3000,position:"top-center"
-                });
+                toast.error(data.msg, { autoClose: 3000, position: "top-center" });
             }
         } 
         catch (error) {
             console.error("Error during login:", error);
             toast.error(error.response?.data?.message || "An error occurred while logging in.", { autoClose: 3000, position: "top-center" });
         }
-        
     };
 
     useEffect(() => {
@@ -78,9 +75,9 @@ function UserLogin() {
         const user = userString ? JSON.parse(userString) : null;
         if (token && user) {
             // Dispatch userAuthentic action with token
-            dispatch(userAuthentic({user, token }));
-            handleRedirect(userRole)
-            // Set loading to false after authentication data is fetched
+            dispatch(userAuthentic({ user, token }));
+            console.log('Redirecting based on role:', user.role);
+            handleRedirect(user.role);
         }
     }, [dispatch]);
 
@@ -104,26 +101,20 @@ function UserLogin() {
     return (
         <div className='login-container'>
             <meta
-        http-equiv="Content-Security-Policy"
-        content="default-src 'self'; font-src https://fonts.gstatic.com; style-src-elem https://fonts.googleapis.com;"
-      />
+                http-equiv="Content-Security-Policy"
+                content="default-src 'self'; font-src https://fonts.gstatic.com; style-src-elem https://fonts.googleapis.com;"
+            />
             <div className='login'>  
-                 
-                 <div className='log-head'>
-                 <h2 >UNIFIED CART</h2>
-               
-                   
+                <div className='log-head'>
+                    <h2>UNIFIED CART</h2>
                     <p>
-                    Elevate Your Shopping Journey with Us
-                    <span><GiLaurelCrown className='tag-icon'/></span>
+                        Elevate Your Shopping Journey with Us
+                        <span><GiLaurelCrown className='tag-icon'/></span>
                     </p>
-               
-
-                 </div>
-               
+                </div>
                 <form onSubmit={handleSubmit}>
                     <input id='email' type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder='Email' />
-                    <input id='password' type="password" value={password} autocomplete="current-password" onChange={e => setPassword(e.target.value)} placeholder='Password' />
+                    <input id='password' type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} placeholder='Password' />
                     <button className='btn' type="submit">Log In</button>
                     <div className='bottom'>
                         <p>Don't have an account? </p>

@@ -1,21 +1,24 @@
-// DashBoard.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../UserDashBoard/Layout/Footer/Footer';
 import Header from './Header';
 import PageContent from './PageContent';
 import Sidebar from './Sidebar';
 import { useSelector } from 'react-redux';
-function DashBoard() { // Added userRole as a prop
+
+function DashBoard() {
   const userRole = useSelector(state => state.auth.user?.role); // Access user's role from Redux state
-  const [selectedOption, setSelectedOption] = useState(() => {
+  const [selectedOption, setSelectedOption] = useState('');
+
+  useEffect(() => {
     if (userRole === 'admin') {
-      return 'Admin-dashBoard';
+      setSelectedOption('Admin-dashBoard');
     } else if (userRole === 'seller') {
-      return 'seller-dashBoard';
+      setSelectedOption('seller-dashBoard');
     } else {
-      return ''; // Handle other roles or default case
+      setSelectedOption(''); // Handle other roles or default case
     }
-  });
+  }, [userRole]);
+
   const handleOptionClick = (option) => {
     setSelectedOption(option);
     console.log(option);
@@ -25,7 +28,7 @@ function DashBoard() { // Added userRole as a prop
     <div className="App">
       <Header />
       <div>
-        <Sidebar handleOptionClick={handleOptionClick} userRole={userRole}  />
+        <Sidebar handleOptionClick={handleOptionClick} userRole={userRole} />
         <PageContent option={selectedOption} userRole={userRole} /> {/* Passed userRole to PageContent */}
       </div>
       <Footer />
