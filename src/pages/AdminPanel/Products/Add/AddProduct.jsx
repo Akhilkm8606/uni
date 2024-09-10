@@ -11,7 +11,7 @@ function AddProduct() {
   const user = useSelector(state => state.auth.user);
   
   // Provide a default fallback if category is undefined
-  const category = useSelector(state => state.cate.category || []);
+  const categoryList = useSelector((state) => state.category.category || []); // Ensure default value is an empty array
   
   const dispatch = useDispatch();
 
