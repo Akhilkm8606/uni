@@ -72,17 +72,17 @@ export const clearError = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
 };
 
-// Action to update a product
-export const updateProduct = (productId, formData) => async (dispatch) => {
-  console.log(formData,"action");
-  
-  try {
 
+export const updateProduct = (productId, formData) => async (dispatch) => {
+  console.log(formData,productId, "action");
+
+  try {
     const response = await axios.put(`/api/v1/product/${productId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data', // Ensure correct headers for file uploads
       },
     });
+
     dispatch({
       type: UPDATE_PRODUCT_SUCCESS,
       payload: response.data,
@@ -90,7 +90,7 @@ export const updateProduct = (productId, formData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PRODUCT_FAILURE,
-      payload: error.response.data.message || error.message,
+      payload: error.response?.data?.message || error.message,
     });
   }
 };

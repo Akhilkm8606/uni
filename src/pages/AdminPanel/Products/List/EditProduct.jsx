@@ -39,7 +39,9 @@ function EditProduct({ productId, onClose }) {
           description: fetchProduct.description,
           features: fetchProduct.features,
           images: null,
-          imagePreview: fetchProduct.images ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(fetchProduct.images[0])}` : ''
+          imagePreview: fetchProduct.images
+            ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(fetchProduct.images[0])}`
+            : ''
         });
       }
     }
@@ -66,7 +68,6 @@ function EditProduct({ productId, onClose }) {
     } else {
       setLoading(true);
       try {
-
         const formDataToSend = new FormData();
         formDataToSend.append('name', formData.name);
         formDataToSend.append('categoryId', formData.categoryId);
@@ -74,18 +75,20 @@ function EditProduct({ productId, onClose }) {
         formDataToSend.append('quantity', formData.quantity);
         formDataToSend.append('description', formData.description);
         formDataToSend.append('features', formData.features);
+
+        // Append the image only if it's selected
         if (formData.images) {
           formDataToSend.append('images', formData.images);
         }
 
-        // Log FormData content
+        // Log the formData contents to ensure it's populated correctly
         for (let [key, value] of formDataToSend.entries()) {
           console.log(`${key}:`, value);
         }
 
         // Dispatch the updateProduct action
-      dispatch(updateProduct(productId, formDataToSend));
-        console.log(productId, formDataToSend);
+        dispatch(updateProduct(productId, formDataToSend));
+        console.log(productId, formDataToSend,'productId, formDataToSend');
         
 
         toast.success('Product updated successfully');
@@ -136,10 +139,21 @@ function EditProduct({ productId, onClose }) {
                   <h3>General</h3>
                   <div className="inpt-fld">
                     <label htmlFor="name">Product Name *</label>
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
                     <label htmlFor="categoryId">Category</label>
                     {categoryOptions.length > 0 && (
-                      <select name="categoryId" value={formData.categoryId} onChange={handleChange} required>
+                      <select
+                        name="categoryId"
+                        value={formData.categoryId}
+                        onChange={handleChange}
+                        required
+                      >
                         <option value="">Select a category</option>
                         {categoryOptions.map((category, index) => (
                           <option key={index} value={category}>
@@ -149,13 +163,36 @@ function EditProduct({ productId, onClose }) {
                       </select>
                     )}
                     <label htmlFor="description">Description *</label>
-                    <input type="text" name="description" value={formData.description} onChange={handleChange} required />
+                    <input
+                      type="text"
+                      name="description"
+                      value={formData.description}
+                      onChange={handleChange}
+                      required
+                    />
                     <label htmlFor="features">Features</label>
-                    <input type="text" name="features" value={formData.features} onChange={handleChange} />
+                    <input
+                      type="text"
+                      name="features"
+                      value={formData.features}
+                      onChange={handleChange}
+                    />
                     <label htmlFor="quantity">Stock</label>
-                    <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} required />
+                    <input
+                      type="number"
+                      name="quantity"
+                      value={formData.quantity}
+                      onChange={handleChange}
+                      required
+                    />
                     <label htmlFor="price">Price</label>
-                    <input type="number" name="price" value={formData.price} onChange={handleChange} required />
+                    <input
+                      type="number"
+                      name="price"
+                      value={formData.price}
+                      onChange={handleChange}
+                      required
+                    />
                   </div>
                   <div className="sum-btn">
                     <button type="submit" disabled={loading}>
