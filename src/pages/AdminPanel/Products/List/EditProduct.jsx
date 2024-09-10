@@ -80,7 +80,7 @@ function EditProduct({ productId, onClose }) {
       }
 
       console.log(formData,'klk');
-      console.log(formDatat ,'hsjh');
+      console.log(formDataToSend ,'hsjh');
       
       for (let [key, value] of formDataToSend.entries()) {
         console.log(`${key}:`, value);
