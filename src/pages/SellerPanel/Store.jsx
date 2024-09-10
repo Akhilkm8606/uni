@@ -19,6 +19,13 @@ function Store({ onAddProductClick }) {
   const [editingProductId, setEditingProductId] = useState(null); // State for managing editing product
   const pageCount = Math.ceil(products.length / productsPerPage);
 
+  const getImagePublicId = (imageUrl) => {
+    const urlParts = imageUrl.split('/');
+    const fileNameWithExtension = urlParts[urlParts.length - 1];
+    const [publicId] = fileNameWithExtension.split('.');
+    return publicId;
+  };
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -107,8 +114,15 @@ function Store({ onAddProductClick }) {
                       <td className='product-price'>{product.price}</td>
                       <td className='product-stock'>{product.quantity}</td>
                       <td className='product-image'>
-                        <img className='p-imag' src={`http://localhost:5000/uploads/${product.images}`} alt={product.name} />
-                      </td>
+                        <img
+                          className='p-imag'
+                          src={
+                            product.images[0]
+                              ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
+                              : 'https://via.placeholder.com/150' // Fallback image
+                          }
+                          alt={product.name}
+                        />                      </td>
                       <td className='product-date'>{formatDate(product.createdAt)}</td>
                       <td className='product-actions'>
                         <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
