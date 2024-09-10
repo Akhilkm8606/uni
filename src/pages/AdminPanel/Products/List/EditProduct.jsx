@@ -79,6 +79,9 @@ function EditProduct({ productId, onClose }) {
         formDataToSend.append('images', formData.images);
       }
 
+      console.log(formData,'klk');
+      console.log(formDatat ,'hsjh');
+      
       for (let [key, value] of formDataToSend.entries()) {
         console.log(`${key}:`, value);
       }
