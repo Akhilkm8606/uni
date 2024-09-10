@@ -66,7 +66,6 @@ function EditProduct({ productId, onClose }) {
     } else {
       setLoading(true);
       try {
-        console.log('Form Data state:', formData);
 
         const formDataToSend = new FormData();
         formDataToSend.append('name', formData.name);
