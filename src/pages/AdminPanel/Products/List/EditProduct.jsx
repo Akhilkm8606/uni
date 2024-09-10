@@ -79,12 +79,16 @@ function EditProduct({ productId, onClose }) {
           formDataToSend.append('images', formData.images);
         }
 
+        // Log FormData content
+        for (let [key, value] of formDataToSend.entries()) {
+          console.log(`${key}:`, value);
+        }
+
         // Dispatch the updateProduct action
         await dispatch(updateProduct(productId, formDataToSend));
 
-        // Optionally handle UI feedback if needed
         toast.success('Product updated successfully');
-        onClose(); // Close the form after successful update
+        onClose();
       } catch (error) {
         console.error('Error updating product:', error);
         toast.error('Failed to update product. Please try again.');
@@ -93,6 +97,7 @@ function EditProduct({ productId, onClose }) {
       }
     }
   };
+
   const getImagePublicId = (imageUrl) => {
     const urlParts = imageUrl.split('/');
     const fileNameWithExtension = urlParts[urlParts.length - 1];
@@ -121,7 +126,7 @@ function EditProduct({ productId, onClose }) {
                   <input
                     type="file"
                     id="imageInput"
-                    name="image"
+                    name="images"
                     onChange={handleChange}
                     style={{ display: 'none' }}
                   />
