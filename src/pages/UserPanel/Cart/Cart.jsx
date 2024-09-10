@@ -6,6 +6,8 @@ import axios from 'axios';
 import { getCart } from '../../../components/Redux/Slice/cart';
 import { MdDelete } from 'react-icons/md';
 import instance from '../../../Instance/axios';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { toast, ToastContainer } from 'react-toastify';
 import Loader from '../../../components/UserDashBoard/Layout/Loader/Loader';
 

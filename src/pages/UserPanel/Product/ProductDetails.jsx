@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Carousel from 'react-material-ui-carousel';
 import './ProductDetails.css';
 import ReactStars from 'react-rating-stars-component';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { ToastContainer, toast } from 'react-toastify';
 import instance from '../../../Instance/axios';
 import ReviewCard from './Review/ReviewCard';
