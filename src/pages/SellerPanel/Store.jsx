@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Table } from 'react-bootstrap';
 import { MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
-import { getProducts } from '../../actions/ProductAction';
 import { useDispatch } from 'react-redux';
 import '../AdminPanel/Products/List/ProductList.css';
 import ReactPaginate from 'react-paginate';
@@ -16,7 +15,8 @@ function Store({ onAddProductClick }) {
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 8;
   const [products, setProducts] = useState([]);
-  const [editingProductId, setEditingProductId] = useState(null); // State for managing editing product
+  const [seller, setSeller] = useState(null); // State for seller information
+  const [editingProductId, setEditingProductId] = useState(null);
   const pageCount = Math.ceil(products.length / productsPerPage);
 
   const getImagePublicId = (imageUrl) => {
@@ -31,6 +31,12 @@ function Store({ onAddProductClick }) {
       try {
         const response = await instance.get('/api/v1/products', { withCredentials: true });
         setProducts(response.data.products);
+        // Fetch seller info if needed
+        // Assuming each product has a sellerId
+        if (response.data.products.length > 0) {
+          const sellerResponse = await instance.get(`/api/v1/seller/product/${response.data.products[0].sellerId}`, { withCredentials: true });
+          setSeller(sellerResponse.data.seller);
+        }
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -75,6 +81,14 @@ function Store({ onAddProductClick }) {
     <>
       <div className='pd-container'>
         <h2 className='pd-heading'>PRODUCTS</h2>
+        {seller && (
+          <div className='seller-info'>
+            <h3>Seller Information</h3>
+            <p><strong>Name:</strong> {seller.name}</p>
+            <p><strong>Email:</strong> {seller.email}</p>
+            {/* Add more seller details as needed */}
+          </div>
+        )}
         <Row className='pd-row'>
           <div className='p-outer-div'>
             <div className='products-div'>
@@ -119,10 +133,11 @@ function Store({ onAddProductClick }) {
                           src={
                             product.images[0]
                               ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
-                              : 'https://via.placeholder.com/150' // Fallback image
+                              : 'https://via.placeholder.com/150'
                           }
                           alt={product.name}
-                        />                      </td>
+                        />
+                      </td>
                       <td className='product-date'>{formatDate(product.createdAt)}</td>
                       <td className='product-actions'>
                         <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
