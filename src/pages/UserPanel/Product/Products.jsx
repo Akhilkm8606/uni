@@ -6,22 +6,22 @@ import { Link, useParams } from 'react-router-dom';
 import Loader from '../../../components/UserDashBoard/Layout/Loader/Loader';
 import ReactStars from 'react-rating-stars-component';
 import instance from '../../../Instance/axios';
-import { getCategory } from '../../../components/Redux/Slice/category'; // Import getCategory action
-import ReactPaginate from 'react-paginate'; // Import ReactPaginate
+import { getCategory } from '../../../components/Redux/Slice/category';
+import ReactPaginate from 'react-paginate';
 import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
 
 function Products() {
   const { keyword } = useParams();
   const dispatch = useDispatch();
   const { loading, products } = useSelector((state) => state.data);
-  const categoryList = useSelector((state) => state.category.category || []); // Ensure default value is an empty array
+  const categoryList = useSelector((state) => state.category.category || []);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
   const [priceRanges, setPriceRanges] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
-  const productsPerPage = 10; // Number of products per page
-  
+  const productsPerPage = 10;
+
   useEffect(() => {
     dispatch(getProducts(keyword));
   }, [dispatch, keyword]);
@@ -33,12 +33,11 @@ function Products() {
         dispatch(getCategory(response.data.categories || []));
       } catch (error) {
         console.error('Error fetching categories:', error);
-        // Optionally set some error state here
       }
     };
     fetchData();
   }, [dispatch]);
-  
+
   useEffect(() => {
     if (products.length === 0) return;
 
@@ -109,7 +108,7 @@ function Products() {
             <div className='categoryList'>
               {categoryList.length > 0 ? (
                 categoryList
-                  .filter(item => item !== null) // Filter out null values
+                  .filter(item => item !== null)
                   .map((item) => (
                     <div className='category' key={item._id}>
                       <p className='cateitems'>
@@ -157,7 +156,7 @@ function Products() {
                               ? product.images[0].startsWith('http')
                                 ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
                                 : `https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`
-                              : 'https://via.placeholder.com/150' // Fallback image
+                              : 'https://via.placeholder.com/150'
                           }
                           alt={product.name}
                         />
