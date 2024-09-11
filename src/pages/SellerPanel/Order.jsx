@@ -28,7 +28,7 @@ function Orders() {
       try {
         if (user?.role === 'seller') {
           const response = await instance.get('/api/v1/seller/orders', { withCredentials: true });
-          console.log(response);
+          console.log(response.data.orders);
           
           dispatch(getAllOrder(response.data.orders));
         } else {
