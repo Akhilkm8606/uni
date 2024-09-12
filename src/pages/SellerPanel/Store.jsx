@@ -48,7 +48,8 @@ function Store({ onAddProductClick }) {
   const filteredProducts = sellerId
     ? products.filter(product => product.sellerId === sellerId)
     : products;
-
+ console.log(filteredProducts,'filteredProducts');
+ 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
