@@ -20,11 +20,16 @@ function Store({ onAddProductClick }) {
   // Retrieve user ID from Redux store
   const users = useSelector(state => state.auth.user);
   const sellerId = users?._id;
-console.log(sellerId,'sellerId');
-console.log(users,'users');
+
+  console.log(sellerId, 'sellerId');
+  console.log(users, 'users');
 
   // Pagination calculation
-  const pageCount = Math.ceil(products.length / productsPerPage);
+  const filteredProducts = sellerId
+    ? products.filter(product => product.userId === sellerId)
+    : products;
+  
+  const pageCount = Math.ceil(filteredProducts.length / productsPerPage);
 
   const getImagePublicId = (imageUrl) => {
     const urlParts = imageUrl.split('/');
@@ -45,13 +50,6 @@ console.log(users,'users');
 
     fetchProducts();
   }, [dispatch]);
-
-  // Filter products by sellerId
-  const filteredProducts = sellerId
-    ? products.filter(product => product.userId === sellerId)
-    : products;
-
-  console.log(filteredProducts, 'filteredProducts');
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -93,22 +91,24 @@ console.log(users,'users');
         <Row className='pd-row'>
           <div className='p-outer-div'>
             <div className='products-div'>
-              <ReactPaginate
-                previousLabel={<MdSkipPrevious />}
-                nextLabel={<MdSkipNext />}
-                breakLabel={'...'}
-                pageCount={pageCount}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={handlePageClick}
-                containerClassName={'pagination'}
-                activeClassName={'active'}
-                pageClassName={'pagination-item'}
-                previousClassName={'pagination-item'}
-                nextClassName={'pagination-item'}
-                breakClassName={'pagination-item'}
-                disabledClassName={'disabled'}
-              />
+              {pageCount > 1 && (
+                <ReactPaginate
+                  previousLabel={<MdSkipPrevious />}
+                  nextLabel={<MdSkipNext />}
+                  breakLabel={'...'}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={5}
+                  onPageChange={handlePageClick}
+                  containerClassName={'pagination'}
+                  activeClassName={'active'}
+                  pageClassName={'pagination-item'}
+                  previousClassName={'pagination-item'}
+                  nextClassName={'pagination-item'}
+                  breakClassName={'pagination-item'}
+                  disabledClassName={'disabled'}
+                />
+              )}
               <Table striped bordered hover className='custom-p-table'>
                 <thead>
                   <tr>
