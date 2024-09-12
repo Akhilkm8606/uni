@@ -20,7 +20,12 @@ function Store({ onAddProductClick }) {
 
   // Pagination calculation
   const pageCount = Math.ceil(products.length / productsPerPage);
-
+  const getImagePublicId = (imageUrl) => {
+    const urlParts = imageUrl.split('/');
+    const fileNameWithExtension = urlParts[urlParts.length - 1];
+    const [publicId] = fileNameWithExtension.split('.');
+    return publicId;
+  };
   useEffect(() => {
     const fetchProducts = async () => {
       try {
