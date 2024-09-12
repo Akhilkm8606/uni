@@ -1,156 +1,208 @@
-function Store({ onAddProductClick }) {
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import CloseBtn from '../../../../components/Buttons/CloseBtn';
+import './Editprdt.css';
+import { updateProduct } from '../../../../actions/ProductAction'; // Adjust the import path
+
+function EditProduct({ productId, onClose }) {
   const dispatch = useDispatch();
-  const [pageNumber, setPageNumber] = useState(0);
-  const productsPerPage = 8;
-  const [products, setProducts] = useState([]);
-  const [editingProductId, setEditingProductId] = useState(null);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [productIdToDelete, setProductIdToDelete] = useState(null);
+  const products = useSelector((state) => state.data.products);
+  const categories = useSelector((state) => state.category.category);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [formData, setFormData] = useState({
+    name: '',
+    categoryId: '',
+    price: '',
+    quantity: '',
+    description: '',
+    features: '',
+    images: null,
+    imagePreview: ''
+  });
   const [loading, setLoading] = useState(false);
 
-  const users = useSelector(state => state.auth.user);
-  const sellerId = users?._id;
-
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await instance.get('/api/v1/products', { withCredentials: true });
-        setProducts(response.data.products);
-      } catch (error) {
-        console.error('Error fetching products:', error);
+    if (products.length && categories.length) {
+      const categoryOptions = categories.map((category) => ({
+        id: category._id,
+        name: category.name
+      }));
+      setCategoryOptions(categoryOptions);
+
+      const fetchProduct = products.find((prd) => prd._id === productId);
+      if (fetchProduct) {
+        const categoryObj = categoryOptions.find(cat => cat.name === fetchProduct.category);
+        setSelectedProduct(fetchProduct);
+        setFormData({
+          name: fetchProduct.name,
+          categoryId: categoryObj ? categoryObj.id : '', // Store actual category ID
+          price: fetchProduct.price,
+          quantity: fetchProduct.quantity,
+          description: fetchProduct.description,
+          features: fetchProduct.features,
+          images: null,
+          imagePreview: fetchProduct.images
+            ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(fetchProduct.images[0])}`
+            : ''
+        });
       }
-    };
+    }
+  }, [productId, products, categories]);
 
-    fetchProducts();
-  }, [dispatch]);
+  const handleChange = (e) => {
+    const { name, value, type, files } = e.target;
+    const newValue = type === 'file' ? files[0] : value;
+    const imagePreview = type === 'file' ? URL.createObjectURL(files[0]) : formData.imagePreview;
 
-  const filteredProducts = sellerId
-    ? products.filter(product => product.userId === sellerId)
-    : products;
-
-  const handleEdit = (id) => {
-    setEditingProductId(id);
+    setFormData({
+      ...formData,
+      [name]: newValue,
+      imagePreview
+    });
   };
 
-  const handleCloseEdit = () => {
-    setEditingProductId(null);
-  };
-
-  const handleDeleteClick = (productId) => {
-    setProductIdToDelete(productId);
-    setOpenDeleteDialog(true);
-  };
-
-  const handleDeleteCancel = () => {
-    setOpenDeleteDialog(false);
-    setProductIdToDelete(null);
-  };
-
-  const handleDeleteConfirm = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
     try {
-      await instance.delete(`/api/v1/product/${productIdToDelete}`, { withCredentials: true });
-      setProducts(products.filter(product => product._id !== productIdToDelete));
-      dispatch({ type: DELETE_PRODUCT, payload: productIdToDelete });
-      toast.success('Product deleted successfully');
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('categoryId', formData.categoryId);
+      formDataToSend.append('price', formData.price);
+      formDataToSend.append('quantity', formData.quantity);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('features', formData.features);
+
+      if (formData.images) {
+        formDataToSend.append('images', formData.images);
+      }
+
+      console.log(formData,'klk');
+      console.log(formDataToSend ,'hsjh');
+      
+      for (let [key, value] of formDataToSend.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      dispatch(updateProduct(productId, formDataToSend));
+
+      toast.success('Product updated successfully');
+      onClose();
     } catch (error) {
-      console.error('Error deleting product:', error);
-      toast.error('Failed to delete product');
+      toast.error('Failed to update product. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const pageCount = Math.ceil(filteredProducts.length / productsPerPage);
-  const startIndex = pageNumber * productsPerPage;
-  const displayedProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
+  const getImagePublicId = (imageUrl) => {
+    const urlParts = imageUrl.split('/');
+    const fileNameWithExtension = urlParts[urlParts.length - 1];
+    const [publicId] = fileNameWithExtension.split('.');
+    return publicId;
+  };
 
   return (
-    <>
-      <div className='pd-container'>
-        <h2 className='pd-heading'>PRODUCTS</h2>
-        <Row className='pd-row'>
-          <div className='p-outer-div'>
-            <div className='products-div'>
-              <ReactPaginate
-                previousLabel={<MdSkipPrevious />}
-                nextLabel={<MdSkipNext />}
-                breakLabel={'...'}
-                pageCount={pageCount}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={({ selected }) => setPageNumber(selected)}
-                containerClassName={'pagination'}
-                activeClassName={'active'}
-                pageClassName={'pagination-item'}
-                previousClassName={'pagination-item'}
-                nextClassName={'pagination-item'}
-                breakClassName={'pagination-item'}
-                disabledClassName={'disabled'}
-              />
-              <Table striped bordered hover className='custom-p-table'>
-                <thead>
-                  <tr>
-                    <th className='product-name'>Product Name</th>
-                    <th className='product-category'>Category</th>
-                    <th className='product-price'>Price</th>
-                    <th className='product-stock'>Stock</th>
-                    <th className='product-image'>Image</th>
-                    <th className='product-date'>Date Of Added</th>
-                    <th className='product-actions'>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {displayedProducts.map((product) => (
-                    <tr className='pdata-row' key={product._id}>
-                      <td className='product-name'>{product.name}</td>
-                      <td className='product-category'>{product.category}</td>
-                      <td className='product-price'>{product.price}</td>
-                      <td className='product-stock'>{product.quantity}</td>
-                      <td className='product-image'>
-                        <img
-                          className='p-imag'
-                          src={
-                            product.images[0]
-                              ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
-                              : 'https://via.placeholder.com/150'
-                          }
-                          alt={product.name}
-                        />
-                      </td>
-                      <td className='product-date'>{formatDate(product.createdAt)}</td>
-                      <td className='product-actions'>
-                        <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
-                        <MdDelete onClick={() => handleDeleteClick(product._id)} className='action-delete' />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-          </div>
-        </Row>
+    <div className="edit-prdut">
+      <CloseBtn onClick={onClose} />
+      <div>
+        <div className="page-hd">
+          <h3>Edit Product</h3>
+        </div>
+        <div>
+          <form onSubmit={handleSubmit} className="page-cont">
+            {selectedProduct && (
+              <>
+                <div className="thumb">
+                  <img
+                    src={formData.imagePreview || 'https://via.placeholder.com/150'} // Fallback image
+                    alt={selectedProduct.name}
+                    onClick={() => document.getElementById('imageInput').click()}
+                    style={{ cursor: 'pointer' }}
+                  />
+                  <input
+                    type="file"
+                    id="imageInput"
+                    name="images"
+                    onChange={handleChange}
+                    style={{ display: 'none' }}
+                  />
+                </div>
+                <div className="general">
+                  <h3>General</h3>
+                  <div className="inpt-fld">
+                    <label htmlFor="name">Product Name *</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
+                    <label htmlFor="categoryId">Category</label>
+                    {categoryOptions.length > 0 && (
+                      <select
+                        name="categoryId"
+                        value={formData.categoryId}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select a category</option>
+                        {categoryOptions.map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    <label htmlFor="description">Description *</label>
+                    <input
+                      type="text"
+                      name="description"
+                      value={formData.description}
+                      onChange={handleChange}
+                      required
+                    />
+                    <label htmlFor="features">Features</label>
+                    <input
+                      type="text"
+                      name="features"
+                      value={formData.features}
+                      onChange={handleChange}
+                    />
+                    <label htmlFor="quantity">Stock</label>
+                    <input
+                      type="number"
+                      name="quantity"
+                      value={formData.quantity}
+                      onChange={handleChange}
+                      required
+                    />
+                    <label htmlFor="price">Price</label>
+                    <input
+                      type="number"
+                      name="price"
+                      value={formData.price}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="sum-btn">
+                    <button type="submit" disabled={loading}>
+                      {loading ? 'Updating...' : 'Submit'}
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </form>
+        </div>
       </div>
-
-      <Dialog open={editingProductId !== null} onClose={handleCloseEdit} fullWidth maxWidth="md">
-        <DialogTitle>Edit Product</DialogTitle>
-        <DialogContent>
-          <EditProduct productId={editingProductId} onClose={handleCloseEdit} />
-        </DialogContent>
-      </Dialog>
-
       <ToastContainer />
-
-      <Dialog open={openDeleteDialog} onClose={handleDeleteCancel}>
-        <DialogTitle>Confirm Deletion</DialogTitle>
-        <DialogContent>Are you sure you want to delete this product?</DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="primary" disabled={loading}>
-            {loading ? <CircularProgress size={24} /> : 'Delete'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+    </div>
   );
 }
+
+export default EditProduct;

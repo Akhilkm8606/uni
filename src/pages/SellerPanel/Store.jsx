@@ -115,11 +115,22 @@ console.log(users,'users');
         <h2 className='pd-heading'>PRODUCTS</h2>
         {editingProductId && (
           <>
-            <div className="overlay" onClick={handleCloseEdit}></div>
-            <EditProduct
-              productId={editingProductId}
-              onClose={handleCloseEdit}
-            />
+           <Dialog open={!!editingProductId} onClose={handleCloseEdit} fullWidth maxWidth="md">
+      <DialogTitle>Edit Product</DialogTitle>
+      <DialogContent>
+        {editingProductId && (
+          <EditProduct
+            productId={editingProductId}
+            onClose={handleCloseEdit}
+          />
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCloseEdit} color="primary">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
           </>
         )}
         <Row className='pd-row'>
