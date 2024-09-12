@@ -3,6 +3,8 @@ import { Row, Table } from 'react-bootstrap';
 import { MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import '../AdminPanel/Products/List/ProductList.css';
+import { getProducts } from '../../actions/ProductAction';
+
 import ReactPaginate from 'react-paginate';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
