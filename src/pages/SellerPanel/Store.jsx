@@ -16,6 +16,9 @@ function Store({ onAddProductClick }) {
   const productsPerPage = 8;
   const [products, setProducts] = useState([]);
   const [editingProductId, setEditingProductId] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Retrieve user ID from Redux store
   const users = useSelector(state => state.auth.user);
@@ -57,15 +60,29 @@ console.log(users,'users');
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
+  const handleEdit = (id) => {
+    setEditingProductId(id);
+  };
+
+  const handleCloseEdit = () => {
+    setEditingProductId(null);
+  };
 
   const handlePageClick = ({ selected }) => {
     setPageNumber(selected);
   };
 
-  const handleEdit = (id) => {
-    setEditingProductId(id);
+  
+
+  const handleDeleteClick = (productId) => {
+    setProductIdToDelete(productId);
+    setOpenDeleteDialog(true);
   };
 
+  const handleDeleteCancel = () => {
+    setOpenDeleteDialog(false);
+    setProductIdToDelete(null);
+  };
   const handleDelete = async (productId) => {
     try {
       if (window.confirm('Are you sure you want to delete this product?')) {
@@ -90,6 +107,15 @@ console.log(users,'users');
     <>
       <div className='pd-container'>
         <h2 className='pd-heading'>PRODUCTS</h2>
+        {editingProductId && (
+          <>
+            <div className="overlay" onClick={handleCloseEdit}></div>
+            <EditProduct
+              productId={editingProductId}
+              onClose={handleCloseEdit}
+            />
+          </>
+        )}
         <Row className='pd-row'>
           <div className='p-outer-div'>
             <div className='products-div'>
@@ -154,13 +180,19 @@ console.log(users,'users');
           </div>
         </Row>
       </div>
-      {editingProductId && (
-        <EditProduct
-          productId={editingProductId}
-          onClose={() => setEditingProductId(null)} // Close modal
-        />
-      )}
+    
       <ToastContainer />
+      <Dialog open={openDeleteDialog} onClose={handleDeleteCancel}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this product?</DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
+          <Button onClick={handleDeleteConfirm} color="primary" disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : 'Delete'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </>
   );
 }
