@@ -9,6 +9,19 @@
   margin: 0 auto;
   background-color: #f9f9f9;
 }
+/* ProductList.css */
+
+/* Add this rule to style the table header */
+.custom-p-table thead th {
+  background-color: black; /* Set the background color of the header */
+  color: white; /* Set the text color to white for better contrast */
+  font-weight: bold; /* Make the text bold */
+}
+
+/* Optional: Style the table rows */
+.custom-p-table tbody tr:hover {
+  background-color: #f0f0f0; /* Add a hover effect for rows */
+}
 
 .pd-heading {
   font-size: 24px;
