@@ -94,7 +94,7 @@ console.log(users,'users');
     setLoading(true);
     try {
       await instance.delete(`/api/v1/product/${productIdToDelete}`, { withCredentials: true });
-      setProducts(products.filter(product => product._id !== productId));
+      setProducts(products.filter(product => product._id !== productIdToDelete));
       dispatch({
         type: DELETE_PRODUCT,
         payload: productIdToDelete
@@ -176,7 +176,7 @@ console.log(users,'users');
                         <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
                       </td>
                       <td className='product-actions'>
-                        <MdDelete onClick={() => handleDelete(product._id)} className='action-delete' />
+                        <MdDelete onClick={() => handleDeleteClick(product._id)} className='action-delete' />
                       </td>
                     </tr>
                   ))}
