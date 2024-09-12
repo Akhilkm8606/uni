@@ -17,48 +17,22 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 
 function Store({ onAddProductClick }) {
-  const dispatch = useDispatch();
+   const dispatch = useDispatch();
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 8;
-  const [products, setProducts] = useState([]);
+  const products = useSelector((state) => state.data.products);
+  const pageCount = Math.ceil(products.length / productsPerPage);
   const [editingProductId, setEditingProductId] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [productIdToDelete, setProductIdToDelete] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const users = useSelector(state => state.auth.user);
-  const sellerId = users?._id;
-
-  // Pagination calculation
-  const pageCount = Math.ceil(products.length / productsPerPage);
-
-  const getImagePublicId = (imageUrl) => {
-    const urlParts = imageUrl.split('/');
-    const fileNameWithExtension = urlParts[urlParts.length - 1];
-    const [publicId] = fileNameWithExtension.split('.');
-    return publicId;
-  };
-
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await instance.get('/api/v1/products', { withCredentials: true });
-        setProducts(response.data.products);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    fetchProducts();
+    dispatch(getProducts());
   }, [dispatch]);
 
-  const filteredProducts = sellerId
-    ? products.filter(product => product.userId === sellerId)
-    : products;
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
+  const handlePageClick = ({ selected }) => {
+    setPageNumber(selected);
   };
 
   const handleEdit = (id) => {
@@ -67,10 +41,6 @@ function Store({ onAddProductClick }) {
 
   const handleCloseEdit = () => {
     setEditingProductId(null);
-  };
-
-  const handlePageClick = ({ selected }) => {
-    setPageNumber(selected);
   };
 
   const handleDeleteClick = (productId) => {
@@ -87,43 +57,39 @@ function Store({ onAddProductClick }) {
     setLoading(true);
     try {
       await instance.delete(`/api/v1/product/${productIdToDelete}`, { withCredentials: true });
-      setProducts(products.filter(product => product._id !== productIdToDelete));
+      
       dispatch({
         type: DELETE_PRODUCT,
         payload: productIdToDelete
       });
+
       toast.success('Product deleted successfully');
+      setOpenDeleteDialog(false);
     } catch (error) {
       console.error('Error deleting product:', error);
       toast.error('Failed to delete product');
     } finally {
       setLoading(false);
-      setOpenDeleteDialog(false); // Close the delete dialog after deletion
-      setProductIdToDelete(null); // Reset the product ID
     }
   };
 
   const startIndex = pageNumber * productsPerPage;
-  const displayedProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
+  const displayedProducts = products.slice(startIndex, startIndex + productsPerPage);
 
   return (
     <>
       <div className='pd-container'>
         <h2 className='pd-heading'>PRODUCTS</h2>
-        <Dialog open={!!editingProductId} onClose={handleCloseEdit} fullWidth maxWidth="md">
-          <DialogTitle>Edit Product</DialogTitle>
-          <DialogContent>
-            {editingProductId && (
-              <EditProduct
-                productId={editingProductId}
-                onClose={handleCloseEdit}
-              />
-            )}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseEdit} color="primary">Close</Button>
-          </DialogActions>
-        </Dialog>
+
+        {editingProductId && (
+          <>
+            <div className="overlay" onClick={handleCloseEdit}></div>
+            <EditProduct
+              productId={editingProductId}
+              onClose={handleCloseEdit}
+            />
+          </>
+        )}
 
         <Row className='pd-row'>
           <div className='p-outer-div'>
@@ -138,12 +104,8 @@ function Store({ onAddProductClick }) {
                 onPageChange={handlePageClick}
                 containerClassName={'pagination'}
                 activeClassName={'active'}
-                pageClassName={'pagination-item'}
-                previousClassName={'pagination-item'}
-                nextClassName={'pagination-item'}
-                breakClassName={'pagination-item'}
-                disabledClassName={'disabled'}
               />
+
               <Table striped bordered hover className='custom-p-table'>
                 <thead>
                   <tr>
@@ -169,12 +131,12 @@ function Store({ onAddProductClick }) {
                           src={
                             product.images[0]
                               ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
-                              : 'https://via.placeholder.com/150'
+                              : 'https://via.placeholder.com/150' // Fallback image
                           }
                           alt={product.name}
                         />
                       </td>
-                      <td className='product-date'>{formatDate(product.createdAt)}</td>
+                      <td className='product-date'>{new Date(product.createdAt).toLocaleDateString()}</td>
                       <td className='product-actions'>
                         <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
                         <MdDelete onClick={() => handleDeleteClick(product._id)} className='action-delete' />
@@ -188,7 +150,7 @@ function Store({ onAddProductClick }) {
         </Row>
       </div>
 
-      <ToastContainer />
+      {/* Delete Confirmation Dialog */}
       <Dialog open={openDeleteDialog} onClose={handleDeleteCancel}>
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>Are you sure you want to delete this product?</DialogContent>
@@ -199,6 +161,8 @@ function Store({ onAddProductClick }) {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <ToastContainer />
     </>
   );
 }
