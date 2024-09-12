@@ -60,7 +60,7 @@ function Store({ onAddProductClick }) {
     setPageNumber(selected);
   };
 
-  const handleEdit = (id) => {
+  const handleRowClick = (id) => {
     setEditingProductId(id);
   };
 
