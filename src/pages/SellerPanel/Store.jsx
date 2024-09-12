@@ -4,7 +4,6 @@ import { MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import '../AdminPanel/Products/List/ProductList.css';
 import { getProducts } from '../../actions/ProductAction';
-
 import ReactPaginate from 'react-paginate';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,15 +18,19 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 
 function Store({ onAddProductClick }) {
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 8;
   const products = useSelector((state) => state.data.products);
-  const pageCount = Math.ceil(products.length / productsPerPage);
+  const users = useSelector(state => state.auth.user);
+  const sellerId = users?._id;
+
   const [editingProductId, setEditingProductId] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [productIdToDelete, setProductIdToDelete] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Function to get image public ID
   const getImagePublicId = (imageUrl) => {
     const urlParts = imageUrl.split('/');
     const fileNameWithExtension = urlParts[urlParts.length - 1];
@@ -38,6 +41,15 @@ function Store({ onAddProductClick }) {
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
+
+  // Filter products by sellerId
+  const filteredProducts = sellerId
+    ? products.filter(product => product.userId === sellerId)
+    : products;
+
+  const pageCount = Math.ceil(filteredProducts.length / productsPerPage);
+  const startIndex = pageNumber * productsPerPage;
+  const displayedProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
 
   const handlePageClick = ({ selected }) => {
     setPageNumber(selected);
@@ -80,9 +92,6 @@ function Store({ onAddProductClick }) {
       setLoading(false);
     }
   };
-
-  const startIndex = pageNumber * productsPerPage;
-  const displayedProducts = products.slice(startIndex, startIndex + productsPerPage);
 
   return (
     <>
