@@ -1,10 +1,12 @@
+// components/Dashboard.jsx
 import React, { useEffect, useState } from 'react';
 import { AiOutlineShop, AiOutlineShoppingCart } from "react-icons/ai";
 import { Card, Row } from 'react-bootstrap';
-import instance from '../../Instance/axios';
+import instance from '../../Instance/axios'; // Your Axios instance
 import '../../pages/AdminPanel/style.css';
 import { toast } from 'react-toastify';
 import BarChart from './Barchart.jsx';
+import { useSelector } from 'react-redux'; // Make sure to include redux
 
 function Dashboard() {
   const [orderCount, setOrderCount] = useState(0);
@@ -12,6 +14,9 @@ function Dashboard() {
   const [salesData, setSalesData] = useState({ labels: [], values: [] });
   const [orderData, setOrderData] = useState({ labels: [], values: [] });
   const [productData, setProductData] = useState({ labels: [], values: [] });
+
+  const users = useSelector(state => state.auth.user);
+  const sellerId = users?._id;
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -23,42 +28,31 @@ function Dashboard() {
           const dashboardData = response.data.dashboard || {};
           console.log('Dashboard data:', dashboardData);
 
-          // Use fallback values if properties are missing
           const orders = dashboardData.orders || [];
           const products = dashboardData.products || [];
+          const sales = dashboardData.sales || [];
           const monthlyData = dashboardData.monthlyData || [];
 
           setOrderCount(orders.length);
           setProductCount(products.length);
 
-          // Handle the response data for charts
-          const salesLabels = monthlyData.map(item => item.month || 'Unknown');
-          const salesValues = monthlyData.map(item => item.sales || 0);
-          const orderLabels = monthlyData.map(item => item.month || 'Unknown');
-          const orderValues = monthlyData.map(item => item.orders || 0);
-          const productLabels = monthlyData.map(item => item.month || 'Unknown');
-          const productValues = monthlyData.map(item => item.products || 0);
+          // Handle the response data
+          const chartLabels = monthlyData.map(item => item.month || 'Unknown');
+          const chartValues = monthlyData.map(item => item.value || 0);
 
-          setSalesData({ labels: salesLabels, values: salesValues });
-          setOrderData({ labels: orderLabels, values: orderValues });
-          setProductData({ labels: productLabels, values: productValues });
-
+          setSalesData({ labels: chartLabels, values: chartValues });
         } else {
           console.error('Unexpected response status:', response.status);
           toast.error('Failed to fetch dashboard data');
         }
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
-        if (error.response && error.response.status === 401) {
-          toast.error('Unauthorized: Please log in');
-        } else {
-          toast.error('Failed to fetch dashboard data');
-        }
+        toast.error('Failed to fetch dashboard data');
       }
     };
 
     fetchDashboard();
-  }, []);
+  }, [sellerId]);
 
   const items = [
     {
@@ -68,7 +62,7 @@ function Dashboard() {
     },
     {
       icon: <AiOutlineShop style={{ color: "green" }} />,
-      title: "Products",
+      title: "Store",
       value: productCount
     },
   ];
