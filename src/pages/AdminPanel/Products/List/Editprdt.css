@@ -11,6 +11,60 @@
   justify-content: center;
   align-items: center;
 }
+/* Add these styles to your CSS file to adjust the dialog appearance */
+.edit-prdut {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.page-hd h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.page-cont {
+  padding: 1rem;
+}
+
+.thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.thumb img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+}
+
+.general {
+  margin-top: 1rem;
+}
+
+.inpt-fld {
+  display: flex;
+  flex-direction: column;
+}
+
+.inpt-fld label {
+  margin-top: 0.5rem;
+}
+
+.inpt-fld input, .inpt-fld select {
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+}
+
+.sum-btn {
+  margin-top: 1rem;
+}
+
+.sum-btn button {
+  padding: 0.5rem 1rem;
+}
 
 /* Edit Product Form Styles */
 .edit-prdut {
