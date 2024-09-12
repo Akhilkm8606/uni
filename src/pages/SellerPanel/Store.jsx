@@ -28,6 +28,12 @@ function Store({ onAddProductClick }) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [productIdToDelete, setProductIdToDelete] = useState(null);
   const [loading, setLoading] = useState(false);
+  const getImagePublicId = (imageUrl) => {
+    const urlParts = imageUrl.split('/');
+    const fileNameWithExtension = urlParts[urlParts.length - 1];
+    const [publicId] = fileNameWithExtension.split('.');
+    return publicId;
+  };
 
   useEffect(() => {
     dispatch(getProducts());
