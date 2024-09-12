@@ -173,7 +173,7 @@ console.log(users,'users');
                       </td>
                       <td className='product-date'>{formatDate(product.createdAt)}</td>
                       <td className='product-actions'>
-                        <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
+                      <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
                       </td>
                       <td className='product-actions'>
                         <MdDelete onClick={() => handleDeleteClick(product._id)} className='action-delete' />
