@@ -20,6 +20,7 @@ function Store({ onAddProductClick }) {
   // Retrieve user ID from Redux store
   const users = useSelector(state => state.auth.users);
   const sellerId = users?._id;
+console.log(sellerId);
 
   // Pagination calculation
   const pageCount = Math.ceil(products.length / productsPerPage);
@@ -36,7 +37,6 @@ function Store({ onAddProductClick }) {
       try {
         const response = await instance.get('/api/v1/products', { withCredentials: true });
         setProducts(response.data.products);
-        console.log(response.data.products);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
