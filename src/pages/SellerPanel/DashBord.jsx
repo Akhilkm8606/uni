@@ -37,6 +37,9 @@ function Dashboard() {
 
           setOrderCount(sellerOrders.length);
           setProductCount(sellerProducts.length);
+          console.log(orderCount,'orderCount');
+          console.log(productCount,'orderCount');
+          
 
           // Handle the response data for charts
           const salesLabels = monthlyData.map(item => item.month || 'Unknown');
