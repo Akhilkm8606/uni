@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Table } from 'react-bootstrap';
-import { MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
+import { MdDelete, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import '../AdminPanel/Products/List/ProductList.css';
 import ReactPaginate from 'react-paginate';
@@ -123,12 +123,12 @@ function Store({ onAddProductClick }) {
                 </thead>
                 <tbody>
                   {displayedProducts.map((product) => (
-                   <tr
-                   className='pdata-row'
-                   key={product._id}
-                   onClick={() => handleRowClick(product._id)}
-                   style={{ cursor: 'pointer' }}
-                 >
+                    <tr
+                      className='pdata-row'
+                      key={product._id}
+                      onClick={() => handleRowClick(product._id)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <td className='product-name'>{product.name}</td>
                       <td className='product-category'>{product.category}</td>
                       <td className='product-price'>{product.price}</td>
@@ -145,9 +145,8 @@ function Store({ onAddProductClick }) {
                         />
                       </td>
                       <td className='product-date'>{formatDate(product.createdAt)}</td>
-                     
                       <td className='product-actions'>
-                        <MdDelete onClick={() => handleDelete(product._id)} className='action-delete' />
+                        <MdDelete onClick={(e) => { e.stopPropagation(); handleDelete(product._id); }} className='action-delete' />
                       </td>
                     </tr>
                   ))}
