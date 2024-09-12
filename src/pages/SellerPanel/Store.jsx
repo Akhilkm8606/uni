@@ -8,7 +8,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import instance from '../../Instance/axios';
 import { DELETE_PRODUCT } from '../../Constants/ProductConstants';
-import EditProduct from '../AdminPanel/Products/List/EditProduct'; // Adjust path as needed
+import EditProduct from '../AdminPanel/Products/List/EditProduct'; 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+// Adjust path as needed
 
 function Store({ onAddProductClick }) {
   const dispatch = useDispatch();
@@ -83,17 +90,16 @@ console.log(users,'users');
     setOpenDeleteDialog(false);
     setProductIdToDelete(null);
   };
-  const handleDelete = async (productId) => {
+  const handleDeleteConfirm = async () => {
+    setLoading(true);
     try {
-      if (window.confirm('Are you sure you want to delete this product?')) {
-        await instance.delete(`/api/v1/product/${productId}`, { withCredentials: true });
-        setProducts(products.filter(product => product._id !== productId));
-        dispatch({
-          type: DELETE_PRODUCT,
-          payload: productId
-        });
-        toast.success('Product deleted successfully');
-      }
+      await instance.delete(`/api/v1/product/${productIdToDelete}`, { withCredentials: true });
+      setProducts(products.filter(product => product._id !== productId));
+      dispatch({
+        type: DELETE_PRODUCT,
+        payload: productIdToDelete
+      });
+      toast.success('Product deleted successfully');
     } catch (error) {
       console.error('Error deleting product:', error);
       toast.error('Failed to delete product');
