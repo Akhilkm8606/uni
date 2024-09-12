@@ -18,7 +18,7 @@ function Store({ onAddProductClick }) {
   const [editingProductId, setEditingProductId] = useState(null);
 
   // Retrieve user ID from Redux store
-  const users = useSelector(state => state.auth.users);
+  const users = useSelector(state => state.auth.user);
   const sellerId = users?._id;
 console.log(sellerId,'sellerId');
 console.log(users,'users');
