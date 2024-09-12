@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Table } from 'react-bootstrap';
 import { MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import '../AdminPanel/Products/List/ProductList.css';
 import ReactPaginate from 'react-paginate';
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,41 +15,43 @@ function Store({ onAddProductClick }) {
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 8;
   const [products, setProducts] = useState([]);
-  const [sellerId, setSellerId] = useState(null); // State for seller ID
   const [editingProductId, setEditingProductId] = useState(null);
+
+  // Retrieve user ID from Redux store
+  const users = useSelector(state => state.auth.users);
+  const sellerId = users?._id;
 
   // Pagination calculation
   const pageCount = Math.ceil(products.length / productsPerPage);
+
   const getImagePublicId = (imageUrl) => {
     const urlParts = imageUrl.split('/');
     const fileNameWithExtension = urlParts[urlParts.length - 1];
     const [publicId] = fileNameWithExtension.split('.');
     return publicId;
   };
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await instance.get('/api/v1/products', { withCredentials: true });
         setProducts(response.data.products);
         console.log(response.data.products);
-        
-        // Extract sellerId from response if needed
-        if (response.data.products.length > 0) {
-          setSellerId(response.data.products[0].sellerId); // Set seller ID (assuming all products have the same seller)
-        }
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
+
     fetchProducts();
   }, [dispatch]);
 
   // Filter products by sellerId
   const filteredProducts = sellerId
-    ? products.filter(product => product.sellerId === sellerId)
+    ? products.filter(product => product.userId === sellerId)
     : products;
- console.log(filteredProducts,'filteredProducts');
- 
+
+  console.log(filteredProducts, 'filteredProducts');
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
