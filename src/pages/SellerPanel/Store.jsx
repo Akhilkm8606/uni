@@ -20,7 +20,8 @@ function Store({ onAddProductClick }) {
   // Retrieve user ID from Redux store
   const users = useSelector(state => state.auth.users);
   const sellerId = users?._id;
-console.log(sellerId);
+console.log(sellerId,'sellerId');
+console.log(users,'users');
 
   // Pagination calculation
   const pageCount = Math.ceil(products.length / productsPerPage);
