@@ -15,27 +15,22 @@ function Store({ onAddProductClick }) {
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 8;
   const [products, setProducts] = useState([]);
-  const [seller, setSeller] = useState(null); // State for seller information
+  const [sellerId, setSellerId] = useState(null); // State for seller ID
   const [editingProductId, setEditingProductId] = useState(null);
-  const pageCount = Math.ceil(products.length / productsPerPage);
 
-  const getImagePublicId = (imageUrl) => {
-    const urlParts = imageUrl.split('/');
-    const fileNameWithExtension = urlParts[urlParts.length - 1];
-    const [publicId] = fileNameWithExtension.split('.');
-    return publicId;
-  };
+  // Pagination calculation
+  const pageCount = Math.ceil(products.length / productsPerPage);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await instance.get('/api/v1/products', { withCredentials: true });
         setProducts(response.data.products);
-        // Fetch seller info if needed
-        // Assuming each product has a sellerId
+        console.log(response.data.products);
+        
+        // Extract sellerId from response if needed
         if (response.data.products.length > 0) {
-          const sellerResponse = await instance.get(`/api/v1/seller/product/${response.data.products[0].sellerId}`, { withCredentials: true });
-          setSeller(sellerResponse.data.seller);
+          setSellerId(response.data.products[0].sellerId); // Set seller ID (assuming all products have the same seller)
         }
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -43,6 +38,11 @@ function Store({ onAddProductClick }) {
     };
     fetchProducts();
   }, [dispatch]);
+
+  // Filter products by sellerId
+  const filteredProducts = sellerId
+    ? products.filter(product => product.sellerId === sellerId)
+    : products;
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -75,20 +75,12 @@ function Store({ onAddProductClick }) {
   };
 
   const startIndex = pageNumber * productsPerPage;
-  const displayedProducts = products.slice(startIndex, startIndex + productsPerPage);
+  const displayedProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
 
   return (
     <>
       <div className='pd-container'>
         <h2 className='pd-heading'>PRODUCTS</h2>
-        {seller && (
-          <div className='seller-info'>
-            <h3>Seller Information</h3>
-            <p><strong>Name:</strong> {seller.name}</p>
-            <p><strong>Email:</strong> {seller.email}</p>
-            {/* Add more seller details as needed */}
-          </div>
-        )}
         <Row className='pd-row'>
           <div className='p-outer-div'>
             <div className='products-div'>
