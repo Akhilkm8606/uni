@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Table } from 'react-bootstrap';
-import { MdDelete, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
+import { MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import '../AdminPanel/Products/List/ProductList.css';
 import ReactPaginate from 'react-paginate';
@@ -20,16 +20,11 @@ function Store({ onAddProductClick }) {
   // Retrieve user ID from Redux store
   const users = useSelector(state => state.auth.user);
   const sellerId = users?._id;
-
-  console.log(sellerId, 'sellerId');
-  console.log(users, 'users');
+console.log(sellerId,'sellerId');
+console.log(users,'users');
 
   // Pagination calculation
-  const filteredProducts = sellerId
-    ? products.filter(product => product.userId === sellerId)
-    : products;
-  
-  const pageCount = Math.ceil(filteredProducts.length / productsPerPage);
+  const pageCount = Math.ceil(products.length / productsPerPage);
 
   const getImagePublicId = (imageUrl) => {
     const urlParts = imageUrl.split('/');
@@ -51,6 +46,13 @@ function Store({ onAddProductClick }) {
     fetchProducts();
   }, [dispatch]);
 
+  // Filter products by sellerId
+  const filteredProducts = sellerId
+    ? products.filter(product => product.userId === sellerId)
+    : products;
+
+  console.log(filteredProducts, 'filteredProducts');
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
@@ -60,7 +62,7 @@ function Store({ onAddProductClick }) {
     setPageNumber(selected);
   };
 
-  const handleRowClick = (id) => {
+  const handleEdit = (id) => {
     setEditingProductId(id);
   };
 
@@ -91,24 +93,22 @@ function Store({ onAddProductClick }) {
         <Row className='pd-row'>
           <div className='p-outer-div'>
             <div className='products-div'>
-              {pageCount > 1 && (
-                <ReactPaginate
-                  previousLabel={<MdSkipPrevious />}
-                  nextLabel={<MdSkipNext />}
-                  breakLabel={'...'}
-                  pageCount={pageCount}
-                  marginPagesDisplayed={2}
-                  pageRangeDisplayed={5}
-                  onPageChange={handlePageClick}
-                  containerClassName={'pagination'}
-                  activeClassName={'active'}
-                  pageClassName={'pagination-item'}
-                  previousClassName={'pagination-item'}
-                  nextClassName={'pagination-item'}
-                  breakClassName={'pagination-item'}
-                  disabledClassName={'disabled'}
-                />
-              )}
+              <ReactPaginate
+                previousLabel={<MdSkipPrevious />}
+                nextLabel={<MdSkipNext />}
+                breakLabel={'...'}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageClick}
+                containerClassName={'pagination'}
+                activeClassName={'active'}
+                pageClassName={'pagination-item'}
+                previousClassName={'pagination-item'}
+                nextClassName={'pagination-item'}
+                breakClassName={'pagination-item'}
+                disabledClassName={'disabled'}
+              />
               <Table striped bordered hover className='custom-p-table'>
                 <thead>
                   <tr>
@@ -123,12 +123,7 @@ function Store({ onAddProductClick }) {
                 </thead>
                 <tbody>
                   {displayedProducts.map((product) => (
-                    <tr
-                      className='pdata-row'
-                      key={product._id}
-                      onClick={() => handleRowClick(product._id)}
-                      style={{ cursor: 'pointer' }}
-                    >
+                    <tr className='pdata-row' key={product._id}>
                       <td className='product-name'>{product.name}</td>
                       <td className='product-category'>{product.category}</td>
                       <td className='product-price'>{product.price}</td>
@@ -146,7 +141,10 @@ function Store({ onAddProductClick }) {
                       </td>
                       <td className='product-date'>{formatDate(product.createdAt)}</td>
                       <td className='product-actions'>
-                        <MdDelete onClick={(e) => { e.stopPropagation(); handleDelete(product._id); }} className='action-delete' />
+                        <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
+                      </td>
+                      <td className='product-actions'>
+                        <MdDelete onClick={() => handleDelete(product._id)} className='action-delete' />
                       </td>
                     </tr>
                   ))}
