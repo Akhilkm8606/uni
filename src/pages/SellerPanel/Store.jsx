@@ -125,11 +125,7 @@ console.log(users,'users');
           />
         )}
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleCloseEdit} color="primary">
-          Close
-        </Button>
-      </DialogActions>
+     
     </Dialog>
           </>
         )}
