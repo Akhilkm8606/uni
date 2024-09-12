@@ -15,7 +15,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-// Adjust path as needed
 
 function Store({ onAddProductClick }) {
   const dispatch = useDispatch();
@@ -27,11 +26,8 @@ function Store({ onAddProductClick }) {
   const [productIdToDelete, setProductIdToDelete] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Retrieve user ID from Redux store
   const users = useSelector(state => state.auth.user);
   const sellerId = users?._id;
-console.log(sellerId,'sellerId');
-console.log(users,'users');
 
   // Pagination calculation
   const pageCount = Math.ceil(products.length / productsPerPage);
@@ -56,17 +52,15 @@ console.log(users,'users');
     fetchProducts();
   }, [dispatch]);
 
-  // Filter products by sellerId
   const filteredProducts = sellerId
     ? products.filter(product => product.userId === sellerId)
     : products;
-
-  console.log(filteredProducts, 'filteredProducts');
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
+
   const handleEdit = (id) => {
     setEditingProductId(id);
   };
@@ -79,8 +73,6 @@ console.log(users,'users');
     setPageNumber(selected);
   };
 
-  
-
   const handleDeleteClick = (productId) => {
     setProductIdToDelete(productId);
     setOpenDeleteDialog(true);
@@ -90,6 +82,7 @@ console.log(users,'users');
     setOpenDeleteDialog(false);
     setProductIdToDelete(null);
   };
+
   const handleDeleteConfirm = async () => {
     setLoading(true);
     try {
@@ -103,6 +96,10 @@ console.log(users,'users');
     } catch (error) {
       console.error('Error deleting product:', error);
       toast.error('Failed to delete product');
+    } finally {
+      setLoading(false);
+      setOpenDeleteDialog(false); // Close the delete dialog after deletion
+      setProductIdToDelete(null); // Reset the product ID
     }
   };
 
@@ -113,22 +110,21 @@ console.log(users,'users');
     <>
       <div className='pd-container'>
         <h2 className='pd-heading'>PRODUCTS</h2>
-        {editingProductId && (
-          <>
-           <Dialog open={!!editingProductId} onClose={handleCloseEdit} fullWidth maxWidth="md">
-      <DialogTitle>Edit Product</DialogTitle>
-      <DialogContent>
-        {editingProductId && (
-          <EditProduct
-            productId={editingProductId}
-            onClose={handleCloseEdit}
-          />
-        )}
-      </DialogContent>
-     
-    </Dialog>
-          </>
-        )}
+        <Dialog open={!!editingProductId} onClose={handleCloseEdit} fullWidth maxWidth="md">
+          <DialogTitle>Edit Product</DialogTitle>
+          <DialogContent>
+            {editingProductId && (
+              <EditProduct
+                productId={editingProductId}
+                onClose={handleCloseEdit}
+              />
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseEdit} color="primary">Close</Button>
+          </DialogActions>
+        </Dialog>
+
         <Row className='pd-row'>
           <div className='p-outer-div'>
             <div className='products-div'>
@@ -180,9 +176,7 @@ console.log(users,'users');
                       </td>
                       <td className='product-date'>{formatDate(product.createdAt)}</td>
                       <td className='product-actions'>
-                      <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
-                      </td>
-                      <td className='product-actions'>
+                        <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
                         <MdDelete onClick={() => handleDeleteClick(product._id)} className='action-delete' />
                       </td>
                     </tr>
@@ -193,7 +187,7 @@ console.log(users,'users');
           </div>
         </Row>
       </div>
-    
+
       <ToastContainer />
       <Dialog open={openDeleteDialog} onClose={handleDeleteCancel}>
         <DialogTitle>Confirm Deletion</DialogTitle>
@@ -205,7 +199,6 @@ console.log(users,'users');
           </Button>
         </DialogActions>
       </Dialog>
-
     </>
   );
 }
