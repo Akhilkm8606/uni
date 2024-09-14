@@ -18,7 +18,7 @@ function EditProfile({ open, handleClose }) {
   useEffect(() => {
     if (user) {
       setFormData({
-        username: user.username || '',
+        name: user.username || '',
         email: user.email || '',
         phone: user.phone || '',
       });
