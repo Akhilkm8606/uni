@@ -33,9 +33,9 @@ const userSlice = createSlice({
           },
           updateUsers: (state, action) => {
             const updatedUser = action.payload;
-            const index = state.users.findIndex(users => users._id === updatedUser._id);
+            const index = state.users.findIndex(user => user._id === updatedUser._id);
             if (index !== -1) {
-              state.users[index] = updatedUser; // Corrected from updateUser to updatedUser
+              state.users[index] = updatedUser; // Update the user in the list
             }
           },
           
