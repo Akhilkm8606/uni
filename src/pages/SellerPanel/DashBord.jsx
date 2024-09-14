@@ -15,14 +15,22 @@ function Dashboard() {
   const [orderData, setOrderData] = useState({ labels: [], values: [] });
   const [productData, setProductData] = useState({ labels: [], values: [] });
 
-  const users = useSelector(state => state.auth.user);
+  const users = useSelector(state => state.auth.user); // Get user from Redux state
   const sellerId = users?._id;
+  const token = users?.token; // Assuming the token is stored in the user object
 
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        console.log('Fetching dashboard data...');
-        const response = await instance.get('/api/v1/viewDashboard', { withCredentials: true });
+
+        // Make the request with the Authorization header if token is available
+        const response = await instance.get('/api/v1/viewDashboard', {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the request
+          },
+          withCredentials: true,
+        });
+        
 
         if (response.status === 200) {
           const dashboardData = response.data.dashboard || {};
@@ -46,13 +54,24 @@ function Dashboard() {
           toast.error('Failed to fetch dashboard data');
         }
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-        toast.error('Failed to fetch dashboard data');
+        if (error.response && error.response.status === 401) {
+          console.error('Unauthorized. Redirecting to login...');
+          toast.error('You need to log in to access the dashboard.');
+          // You can redirect to login here if needed
+        } else {
+          console.error('Error fetching dashboard data:', error);
+          toast.error('Failed to fetch dashboard data');
+        }
       }
     };
 
-    fetchDashboard();
-  }, [sellerId]);
+    // Check if sellerId exists before fetching the dashboard data
+    if (sellerId && token) {
+      fetchDashboard();
+    } else {
+      console.warn('User is not authenticated or token is missing.');
+    }
+  }, [sellerId, token]);
 
   const items = [
     {
