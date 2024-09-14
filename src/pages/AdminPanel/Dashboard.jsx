@@ -35,6 +35,8 @@ function Dashboard() {
           },
           withCredentials: true,
         });
+        console.log(response,'ppp');
+        
 
         if (response.status === 200) {
           const dashboardData = response.data.dashboard || {};
