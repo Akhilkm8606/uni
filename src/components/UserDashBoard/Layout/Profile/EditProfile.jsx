@@ -37,7 +37,7 @@ function EditProfile() {
     e.preventDefault();
   
     try {
-      const response = await instance.post(`/api/v1/updateUser/${userID}`, {
+      const response = await instance.put(`/api/v1/updateUser/${userID}`, {
         name,
         email,
         phone: phoneNumber
