@@ -1,14 +1,13 @@
-// components/AdminDashboard.jsx
 import React, { useEffect, useState } from 'react';
 import { AiOutlineShop, AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
-import { Card, Row, Col, Container } from 'react-bootstrap';
-import instance from '../../Instance/axios'; // Your Axios instance
+import { Card, Row, Col } from 'react-bootstrap';
 import '../../pages/AdminPanel/style.css';
+import { useSelector } from 'react-redux';
+import BarChart from '../SellerPanel/Barchart'; // Import BarChart component
+import instance from '../../Instance/axios'; // Import axios instance
 import { toast } from 'react-toastify';
-import BarChart from '../SellerPanel/Barchart'; // Import your BarChart component
-import { useSelector } from 'react-redux'; // Include redux
 
-function AdminDashboard() {
+function Dashboard() {
   const [orderCount, setOrderCount] = useState(0);
   const [productCount, setProductCount] = useState(0);
   const [userCount, setUserCount] = useState(0); // Total user count
@@ -17,7 +16,7 @@ function AdminDashboard() {
   const [productData, setProductData] = useState({ labels: [], values: [] });
 
   const users = useSelector(state => state.auth.user); // Get current user from Redux
-  const isAdminId = users?._id ; // Ensure the current user is admin
+  const isAdminId = users?._id; // Ensure the current user is admin
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -30,8 +29,8 @@ function AdminDashboard() {
       
       try {
         // Make the request with the Authorization header if token is available
-        const response = await instance.get(`/api/v1/viewDashboard/${isAdminId}`, {
-        headers: {
+        const response = await instance.get(`/api/v1/viewAdminDashboard/${isAdminId}`, {
+          headers: {
             Authorization: `Bearer ${token}`, // Include the token in the request
           },
           withCredentials: true,
@@ -46,34 +45,54 @@ function AdminDashboard() {
 
           setOrderCount(orders.length);
           setProductCount(products.length);
-          setUserCount(users.length); // Set total user count (buyers and sellers)
+          setUserCount(users.length);
 
-          // Prepare chart data
-          const chartLabels = monthlyData.map(item => item.month || 'Unknown');
-          const chartValues = monthlyData.map(item => item.value || 0);
+          const chartLabels = monthlyData.map(item => item.month);
+          const chartValues = monthlyData.map(item => item.value);
 
           setSalesData({ labels: chartLabels, values: chartValues });
-        } else {
-          toast.error('Failed to fetch dashboard data');
         }
       } catch (error) {
-        if (error.response && error.response.status === 401) {
-          toast.error('You need to log in to access the dashboard.');
-        } else {
-          toast.error('Failed to fetch dashboard data');
-        }
+        console.error('Error fetching dashboard data:', error);
+        toast.error('Failed to fetch dashboard data');
       }
     };
 
-    // Ensure admin role before fetching the data
     if (isAdminId) {
       fetchDashboard();
-    } else {
-      toast.error('You are not authorized to view this page.');
     }
   }, [isAdminId]);
 
-  // Items to display in cards
+  // Simulated data for fallback if API fails
+  const simulatedSalesData = [
+    { month: 'January', value: 5000 },
+    { month: 'February', value: 6000 },
+    { month: 'March', value: 7000 },
+    // Add other months...
+  ];
+
+  const simulatedOrderData = [
+    { month: 'January', count: 150 },
+    { month: 'February', count: 170 },
+    // Add other months...
+  ];
+
+  const simulatedProductData = [
+    { month: 'January', count: 100 },
+    { month: 'February', count: 120 },
+    // Add other months...
+  ];
+
+  // Use simulated data if no API data is available
+  const salesLabels = salesData.labels.length ? salesData.labels : simulatedSalesData.map(item => item.month);
+  const salesValues = salesData.values.length ? salesData.values : simulatedSalesData.map(item => item.value);
+
+  const orderLabels = orderData.labels.length ? orderData.labels : simulatedOrderData.map(item => item.month);
+  const orderValues = orderData.values.length ? orderData.values : simulatedOrderData.map(item => item.count);
+
+  const productLabels = productData.labels.length ? productData.labels : simulatedProductData.map(item => item.month);
+  const productValues = productData.values.length ? productData.values : simulatedProductData.map(item => item.count);
+
   const items = [
     {
       icon: <AiOutlineShoppingCart style={{ color: "red" }} />,
@@ -87,31 +106,27 @@ function AdminDashboard() {
     },
     {
       icon: <AiOutlineShop style={{ color: "green" }} />,
-      title: "Products",
+      title: "Store",
       value: productCount
     },
   ];
 
   return (
-    <div className='admin-dashboard'>
-      <Container fluid>
-        <Row className="mb-4">
-          <Col>
-            <h2 className="dashboard-title text-center">ADMIN DASHBOARD</h2>
-          </Col>
-        </Row>
-
-        {/* Cards Section */}
-        <Row className="card-Row mb-4">
+    <div className='container'>
+      <Row>
+        <h2>DASHBOARD</h2>
+      </Row>
+      <Row>
+        <Row className='card-Row'>
           {items.map((item, index) => (
             <Col key={index} md={4}>
               <div className='card-container'>
-                <Card className='dashboard-card'>
+                <Card className='card'>
                   <Card.Body className='card-body'>
                     <span className='icon'>{item.icon}</span>
                     <div className='items'>
-                      <span className="item-title">{item.title}</span>
-                      <span className="item-value">{item.value.toLocaleString()}</span>
+                      <span>{item.title}</span>
+                      <span>{item.value.toLocaleString()}</span>
                     </div>
                   </Card.Body>
                 </Card>
@@ -119,34 +134,14 @@ function AdminDashboard() {
             </Col>
           ))}
         </Row>
-
-        {/* Charts Section */}
-        <Row className="charts-section">
-          <Col md={6} className="mb-4">
-            <Card className="chart-card">
-              <Card.Body>
-                <BarChart title="Sales Data" data={salesData} />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={6} className="mb-4">
-            <Card className="chart-card">
-              <Card.Body>
-                <BarChart title="Order Data" data={orderData} />
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={12} className="mb-4">
-            <Card className="chart-card">
-              <Card.Body>
-                <BarChart title="Product Data" data={productData} />
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+      </Row>
+      <div>
+        <BarChart title="Sales Data" data={{ labels: salesLabels, values: salesValues }} />
+        <BarChart title="Order Data" data={{ labels: orderLabels, values: orderValues }} />
+        <BarChart title="Product Data" data={{ labels: productLabels, values: productValues }} />
+      </div>
     </div>
   );
 }
 
-export default AdminDashboard;
+export default Dashboard;
