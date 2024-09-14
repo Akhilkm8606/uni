@@ -7,7 +7,7 @@ import instance from '../../../../Instance/axios';
 function EditProfile({ open, handleClose }) {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
-  const userID = users?._id;
+  const userID = user?._id;
 
   const [formData, setFormData] = useState({
     username: '',
