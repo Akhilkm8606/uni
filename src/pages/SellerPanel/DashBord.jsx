@@ -21,14 +21,14 @@ function Dashboard() {
   useEffect(() => {
     const fetchDashboard = async () => {
       const token = localStorage.getItem('token');
-    console.log(token, 'token');
+      console.log(token, 'token');
     
-    if (!token) {
-      toast.error('No authentication token found');
-      return;
-    }
+      if (!token) {
+        toast.error('No authentication token found');
+        return;
+      }
+      
       try {
-
         // Make the request with the Authorization header if token is available
         const response = await instance.get('/api/v1/viewDashboard', {
           headers: {
@@ -36,7 +36,6 @@ function Dashboard() {
           },
           withCredentials: true,
         });
-
 
         if (response.status === 200) {
           const dashboardData = response.data.dashboard || {};
@@ -72,12 +71,12 @@ function Dashboard() {
     };
 
     // Check if sellerId exists before fetching the dashboard data
-    if (sellerId && token) {
+    if (sellerId) {
       fetchDashboard();
     } else {
       console.warn('User is not authenticated or token is missing.');
     }
-  }, [sellerId, token]);
+  }, [sellerId]); // Depend on sellerId to trigger the effect
 
   const items = [
     {
