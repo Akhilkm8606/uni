@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { userAuthentic } from '../../../Redux/Slice/user';
 import instance from '../../../../Instance/axios';
+import { updateUsers } from '../../../Redux/Slice/user';
+
 
 function EditProfile() {
   const [name, setName] = useState('');
@@ -43,17 +45,16 @@ function EditProfile() {
         phone: phoneNumber
       }, { withCredentials: true });
 
-      console.log(id,'o');
-      console.log(response,'o');
       
       
       setMessage(response.data.message);
-      
-      if (response.data.success) {
+      dispatch(updateUsers(response.data.user));
+            if (response.data.success) {
         toast.success(response.data.message, {
           autoClose: 3000,
           position: "top-center"
         });
+        
         navigate('/MyAccount');
       }
     } catch (error) {
