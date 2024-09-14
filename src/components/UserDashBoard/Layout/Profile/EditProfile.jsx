@@ -25,7 +25,7 @@ function EditProfile({ open, handleClose, user }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await instance.put(`/api/v1/users/${user._id}`, formData, {
+      const response = await instance.put(`/api/v1/updateUser/${user._id}`, formData, {
         withCredentials: true,
       });
       dispatch(updateUser(response.data.user));
