@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import instance from '../../../../Instance/axios';
 import EditProfile from './EditProfile'; // Adjust the import path as necessary
+import { Button } from '@mui/material';
 
 function Profile() {
   const products = useSelector(state => state.data.products);
