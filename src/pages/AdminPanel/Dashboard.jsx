@@ -41,7 +41,7 @@ function Dashboard() {
         },
         withCredentials: true,
       });
-      const dashboardData = res.data.dashboard;
+      const dashboardData = response.data.dashboard;
       console.log(dashboardData);
   
       const orders = dashboardData.orders;
