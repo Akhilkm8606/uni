@@ -50,13 +50,14 @@ export const productReducer = (state = initialState, action) => {
         loading: true,
       };
     case UPDATE_PRODUCT_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        products: state.products.map(product =>
-          product._id === action.payload._id ? action.payload : product
-        ),
-      };
+  return {
+    ...state,
+    loading: false,
+    products: state.products.map(product =>
+      product._id === action.payload._id ? action.payload : product
+    ),
+  };
+
     case UPDATE_PRODUCT_FAILURE:
       return {
         ...state,

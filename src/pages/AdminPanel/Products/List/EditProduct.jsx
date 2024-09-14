@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import CloseBtn from '../../../../components/Buttons/CloseBtn';
 import './Editprdt.css';
 import { updateProduct } from '../../../../actions/ProductAction'; // Adjust the import path
+import { getProducts } from '../../../../actions/ProductAction'; // Adjust the import path if necessary
 
 function EditProduct({ productId, onClose }) {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function EditProduct({ productId, onClose }) {
     imagePreview: ''
   });
   const [loading, setLoading] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0); // State to force re-render
 
   useEffect(() => {
     if (products.length && categories.length) {
@@ -33,7 +35,7 @@ function EditProduct({ productId, onClose }) {
 
       const fetchProduct = products.find((prd) => prd._id === productId);
       if (fetchProduct) {
-        const categoryObj = categoryOptions.find(cat => cat.name === fetchProduct.category);
+        const categoryObj = categoryOptions.find(cat => cat.id === fetchProduct.categoryId);
         setSelectedProduct(fetchProduct);
         setFormData({
           name: fetchProduct.name,
@@ -43,13 +45,13 @@ function EditProduct({ productId, onClose }) {
           description: fetchProduct.description,
           features: fetchProduct.features,
           images: null,
-          imagePreview: fetchProduct.images
+          imagePreview: fetchProduct.images?.[0]
             ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(fetchProduct.images[0])}`
             : ''
         });
       }
     }
-  }, [productId, products, categories]);
+  }, [productId, products, categories, refreshKey]); // Add refreshKey here
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -66,10 +68,6 @@ function EditProduct({ productId, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
-    // Optimistically update the local state
-    const updatedProduct = { ...formData, _id: productId };
-  
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
@@ -78,23 +76,27 @@ function EditProduct({ productId, onClose }) {
       formDataToSend.append('quantity', formData.quantity);
       formDataToSend.append('description', formData.description);
       formDataToSend.append('features', formData.features);
-  
+
       if (formData.images) {
         formDataToSend.append('images', formData.images);
       }
-  
-      // Dispatch the update action
+
       await dispatch(updateProduct(productId, formDataToSend));
-  
+
       toast.success('Product updated successfully');
-      onClose(); // Close the modal or form after success
+
+      // Fetch all products again after update
+      dispatch(getProducts());
+
+      setRefreshKey((prevKey) => prevKey + 1); // Manually trigger a re-render
+
+      onClose();
     } catch (error) {
       toast.error('Failed to update product. Please try again.');
     } finally {
       setLoading(false);
     }
   };
-  
 
   const getImagePublicId = (imageUrl) => {
     const urlParts = imageUrl.split('/');
