@@ -38,7 +38,7 @@ function Dashboard() {
         });
         
 
-        console.log(response);
+        console.log(response,'pppp');
         
         if (response.status === 200) {
           const dashboardData = response.data.dashboard || {};
