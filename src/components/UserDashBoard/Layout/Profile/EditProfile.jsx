@@ -37,11 +37,15 @@ function EditProfile() {
     e.preventDefault();
   
     try {
-      const response = await instance.put(`/api/v1/updateUser/${userID}`, {
+      const response = await instance.put(`/api/v1/updateUser/${id}`, {
         name,
         email,
         phone: phoneNumber
       }, { withCredentials: true });
+
+      console.log(id,'o');
+      console.log(response,'o');
+      
       
       setMessage(response.data.message);
       
