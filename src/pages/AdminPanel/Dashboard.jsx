@@ -66,12 +66,12 @@ function AdminDashboard() {
     };
 
     // Ensure admin role before fetching the data
-    if (isAdmin) {
+    if (isAdminId) {
       fetchDashboard();
     } else {
       toast.error('You are not authorized to view this page.');
     }
-  }, [isAdmin]);
+  }, [isAdminId]);
 
   // Items to display in cards
   const items = [
