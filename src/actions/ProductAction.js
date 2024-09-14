@@ -76,6 +76,8 @@ export const clearError = () => async (dispatch) => {
 // actions/ProductAction.js
 
 export const updateProduct = (productId, formData) => async (dispatch) => {
+  console.log(formData);
+  
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
