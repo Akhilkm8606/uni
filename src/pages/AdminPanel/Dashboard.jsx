@@ -10,11 +10,13 @@ import { toast } from 'react-toastify';
 function Dashboard() {
   const orders = useSelector(state => state.orders);
   const products = useSelector(state => state.data.products);
-  const users = useSelector(state => state.auth.user);
+  const users = useSelector(state => state.auth.user) || []; // Default to an empty array
   const admin = users?._id;
 
   // Filter users
   const user = users.filter(user => user.role === 'user');
+  console.log('Users:', user);
+
   const seller = users.filter(user => user.role === 'seller');
   const allUsers = [...user, ...seller];
 
