@@ -10,7 +10,7 @@ function EditProfile({ open, handleClose }) {
   const userID = user?._id;
 
   const [formData, setFormData] = useState({
-    username: '',
+    name: '',
     email: '',
     phone: '',
   });
@@ -18,7 +18,7 @@ function EditProfile({ open, handleClose }) {
   useEffect(() => {
     if (user) {
       setFormData({
-        name: user.username || '',
+        username: user.username || '',
         email: user.email || '',
         phone: user.phone || '',
       });
