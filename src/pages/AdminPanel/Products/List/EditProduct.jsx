@@ -66,6 +66,10 @@ function EditProduct({ productId, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+  
+    // Optimistically update the local state
+    const updatedProduct = { ...formData, _id: productId };
+  
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
@@ -74,28 +78,23 @@ function EditProduct({ productId, onClose }) {
       formDataToSend.append('quantity', formData.quantity);
       formDataToSend.append('description', formData.description);
       formDataToSend.append('features', formData.features);
-
+  
       if (formData.images) {
         formDataToSend.append('images', formData.images);
       }
-
-      console.log(formData,'klk');
-      console.log(formDataToSend ,'hsjh');
-      
-      for (let [key, value] of formDataToSend.entries()) {
-        console.log(`${key}:`, value);
-      }
-
-      dispatch(updateProduct(productId, formDataToSend));
-
+  
+      // Dispatch the update action
+      await dispatch(updateProduct(productId, formDataToSend));
+  
       toast.success('Product updated successfully');
-      onClose();
+      onClose(); // Close the modal or form after success
     } catch (error) {
       toast.error('Failed to update product. Please try again.');
     } finally {
       setLoading(false);
     }
   };
+  
 
   const getImagePublicId = (imageUrl) => {
     const urlParts = imageUrl.split('/');
