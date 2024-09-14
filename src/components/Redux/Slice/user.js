@@ -32,7 +32,9 @@ const userSlice = createSlice({
       
           },
           updateUser: (state, action) => {
-            state.user = action.payload; // Update the single user object
+            if (state.user && state.user._id === action.payload._id) {
+              state.user = { ...state.user, ...action.payload };
+            }
           },
           updateUsers: (state, action) => {
             const updatedUser = action.payload;

@@ -8,7 +8,7 @@ import instance from '../../../../Instance/axios';
 function Profile() {
   const products = useSelector(state => state.data.products);
   const user = useSelector(state => state.auth.user);
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState([]);
