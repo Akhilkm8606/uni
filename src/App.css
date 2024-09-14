@@ -3,18 +3,24 @@
   padding: 0;
   box-sizing: border-box;
 }
-body{
-     height: fit-content;
-    }
+
 img {
   width: 100%;
   max-width: 100%;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   font-weight: 600;
   font-style: normal;
 }
 p, a, li, span {
-  font-family: Arial, sans-serif; 
+  /* font-family: Arial, sans-serif;  */
+}
+
+body {
+  font-family: 'Poppins', sans-serif; /* Modern, clean font */
+  background-color: #f8f9fa;
+  color: #333;
+  height: fit-content;
+
 }

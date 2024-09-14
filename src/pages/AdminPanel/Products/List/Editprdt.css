@@ -1,135 +1,173 @@
-/* Overlay Styles */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   z-index: 999;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Edit Product Form Styles */
+/* Edit Product Modal */
 .edit-prdut {
   background-color: #fff;
   z-index: 1000;
-  padding: 20px;
+  padding: 40px; /* Increased padding for more space */
   width: 90%;
-  max-width: 800px;
-  max-height: 90vh; /* Adjusted for better scrolling within viewport */
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  overflow-y: auto; /* Enables scrolling for long forms */
+  max-width: 700px;
+  max-height: 85vh;
+  border-radius: 12px; /* Softer border radius */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Larger shadow for depth */
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s ease-in-out; /* Smooth animations */
+  transform: scale(1); /* Default scaling for animation */
 }
 
-/* Header Styles */
+.edit-prdut:hover {
+  transform: scale(1.02); /* Slight hover effect */
+}
+
+/* Header */
 .page-hd {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(158, 152, 152, 0.2), 0 6px 20px rgba(221, 214, 214, 0.19);
+  border-radius: 10px;
+  background-color: #f1f1f1;
 }
 
 .page-hd h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1d3d68;
   margin: 0;
 }
 
-/* Thumbnail Styles */
+/* Thumbnail */
 .thumb {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .thumb img {
-  max-width: 70%;
+  max-width: 80%;
   height: auto;
+  border-radius: 10px;
   cursor: pointer;
-  border-radius: 5px;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .thumb img:hover {
   transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
-/* Form Container Styles */
+/* Form */
 .page-cont {
   display: flex;
-  flex-direction: column; /* Better layout on small screens */
+  flex-direction: column;
   gap: 30px;
 }
 
-/* General Section Styles */
+/* General Section */
 .general {
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .general h3 {
-  margin-top: 0;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: #1d3d68;
 }
 
-/* Input Field Styles */
+/* Input Fields */
 .inpt-fld {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Space between fields */
+  gap: 15px;
 }
 
 .inpt-fld label {
-  margin-bottom: 5px;
   font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
 }
 
 .inpt-fld input,
 .inpt-fld select {
   padding: 12px;
-  border-radius: 5px;
+  border-radius: 8px;
   border: 1px solid #ddd;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  background-color: #f7f7f7;
 }
 
 .inpt-fld input:focus,
 .inpt-fld select:focus {
-  border-color: #007bff;
-  outline: none;
+  border-color: #1d3d68;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(29, 61, 104, 0.3);
 }
 
-/* Adjustments for Different Input Types */
+.inpt-fld input::placeholder,
+.inpt-fld select {
+  color: #999;
+}
+
 .inpt-fld input[name="description"] {
-  padding: 20px;
-  height: auto; /* Adjusts height based on content */
+  height: auto;
+  min-height: 60px;
 }
 
-/* Submit Button Styles */
+/* Submit Button */
 .sum-btn {
   display: flex;
   justify-content: center;
 }
 
 .sum-btn button {
-  width: 250px;
-  padding: 10px;
-  border-radius: 10px;
-  color: #f5f5f5;
+  width: 100%;
+  max-width: 250px;
+  padding: 12px 20px;
+  border-radius: 8px;
   background-color: #1d3d68;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .sum-btn button:hover {
   background-color: #0056b3;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .edit-prdut {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .thumb img {
+    max-width: 100%;
+  }
 }
