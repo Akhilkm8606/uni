@@ -30,7 +30,7 @@ function AdminDashboard() {
       
       try {
         // Make the request with the Authorization header if token is available
-        const response = await instance.get(`/api/v1/adminDashboard`, {
+        const response = await instance.get(`/api/v1/viewDashboard`, {
           headers: {
             Authorization: `Bearer ${token}`, // Include the token in the request
           },
