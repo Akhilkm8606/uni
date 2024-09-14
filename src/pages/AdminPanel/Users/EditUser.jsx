@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { updateUsers } from '../../../components/Redux/Slice/user';
 import instance from '../../../Instance/axios';
@@ -12,13 +12,10 @@ function EditUser({ user, onClose }) {
     const [phoneNumber, setPhoneNumber] = useState(user.phone || '');
     const [selectedRole, setSelectedRole] = useState(user.role || '');
     const [selectedStatus, setSelectedStatus] = useState(user.status || '');
-    const [profileImage, setProfileImage] = useState(user.profileImage || ''); 
-
-    const users = useSelector(state => state.auth.user); // Get user from Redux state
-    const userID = users?._id;
+    const [profileImage, setProfileImage] = useState(user.profileImage || ''); // State for profile image
 
     useEffect(() => {
-        setProfileImage(user.profileImage || 'https://source.unsplash.com/random/?superbike');
+        setProfileImage(user.profileImage || 'https://source.unsplash.com/random/?superbike'); // Update profile image when user changes
     }, [user]);
 
     const handleNameChange = (e) => setName(e.target.value);
@@ -44,18 +41,13 @@ function EditUser({ user, onClose }) {
         }
 
         try {
-            console.log(userID,'user');
-            
-            const response = await instance.put(`/api/v1/updateUser/${userID}`, {
+            const response = await instance.put(`/api/v1/updateUser/${user._id}`, {
                 name,
                 email,
                 phone: phoneNumber,
                 role: selectedRole,
                 status: selectedStatus
             }, { withCredentials: true });
-
-            console.log(response,'ppp');
-            
             dispatch(updateUsers(response.data.user));
             if (response.data.success) {
                 toast.success(response.data.message, {
@@ -65,7 +57,7 @@ function EditUser({ user, onClose }) {
                 onClose(); // Close the dialog
             }
         } catch (error) {
-            toast.error(error.response?.data?.message || "An error occurred", {
+            toast.error(error.response.data.message, {
                 autoClose: 3000,
                 position: "top-center"
             });
@@ -74,7 +66,7 @@ function EditUser({ user, onClose }) {
 
     return (
         <div className="App">
-            <CloseBtn onClose={onClose} />
+            <CloseBtn onClose={onClose} /> {/* Make sure CloseBtn can handle onClose */}
             <form className='user-form' onSubmit={handleSubmit}>
                 <div className='hd'>
                     <h3>Edit User</h3>
@@ -128,7 +120,7 @@ function EditUser({ user, onClose }) {
             </form>
             <ToastContainer />
         </div>
-    );
+    )
 }
 
 export default EditUser;

@@ -17,6 +17,9 @@ function EditProfile() {
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
+  const users = useSelector(state => state.auth.user); // Get user from Redux state
+  const userID = users?._id;
+
 
   useEffect(() => {
     if (user) {
@@ -34,7 +37,7 @@ function EditProfile() {
     e.preventDefault();
   
     try {
-      const response = await instance.post(`/api/v1/updateUser/${id}`, {
+      const response = await instance.post(`/api/v1/updateUser/${userID}`, {
         name,
         email,
         phone: phoneNumber
