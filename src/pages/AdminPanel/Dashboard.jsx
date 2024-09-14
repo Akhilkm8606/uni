@@ -17,7 +17,7 @@ function AdminDashboard() {
   const [productData, setProductData] = useState({ labels: [], values: [] });
 
   const users = useSelector(state => state.auth.user); // Get current user from Redux
-  const isAdmin = users?.role === 'admin'; // Ensure the current user is admin
+  const isAdminId = users?._id ; // Ensure the current user is admin
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -30,7 +30,7 @@ function AdminDashboard() {
       
       try {
         // Make the request with the Authorization header if token is available
-        const response = await instance.get(`/api/v1/viewDashboard/${sellerId}`, {
+        const response = await instance.get(`/api/v1/viewDashboard/${isAdminId}`, {
         headers: {
             Authorization: `Bearer ${token}`, // Include the token in the request
           },
