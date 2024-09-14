@@ -10,7 +10,8 @@ import { toast } from 'react-toastify';
 function Dashboard() {
   const orders = useSelector(state => state.orders);
   const products = useSelector(state => state.data.products);
-  const users = useSelector(state => state.auth.users);
+  const users = useSelector(state => state.auth.user);
+  const admin = users?._id;
 
   // Filter users
   const user = users.filter(user => user.role === 'user');
@@ -22,14 +23,24 @@ function Dashboard() {
   const [salesData, setSalesData] = useState({ labels: [], values: [] });
   const [orderData, setOrderData] = useState({ labels: [], values: [] });
   const [productData, setProductData] = useState({ labels: [], values: [] });
-
-  // Fetch dashboard data
-  const fetchDashboard = async () => {
-    try {
-      const res = await instance.get('/api/v1/viewAdminDashboard', {
-        withCredentials: true
-      });
   
+  // Fetch dashboard data
+    const fetchDashboard = async () => {
+      const token = localStorage.getItem('token');
+      console.log(token, 'token');
+    
+      if (!token) {
+        toast.error('No authentication token found');
+        return;
+      }
+    try {
+      const response = await instance.get(`/api/v1/viewAdminDashboard/${admin}`, {
+
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the request
+        },
+        withCredentials: true,
+      });
       const dashboardData = res.data.dashboard;
       console.log(dashboardData);
   
