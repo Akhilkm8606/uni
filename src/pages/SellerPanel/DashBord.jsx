@@ -17,10 +17,16 @@ function Dashboard() {
 
   const users = useSelector(state => state.auth.user); // Get user from Redux state
   const sellerId = users?._id;
-  const token = users?.token; // Assuming the token is stored in the user object
 
   useEffect(() => {
     const fetchDashboard = async () => {
+      const token = localStorage.getItem('token');
+    console.log(token, 'token');
+    
+    if (!token) {
+      toast.error('No authentication token found');
+      return;
+    }
       try {
 
         // Make the request with the Authorization header if token is available
@@ -30,7 +36,7 @@ function Dashboard() {
           },
           withCredentials: true,
         });
-        
+
 
         if (response.status === 200) {
           const dashboardData = response.data.dashboard || {};
