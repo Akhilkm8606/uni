@@ -7,7 +7,6 @@ import '../../pages/AdminPanel/style.css';
 import { toast } from 'react-toastify';
 import BarChart from '../SellerPanel/Barchart'; // Import your BarChart component
 import { useSelector } from 'react-redux'; // Include redux
-import '../../pages/AdminPanel/style.css';
 
 function AdminDashboard() {
   const [orderCount, setOrderCount] = useState(0);
