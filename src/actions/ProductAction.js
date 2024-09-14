@@ -73,13 +73,14 @@ export const clearError = () => async (dispatch) => {
 };
 
 
-// actions/ProductAction.js
 
+
+
+// Update Product Action
 export const updateProduct = (productId, formData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
-    // Make the API request
     const response = await instance.put(`/api/v1/product/edit/${productId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -89,7 +90,7 @@ export const updateProduct = (productId, formData) => async (dispatch) => {
 
     dispatch({
       type: UPDATE_PRODUCT_SUCCESS,
-      payload: response.data,
+      payload: response.data.product, // Ensure you're sending back updated product data
     });
   } catch (error) {
     dispatch({
@@ -98,6 +99,30 @@ export const updateProduct = (productId, formData) => async (dispatch) => {
     });
   }
 };
+
+// Fetch Product by ID Action
+export const fetchProductById = (productId) => async (dispatch) => {
+  try {
+    dispatch({ type: FETCH_PRODUCT_REQUEST });
+
+    const response = await axios.get(`/api/v1/product/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    dispatch({
+      type: FETCH_PRODUCT_SUCCESS,
+      payload: response.data.product,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_PRODUCT_FAILURE,
+      payload: error.response?.data?.message || error.message,
+    });
+  }
+};
+
 
 
 // Action to clear errors

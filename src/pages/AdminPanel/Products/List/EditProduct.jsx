@@ -1,15 +1,14 @@
-// components/EditProduct.jsx
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import CloseBtn from '../../../../components/Buttons/CloseBtn';
 import './Editprdt.css';
-import { updateProduct } from '../../../../actions/ProductAction'; // Adjust the import path
+import { updateProduct, fetchProductById } from '../../../../actions/ProductAction';
 
 function EditProduct({ productId, onClose }) {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.data.products);
-  const categories = useSelector((state) => state.category.category);
+  const products = useSelector((state) => state.product.products);
+  const categories = useSelector((state) => state.category.categories);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [formData, setFormData] = useState({
@@ -81,8 +80,11 @@ function EditProduct({ productId, onClose }) {
       console.log(formData, 'klk');
       console.log(formDataToSend, 'hsjh');
 
-      // Dispatch the update action
+      // Dispatch the update action and wait for it to complete
       await dispatch(updateProduct(productId, formDataToSend));
+
+      // Optionally refetch the product to ensure the local state is updated
+      await dispatch(fetchProductById(productId));
 
       toast.success('Product updated successfully');
       onClose();
