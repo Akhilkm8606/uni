@@ -31,6 +31,9 @@ const userSlice = createSlice({
             state.users = state.users.filter(users => users._id !== userDelete);
       
           },
+          updateUser: (state, action) => {
+            state.user = action.payload; // Update the single user object
+          },
           updateUsers: (state, action) => {
             const updatedUser = action.payload;
             const index = state.users.findIndex(user => user._id === updatedUser._id);
@@ -43,5 +46,5 @@ const userSlice = createSlice({
     }
 });
 
-export const { userAuthentic, userLogOut, setAllUsers,deleteUser,updateUsers } = userSlice.actions;
+export const { userAuthentic, userLogOut, setAllUsers,deleteUser,updateUsers,updateUser } = userSlice.actions;
 export default userSlice.reducer;

@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { userAuthentic } from '../../../Redux/Slice/user';
 import instance from '../../../../Instance/axios';
-import { updateUsers } from '../../../Redux/Slice/user';
+import { updateUser } from '../../../Redux/Slice/user';
 
 
 function EditProfile() {
@@ -48,8 +48,8 @@ function EditProfile() {
       
       
       setMessage(response.data.message);
-      dispatch(updateUsers(response.data.user));
             if (response.data.success) {
+              dispatch(updateUser(response.data.user));
         toast.success(response.data.message, {
           autoClose: 3000,
           position: "top-center"
