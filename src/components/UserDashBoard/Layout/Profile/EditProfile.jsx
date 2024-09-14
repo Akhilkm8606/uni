@@ -7,7 +7,7 @@ import instance from '../../../../Instance/axios';
 
 function EditProfile({ open, handleClose, user }) {
   const [formData, setFormData] = useState({
-    uname: user.username || '',
+    name: user.username || '',
     email: user.email || '',
     phone: user.phone || '',
   });
