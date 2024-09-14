@@ -8,6 +8,11 @@ import { IoMdHome, IoMdNotifications } from 'react-icons/io';
 import { userLogOut } from '../Redux/Slice/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 
 function Header({ handleOptionClick }) {
   const dispatch = useDispatch();
@@ -16,6 +21,11 @@ function Header({ handleOptionClick }) {
   
   const [profileState, setProfileState] = useState({
     card: false,
+    msg: false,
+    nty: false,
+  });
+
+  const [dialogOpen, setDialogOpen] = useState({
     msg: false,
     nty: false,
   });
@@ -37,6 +47,14 @@ function Header({ handleOptionClick }) {
     }));
   };
 
+  const openDialog = (type) => {
+    setDialogOpen((prev) => ({ ...prev, [type]: true }));
+  };
+
+  const closeDialog = (type) => {
+    setDialogOpen((prev) => ({ ...prev, [type]: false }));
+  };
+
   return (
     <div className='PanelHeader'>
       <div className='profile'>
@@ -50,11 +68,31 @@ function Header({ handleOptionClick }) {
       <div className='header-right'>
         <Link to={"/"}><IoMdHome className='icon-Home' /></Link>
 
-        <AiOutlineMail onClick={() => handleProfile('msg')} className='icon-user' />
-        {profileState.msg && <div className='messages'>Message Section</div>}
+        <AiOutlineMail onClick={() => openDialog('msg')} className='icon-user' />
+        <Dialog open={dialogOpen.msg} onClose={() => closeDialog('msg')}>
+          <DialogTitle>Messages</DialogTitle>
+          <DialogContent>
+            <p>Message Section</p>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => closeDialog('msg')} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-        <IoMdNotifications onClick={() => handleProfile('nty')} className='icon-user' />
-        {profileState.nty && <div className='notification'>Notification Section</div>}
+        <IoMdNotifications onClick={() => openDialog('nty')} className='icon-user' />
+        <Dialog open={dialogOpen.nty} onClose={() => closeDialog('nty')}>
+          <DialogTitle>Notifications</DialogTitle>
+          <DialogContent>
+            <p>Notification Section</p>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => closeDialog('nty')} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         <FaCircleUser onClick={() => handleProfile('card')} className='icon-user' />
         {profileState.card && (
