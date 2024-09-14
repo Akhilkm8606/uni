@@ -9,14 +9,9 @@ import {
   PRODUCTS_DETAILS_SUCCESS,
   PRODUCTS_DETAILS_FAILURE,
 
- 
-
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAILURE,
-  FETCH_PRODUCT_REQUEST,
-  FETCH_PRODUCT_SUCCESS,
-  FETCH_PRODUCT_FAILURE,
 
   CLEAR_ERRORS,
 } from "../Constants/ProductConstants";
@@ -78,13 +73,14 @@ export const clearError = () => async (dispatch) => {
 };
 
 
-
+// actions/ProductAction.js
 
 export const updateProduct = (productId, formData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
-    const response = await axios.put(`/api/v1/product/edit/${productId}`, formData, {
+    // Make the API request
+    const response = await instance.put(`/api/v1/product/edit/${productId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${localStorage.getItem('token')}` // Include token if needed
@@ -93,7 +89,7 @@ export const updateProduct = (productId, formData) => async (dispatch) => {
 
     dispatch({
       type: UPDATE_PRODUCT_SUCCESS,
-      payload: response.data.product, // Ensure you're sending back updated product data
+      payload: response.data,
     });
   } catch (error) {
     dispatch({
@@ -103,25 +99,5 @@ export const updateProduct = (productId, formData) => async (dispatch) => {
   }
 };
 
-// Fetch Product by ID Action
-export const fetchProductById = (productId) => async (dispatch) => {
-  try {
-    dispatch({ type: FETCH_PRODUCT_REQUEST });
 
-    const response = await axios.get(`/api/v1/product/${productId}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-
-    dispatch({
-      type: FETCH_PRODUCT_SUCCESS,
-      payload: response.data.product,
-    });
-  } catch (error) {
-    dispatch({
-      type: FETCH_PRODUCT_FAILURE,
-      payload: error.response?.data?.message || error.message,
-    });
-  }
-};
+// Action to clear errors
