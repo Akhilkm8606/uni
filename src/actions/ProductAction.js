@@ -9,9 +9,14 @@ import {
   PRODUCTS_DETAILS_SUCCESS,
   PRODUCTS_DETAILS_FAILURE,
 
+ 
+
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAILURE,
+  FETCH_PRODUCT_REQUEST,
+  FETCH_PRODUCT_SUCCESS,
+  FETCH_PRODUCT_FAILURE,
 
   CLEAR_ERRORS,
 } from "../Constants/ProductConstants";
@@ -75,13 +80,11 @@ export const clearError = () => async (dispatch) => {
 
 
 
-
-// Update Product Action
 export const updateProduct = (productId, formData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
-    const response = await instance.put(`/api/v1/product/edit/${productId}`, formData, {
+    const response = await axios.put(`/api/v1/product/edit/${productId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${localStorage.getItem('token')}` // Include token if needed
@@ -122,7 +125,3 @@ export const fetchProductById = (productId) => async (dispatch) => {
     });
   }
 };
-
-
-
-// Action to clear errors

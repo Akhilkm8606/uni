@@ -10,10 +10,22 @@ import {
   CLEAR_PRODUCTS,
   CLEAR_ERRORS,
   DELETE_PRODUCT,
+  
+  
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAILURE,
+  FETCH_PRODUCT_REQUEST,
+  FETCH_PRODUCT_SUCCESS,
+  FETCH_PRODUCT_FAILURE,
 } from "../../../Constants/ProductConstants";
+
+
+const initialState = {
+  products: [],
+  loading: false,
+  error: null,
+};
 
 export const productReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -50,6 +62,7 @@ export const productReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 
 export const productDetailsReducer = (state = { product: {} }, action) => {
   switch (action.type) {
