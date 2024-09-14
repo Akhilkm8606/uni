@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Profile.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { userAuthentic } from '../../../Redux/Slice/user';
@@ -14,12 +14,11 @@ function EditProfile() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [message, setMessage] = useState('');
   const user = useSelector(state => state.auth.user);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Populate input fields with user details when component mounts
     if (user) {
       setName(user.username || '');
       setEmail(user.email || '');
@@ -27,17 +26,9 @@ function EditProfile() {
     }
   }, [user]);
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(e.target.value);
-  };
+  const handleNameChange = (e) => setName(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePhoneNumberChange = (e) => setPhoneNumber(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,27 +39,25 @@ function EditProfile() {
         email,
         phone: phoneNumber
       }, { withCredentials: true });
-      setMessage(response.data.message); // Set the message state to the response message
-      console.log(response.data.user); // Set the message state to the response message
-      // dispatch(userAuthentic(response.user));
-
+      
+      setMessage(response.data.message);
+      
       if (response.data.success) {
-        
-        toast.success(response.data.message, { // Use response.data.message for success toast
+        toast.success(response.data.message, {
           autoClose: 3000,
           position: "top-center"
         });
-        navigate('/MyAccount')
+        navigate('/MyAccount');
       }
     } catch (error) {
-      console.error('Error updating profile:', error); // Log the error
-      toast.error(error.response.data.message, { // Use error.response.data.message for error toast
+      console.error('Error updating profile:', error);
+      const errorMessage = error.response?.data?.message || 'An error occurred';
+      toast.error(errorMessage, {
         autoClose: 3000,
         position: "top-center"
       });
     }
   };
-  
   
   return (
     <div className="edit-profile-container">
