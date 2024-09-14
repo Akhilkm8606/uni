@@ -30,13 +30,16 @@ function Dashboard() {
       
       try {
         // Make the request with the Authorization header if token is available
-        const response = await instance.get('/api/v1/viewDashboard', {
+        const response = await instance.get(`/api/v1/viewDashboard/${sellerId}`, {
           headers: {
             Authorization: `Bearer ${token}`, // Include the token in the request
           },
           withCredentials: true,
         });
+        
 
+        console.log(response);
+        
         if (response.status === 200) {
           const dashboardData = response.data.dashboard || {};
           console.log('Dashboard data:', dashboardData);
