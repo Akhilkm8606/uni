@@ -1,60 +1,74 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
 .pm {
     min-height: 100vh;
     width: 100%;
-    ;
+    background-color: #f4f4f9;
 }
 
+/* Profile Picture */
 .pp {
     display: flex;
     justify-content: center;
+    margin-top: 30px;
 }
 
 .pp img {
-    border: 1px solid rgb(70, 69, 69);
-    margin-top: 30px;
-    margin-bottom: 30px;
+    border: 3px solid #007bff;
+    margin-bottom: 20px;
     width: 150px;
     height: 150px;
     border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+/* Profile Information */
 .d {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    margin-bottom: 10px;
-    
-
+    margin-bottom: 20px;
 }
-.d div{
-   
+
+.d div {
     text-align: center;
-    padding-bottom: 10px;
+    padding: 20px;
     width: 500px;
-    border: 1px solid rgb(112, 106, 106);
-    border-radius: 10px;
-    background-color: rgb(8 108 67 / 78%)
-
-
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.d div h3,h5{
+
+.d div h3,
+.d div h5 {
     padding: 10px;
-
+    margin: 0;
+    font-weight: 500;
 }
-.edit{
+
+.edit {
     margin: 5px;
     text-align: center;
-    border: 1px solid rgb(85, 85, 85);
-    padding: 5px 10px ;
-    border-radius: 10px;
-
+    border: 1px solid #007bff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: #e7f0ff;
 }
-.edit-profile-button{
+
+.edit-profile-button {
     text-decoration: none;
-   
-    color: #dadada;
-
+    color: #007bff;
+    font-weight: bold;
 }
+
+/* Orders Section */
 .ps3 {
     display: flex;
     justify-content: center;
@@ -62,60 +76,64 @@
 }
 
 .ps3 h1 {
-    border-bottom: 2px solid;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
 }
 
-.ps4 {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-}
-
+/* Order List Styles */
 .orders-list {
     display: flex;
-    flex-wrap: wrap;    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: space-between;
     padding: 20px;
     gap: 20px;
     width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-  
-  
+    margin: 0 auto;
 }
 
 .order-item {
-   
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     margin-bottom: 20px;
-    padding: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .order-item h2 {
-    font-size: 18px;
-    margin-bottom: 5px;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #007bff;
 }
 
 .order-item p {
-    font-size: 16px;
+    font-size: 1rem;
     margin-bottom: 5px;
 }
 
+/* Product Item Styles */
 .product-item {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .product-image {
-    margin-right: 10px;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .product-details {
-    flex: 1;
+    text-align: center;
 }
 
+/* No Orders Section */
 .no-orders {
     display: flex;
     flex-direction: column;
@@ -123,12 +141,13 @@
     justify-content: center;
     min-height: 50vh;
     text-align: center;
-    font-family: sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 .no-orders h1 {
     font-size: 2rem;
     margin-bottom: 1rem;
+    color: #007bff;
 }
 
 .no-orders p {
@@ -136,56 +155,47 @@
     margin-bottom: 2rem;
 }
 
-.sbtn button {
-    height: 50px;
-    width: 150px;
-    position: absolute;
-    right: 40px;
-    top: 80px;
-    background-color: rgb(255, 174, 66);
-    border-radius: 20px;
-    box-shadow: 0px 0px 10px 1px;
+/* Edit Profile Styles */
+.edit-profile-container {
+    max-width: 450px;
+    margin: 30px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
-
-/* edit profile */
-
-.edit-profile-container {
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .input-field {
+.input-field {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #191919;
-    border-radius: 5px;
-  }
-  
-  .submit-btn {
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.submit-btn {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-  }
-  
-  .submit-btn:hover {
+    font-size: 1rem;
+}
+
+.submit-btn:hover {
     background-color: #0056b3;
-  }
-  
+}
+
+/* Responsive Styles */
 @media (max-width: 600px) {
     .order-item {
         flex-direction: column;
     }
-    .edit-profile-container{
-        width: 80%;
+    .edit-profile-container {
+        width: 90%;
     }
 }
