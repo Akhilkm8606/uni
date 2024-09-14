@@ -4,6 +4,8 @@ import {
   ALL_PRODUCTS_REQUEST,
   ALL_PRODUCTS_SUCCESS,
   ALL_PRODUCTS_FAILURE,
+ 
+
   PRODUCTS_DETAILS_REQUEST,
   PRODUCTS_DETAILS_SUCCESS,
   PRODUCTS_DETAILS_FAILURE,
@@ -13,9 +15,16 @@ import {
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAILURE,
+ 
 } from "../../../Constants/ProductConstants";
 
-export const productReducer = (state = { products: [] }, action) => {
+const initialState = {
+  products: [],
+  loading: false,
+  error: null,
+};
+
+export const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case ALL_PRODUCTS_REQUEST:
       return {
@@ -33,7 +42,7 @@ export const productReducer = (state = { products: [] }, action) => {
       return {
         ...state,
         loading: false,
-        error: action.payload
+        error: action.payload,
       };
     case UPDATE_PRODUCT_REQUEST:
       return {
@@ -44,7 +53,7 @@ export const productReducer = (state = { products: [] }, action) => {
       return {
         ...state,
         loading: false,
-        products: state.products.map(product => 
+        products: state.products.map(product =>
           product._id === action.payload._id ? action.payload : product
         ),
       };
@@ -57,12 +66,7 @@ export const productReducer = (state = { products: [] }, action) => {
     case DELETE_PRODUCT:
       return {
         ...state,
-        products: state.products.filter(product => product._id !== action.payload)
-      };
-    case CLEAR_PRODUCTS:
-      return {
-        ...state,
-        products: []
+        products: state.products.filter(product => product._id !== action.payload),
       };
     case CLEAR_ERRORS:
       return {
@@ -73,6 +77,7 @@ export const productReducer = (state = { products: [] }, action) => {
       return state;
   }
 };
+
 
 export const productDetailsReducer = (state = { product: {} }, action) => {
   switch (action.type) {
