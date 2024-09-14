@@ -73,14 +73,17 @@ export const clearError = () => async (dispatch) => {
 };
 
 
+// actions/ProductAction.js
+
 export const updateProduct = (productId, formData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
     // Make the API request
-    const response = await axios.post(`/api/v1/product/edit/${productId}`, formData, {
+    const response = await instance.put(`/api/v1/product/edit/${productId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}` // Include token if needed
       },
     });
 
@@ -95,5 +98,6 @@ export const updateProduct = (productId, formData) => async (dispatch) => {
     });
   }
 };
+
 
 // Action to clear errors

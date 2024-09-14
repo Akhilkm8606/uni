@@ -1,3 +1,4 @@
+// components/EditProduct.jsx
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
@@ -33,7 +34,7 @@ function EditProduct({ productId, onClose }) {
 
       const fetchProduct = products.find((prd) => prd._id === productId);
       if (fetchProduct) {
-        const categoryObj = categoryOptions.find(cat => cat.name === fetchProduct.category);
+        const categoryObj = categoryOptions.find(cat => cat.id === fetchProduct.categoryId);
         setSelectedProduct(fetchProduct);
         setFormData({
           name: fetchProduct.name,
@@ -43,9 +44,7 @@ function EditProduct({ productId, onClose }) {
           description: fetchProduct.description,
           features: fetchProduct.features,
           images: null,
-          imagePreview: fetchProduct.images
-            ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(fetchProduct.images[0])}`
-            : ''
+          imagePreview: fetchProduct.images?.[0] ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(fetchProduct.images[0])}` : ''
         });
       }
     }
@@ -79,14 +78,11 @@ function EditProduct({ productId, onClose }) {
         formDataToSend.append('images', formData.images);
       }
 
-      console.log(formData,'klk');
-      console.log(formDataToSend ,'hsjh');
-      
-      for (let [key, value] of formDataToSend.entries()) {
-        console.log(`${key}:`, value);
-      }
+      console.log(formData, 'klk');
+      console.log(formDataToSend, 'hsjh');
 
-      dispatch(updateProduct(productId, formDataToSend));
+      // Dispatch the update action
+      await dispatch(updateProduct(productId, formDataToSend));
 
       toast.success('Product updated successfully');
       onClose();
