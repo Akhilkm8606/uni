@@ -19,6 +19,10 @@ function Header({ handleOptionClick }) {
   const navigate = useNavigate();
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   
+  // Example state for message and notification counts
+  const [messageCount, setMessageCount] = useState(5); // Replace with actual count
+  const [notificationCount, setNotificationCount] = useState(3); // Replace with actual count
+  
   const [profileState, setProfileState] = useState({
     card: false,
     msg: false,
@@ -68,31 +72,37 @@ function Header({ handleOptionClick }) {
       <div className='header-right'>
         <Link to={"/"}><IoMdHome className='icon-Home' /></Link>
 
-        <AiOutlineMail onClick={() => openDialog('msg')} className='icon-user' />
-        <Dialog open={dialogOpen.msg} onClose={() => closeDialog('msg')}>
-          <DialogTitle>Messages</DialogTitle>
-          <DialogContent>
-            <p>Message Section</p>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => closeDialog('msg')} color="primary">
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <div className='header-icon-container'>
+          <AiOutlineMail onClick={() => openDialog('msg')} className='icon-user' />
+          {messageCount > 0 && <span className='badge'>{messageCount}</span>}
+          <Dialog open={dialogOpen.msg} onClose={() => closeDialog('msg')}>
+            <DialogTitle>Messages</DialogTitle>
+            <DialogContent>
+              <p>Message Section</p>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => closeDialog('msg')} color="primary">
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
 
-        <IoMdNotifications onClick={() => openDialog('nty')} className='icon-user' />
-        <Dialog open={dialogOpen.nty} onClose={() => closeDialog('nty')}>
-          <DialogTitle>Notifications</DialogTitle>
-          <DialogContent>
-            <p>Notification Section</p>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => closeDialog('nty')} color="primary">
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <div className='header-icon-container'>
+          <IoMdNotifications onClick={() => openDialog('nty')} className='icon-user' />
+          {notificationCount > 0 && <span className='badge'>{notificationCount}</span>}
+          <Dialog open={dialogOpen.nty} onClose={() => closeDialog('nty')}>
+            <DialogTitle>Notifications</DialogTitle>
+            <DialogContent>
+              <p>Notification Section</p>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => closeDialog('nty')} color="primary">
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
 
         <FaCircleUser onClick={() => handleProfile('card')} className='icon-user' />
         {profileState.card && (
