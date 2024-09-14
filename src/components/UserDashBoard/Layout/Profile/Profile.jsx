@@ -42,9 +42,9 @@ function Profile() {
               <h3>{user.username}</h3>
               <p>{user.phone}</p>
               <h5>{user.email}</h5>
-              <div className='edit'>
+              <span className='edit'>
                 <Link to={`/edit-profile/${user._id}`} className="edit-profile-button"> Edit </Link>
-              </div>
+              </span>
             </div>
             
           </div>
