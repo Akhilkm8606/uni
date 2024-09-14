@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Table } from 'react-bootstrap';
-import { MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
+import { MdDelete, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../../../../actions/ProductAction';
 import './ProductList.css';
@@ -44,7 +44,7 @@ function ProductList() {
     setPageNumber(selected);
   };
 
-  const handleEdit = (id) => {
+  const handleRowClick = (id) => {
     setEditingProductId(id);
   };
 
@@ -129,7 +129,7 @@ function ProductList() {
                 </thead>
                 <tbody>
                   {displayedProducts.map((product) => (
-                    <tr className='pdata-row' key={product._id}>
+                    <tr className='pdata-row' key={product._id} onClick={() => handleRowClick(product._id)}>
                       <td className='product-name'>{product.name}</td>
                       <td className='product-category'>{product.category}</td>
                       <td className='product-price'>{product.price}</td>
@@ -147,8 +147,7 @@ function ProductList() {
                       </td>
                       <td className='product-date'>{new Date(product.createdAt).toLocaleDateString()}</td>
                       <td className='product-actions'>
-                        <MdEdit onClick={() => handleEdit(product._id)} className='action-edit' />
-                        <MdDelete onClick={() => handleDeleteClick(product._id)} className='action-delete' />
+                        <MdDelete onClick={(e) => { e.stopPropagation(); handleDeleteClick(product._id); }} className='action-delete' />
                       </td>
                     </tr>
                   ))}
