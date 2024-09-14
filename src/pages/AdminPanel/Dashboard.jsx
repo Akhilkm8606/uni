@@ -26,7 +26,7 @@ function Dashboard() {
   // Fetch dashboard data
   const fetchDashboard = async () => {
     try {
-      const res = await instance.get('/api/v1/viewDashboard', {
+      const res = await instance.get('/api/v1/viewAdminDashboard', {
         withCredentials: true
       });
   
