@@ -21,21 +21,25 @@ function Orders() {
   const [showOrderDetails, setShowOrderDetails] = useState(false);
 
   const ordersList = useSelector(state => state.orders.orders);
+  const token = localStorage.getItem('token'); // or wherever you store your token
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await instance.get('/api/v1/all_orders', { withCredentials: true });
-        if (response) {
-          dispatch(getAllOrder(response.data.orders));
+
+  const fetchOrders = async () => {
+    try {
+      const response = await instance.get('/api/v1/all_orders', {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${token}` // Ensure you include the token if required
         }
-      } catch (error) {
-        console.error('Error fetching orders:', error);
+      });
+      if (response) {
+        dispatch(getAllOrder(response.data.orders));
       }
-    };
-
-    fetchOrders();
-  }, [dispatch]);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
+  
 
   const handleEdit = (order) => {
     setSelectedOrder(order);
