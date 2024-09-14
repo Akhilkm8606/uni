@@ -1,18 +1,29 @@
-// EditProfile.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { updateUser } from '../../../Redux/Slice/user'; // Update the import path as necessary
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../../../Redux/Slice/user';
 import instance from '../../../../Instance/axios';
 
-function EditProfile({ open, handleClose, user }) {
+function EditProfile({ open, handleClose }) {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const userID = users?._id;
+
   const [formData, setFormData] = useState({
-    username: user.username || '',
-    email: user.email || '',
-    phone: user.phone || '',
+    username: '',
+    email: '',
+    phone: '',
   });
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        username: user.username || '',
+        email: user.email || '',
+        phone: user.phone || '',
+      });
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,13 +36,19 @@ function EditProfile({ open, handleClose, user }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await instance.put(`/api/v1/updateUser/${user._id}`, formData, {
+      const response = await instance.put(`/api/v1/updateUser/${userID}`, formData, {
         withCredentials: true,
       });
       dispatch(updateUser(response.data.user));
       handleClose(); // Close the dialog on successful update
     } catch (error) {
       console.error('Error updating profile:', error);
+      // Log detailed error information
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
     }
   };
 
