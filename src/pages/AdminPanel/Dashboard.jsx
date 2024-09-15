@@ -138,22 +138,23 @@ console.log(productCount,);
         <h2>DASHBOARD</h2>
       </Row>
       <Row className='card-Row'>
-        {items.map((item, index) => (
-          <Col key={index} md={4}>
-            <div className='card-container'>
-              <Card className='card'>
-                <Card.Body className='card-body'>
-                  <span className='icon'>{item.icon}</span>
-                  <div className='items'>
-                    <span>{item.title}</span>
-                    <span>{item.value.toLocaleString()}</span>
-                  </div>
-                </Card.Body>
-              </Card>
+  {items.map((item, index) => (
+    <Col key={index} md={4}>
+      <div className='card-container'>
+        <Card className='card'>
+          <Card.Body className='card-body'>
+            <span className='icon'>{item.icon}</span>
+            <div className='items'>
+              <span>{item.title}</span>
+              <span>{(item.value || 0).toLocaleString()}</span> {/* Use a fallback of 0 if value is undefined */}
             </div>
-          </Col>
-        ))}
-      </Row>
+          </Card.Body>
+        </Card>
+      </div>
+    </Col>
+  ))}
+</Row>
+
       <div>
         <BarChart title="Sales Data" data={{ labels: salesLabels, values: salesValues }} />
         {/* Other charts here */}
