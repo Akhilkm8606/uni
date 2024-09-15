@@ -53,7 +53,7 @@ function Products() {
 
     const ranges = [];
     for (let i = minProductPrice; i <= maxProductPrice; i += 1000) {
-      ranges.push({ min: i, max: i + 1000 });
+      ranges.push({ min: i, max: i + 3000 });
     }
     setPriceRanges(ranges);
 
