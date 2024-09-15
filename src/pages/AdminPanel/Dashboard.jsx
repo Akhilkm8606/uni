@@ -17,7 +17,7 @@ function Dashboard() {
   // State for storing counts and chart data
   const [orderCount, setOrderCount] = useState(orders.length);  // Default count to existing length
   const [productCount, setProductCount] = useState(products.length);  // Same for products
-  const [userCount, setUserCount] = useState(users.length);  // Same for users
+  const [userCount, setUserCount] = useState(allUsers.length);  // Same for users
   const [salesData, setSalesData] = useState({ labels: [], values: [] });
 
   // Fetch dashboard data
@@ -43,7 +43,7 @@ function Dashboard() {
       // Set the counts from the fetched data
       setOrderCount(fetchedOrders.length);
       setProductCount(fetchedProducts.length);
-      setUserCount(users.length); // Ensure users count is updated if changed
+      setUserCount(allUsers.length); // Ensure users count is updated if changed
       
       // Set chart data
       const chartLabels = monthlyData.map(item => item.month);
