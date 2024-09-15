@@ -110,6 +110,9 @@ function Dashboard() {
   // Use fallback simulated data if no API data is available
   const salesLabels = (salesData.labels.length ? salesData.labels : simulatedSalesData.map(item => item.month));
   const salesValues = (salesData.values.length ? salesData.values : simulatedSalesData.map(item => item.value));
+console.log(orderCount,"kjjhj");
+console.log(userCount,"kjjhj");
+console.log(productCount,"kjjhj");
 
   const items = [
     {
