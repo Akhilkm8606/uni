@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 function Dashboard() {
   const orders = useSelector(state => state.orders) || [];  // Ensure orders is always an array
   const products = useSelector(state => state.data.products) || []; // Ensure products is always an array
-  const users = useSelector(state =>  state.auth.user) || []; // Use proper slice for all users
+  const users = useSelector(state => state.auth.users) || []; // Use proper slice for all users
 
   const admin = useSelector(state => state.auth.user)?._id;  // Get the admin's _id
   
@@ -61,6 +61,13 @@ function Dashboard() {
     fetchDashboard();
   }, []);
 
+  // Log counts after update
+  useEffect(() => {
+    console.log('Order Count:', orderCount);
+    console.log('User Count:', userCount);
+    console.log('Product Count:', productCount);
+  }, [orderCount, userCount, productCount]);
+
   // Simulated fallback data
   const simulatedSalesData = [
     { month: 'January', value: 5000 },
@@ -108,11 +115,8 @@ function Dashboard() {
   ];
 
   // Use fallback simulated data if no API data is available
-  const salesLabels = (salesData.labels.length ? salesData.labels : simulatedSalesData.map(item => item.month));
-  const salesValues = (salesData.values.length ? salesData.values : simulatedSalesData.map(item => item.value));
-console.log(orderCount);
-console.log(userCount);
-console.log(productCount,);
+  const salesLabels = salesData.labels.length ? salesData.labels : simulatedSalesData.map(item => item.month);
+  const salesValues = salesData.values.length ? salesData.values : simulatedSalesData.map(item => item.value);
 
   const items = [
     {
@@ -138,26 +142,28 @@ console.log(productCount,);
         <h2>DASHBOARD</h2>
       </Row>
       <Row className='card-Row'>
-  {items.map((item, index) => (
-    <Col key={index} md={4}>
-      <div className='card-container'>
-        <Card className='card'>
-          <Card.Body className='card-body'>
-            <span className='icon'>{item.icon}</span>
-            <div className='items'>
-              <span>{item.title}</span>
-              <span>{(item.value || 0).toLocaleString()}</span> {/* Use a fallback of 0 if value is undefined */}
+        {items.map((item, index) => (
+          <Col key={index} md={4}>
+            <div className='card-container'>
+              <Card className='card'>
+                <Card.Body className='card-body'>
+                  <span className='icon'>{item.icon}</span>
+                  <div className='items'>
+                    <span>{item.title}</span>
+                    <span>{(item.value || 0).toLocaleString()}</span> {/* Use fallback of 0 if value is undefined */}
+                  </div>
+                </Card.Body>
+              </Card>
             </div>
-          </Card.Body>
-        </Card>
-      </div>
-    </Col>
-  ))}
-</Row>
+          </Col>
+        ))}
+      </Row>
 
+      {/* Chart section */}
       <div>
         <BarChart title="Sales Data" data={{ labels: salesLabels, values: salesValues }} />
-        {/* Other charts here */}
+        <BarChart title="Order Data" data={{ labels: salesLabels, values: simulatedOrderData.map(item => item.count) }} />
+        <BarChart title="Product Data" data={{ labels: salesLabels, values: simulatedProductData.map(item => item.count) }} />
       </div>
     </div>
   );
