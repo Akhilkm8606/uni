@@ -14,15 +14,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 
-function Header({ handleOptionClick }) {
+function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  
+
   // Example state for message and notification counts
   const [messageCount, setMessageCount] = useState(5); // Replace with actual count
   const [notificationCount, setNotificationCount] = useState(3); // Replace with actual count
-  
+
   const [profileState, setProfileState] = useState({
     card: false,
     msg: false,
@@ -108,7 +108,7 @@ function Header({ handleOptionClick }) {
         {profileState.card && (
           <div className='profile_setting'>
             <h4>User Options</h4>
-            <Link className='profileLinks' onClick={() => handleOptionClick("/MyAccount")}><FaUser /> Profile</Link>
+            <Link className='profileLinks' onClick={() => navigate("/MyAccount")}><FaUser /> Profile</Link>
             <Link className='profileLinks' to="/settings"><IoSettingsOutline /> Settings</Link>
             <Link className='profileLinks' to="#" onClick={handleLogOut}><IoExit /> Logout</Link>
           </div>
