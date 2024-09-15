@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 function Dashboard() {
   const orders = useSelector(state => state.orders) || [];  // Ensure orders is always an array
   const products = useSelector(state => state.data.products) || []; // Ensure products is always an array
-  const users = useSelector(state => state.users.allUsers) || []; // Use proper slice for all users
+  const allUsers = useSelector((state) => state.userAuth.users || []);
 
   const admin = useSelector(state => state.auth.user)?._id;  // Get the admin's _id
   

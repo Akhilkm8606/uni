@@ -178,9 +178,9 @@ background-color: rgb(6, 25, 60);
         align-items: center;
         width: 100%;
       }
-      /* .header-right{
-        display: none;
-      } */
+      .header-right {
+        margin-top: 10px;  /* Add some spacing */
+    }
         .PanelSideBar .options:last-child span:last-child {
             display: none;
           }
@@ -208,5 +208,16 @@ background-color: rgb(6, 25, 60);
         .PanelSideBar .toggleButton{
            display: none;
           }
+          .PanelHeader {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 12px;
+        }
+    
+        .header-right {
+            width: 100%;
+            justify-content: center;
+            margin-top: 10px;
+        }
  }
           
