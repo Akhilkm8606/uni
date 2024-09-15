@@ -1,66 +1,63 @@
-.productdetail-container{
-    margin-left: auto;
-    margin-right: auto;
-    height: fit-content;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 30px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: solid 1px;
-    width: 70%;
-    padding: 20px;
+.productdetail-container {
+  margin: 20px auto;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 30px;
+  border: solid 1px;
+  width: 70%;
+  padding: 20px;
 }
 
 .product-content {
-
-gap: 30px;  
+  gap: 30px;  
 }
+
 .media {
-    display: grid;
-    place-items: center;
-    width: 300px;
-    height: 400px;
-
+  display: grid;
+  place-items: center;
+  width: 300px;
+  height: 400px;
 }
+
 .media img {
-    width: 100%;
-    height: 300px;
-    max-width: 300px;
-    object-fit: cover;
-
+  width: 100%;
+  height: 300px;
+  max-width: 300px;
+  object-fit: cover;
 }
-.product-details{
-    width: 50%;
+
+.product-details {
+  width: 50%;
   padding: 20px;
   border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
 
+.product-details p span {
+  font-weight: bold;
+  font-size: 18px;
 }
-.product-details p span{
-font-weight: bold;
-font-size: 18px;
-}
+
 .detailsBlock-1 {
   margin-bottom: 20px;
 }
-.detailsBlock-1>p{
+
+.detailsBlock-1 > p {
   display: flex;
   flex-wrap: wrap;
-
 }
 
 .detailsBlock-2 {
   display: flex;
- flex-direction: row;
- justify-content: flex-start;
- gap: 50px;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 50px;
 }
-
 
 .detailsBlock-3 {
   display: flex;
@@ -74,80 +71,107 @@ font-size: 18px;
   gap: 30px;
 }
 
-
 .detailsBlock-3-1 button {
   border: none;
   padding: 5px 10px;
   cursor: pointer;
-  border-radius:20px ;
+  border-radius: 20px;
 }
 
 .detailsBlock-3-1 input {
-width: 50px;
+  width: 50px;
   text-align: center;
   border: 1px solid #093d04;
   margin: 0 10px;
 }
 
-
-
 .detailsBlock-3-1-1 a {
   text-decoration: none;
- 
   margin-right: 30px;
 }
-.addToCart{
-  color: #ffffff;
 
+/* Style for Add to Cart button */
+.addToCart {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
   background-color: #007bff;
-  padding: 10px 20px;
-  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-top: 10px;
 }
-.buy{
+
+.addToCart:hover {
+  background-color: #0056b3;
+}
+
+.buy {
   background-color: #9b340b;
   padding: 10px 30px;
-
   border-radius: 5px;
 }
+
 .detailsBlock-3-1-1 .buy:hover {
   background-color: #137602;
 }
 
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .productdetail-container {
+      flex-direction: column;
+  }
+}
 
-@media (max-width: 992) {
-  .productdetail-container{
-   height: fit-content;
-    flex-direction: column;
-   
-   
-}
-}
 @media (max-width: 768px) {
-  .product-details{
-    width: 80%;}
+  .product-details {
+      width: 80%;
+  }
 }
+
 @media (max-width: 577px) {
   .detailsBlock-3-1 {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-content: flex-start;
-    gap: 30px;
+      align-content: flex-start;
+      gap: 20px; /* Reduced gap for smaller screens */
   }
-  .detailsBlock-3-1-1 {
-    margin-left: none;
-  }
-  .media {
-    margin-top: 20px;
-    display: grid;
-    place-items: center;
-    width: 150px;
-    height: 200px;
-}
 
-.media img {
-    width: 100%;
-    height: 100%; /* Adjust height to fill the container */
-    object-fit: cover;
-}
+  .media {
+      margin-top: 20px;
+      width: 150px;
+      height: 200px;
+  }
+
+  .media img {
+      height: 100%; /* Adjust height to fill the container */
+  }
+
+  .product-content,
+  .product-details {
+      padding: 0;
+  }
+
+  .detailsBlock-1,
+  .detailsBlock-2,
+  .detailsBlock-3 {
+      text-align: center;
+  }
+
+  .detailsBlock-3-1 {
+      flex-direction: column;
+  }
+
+  .detailsBlock-3-1 div {
+      width: 100%;
+      justify-content: center;
+  }
+
+  .detailsBlock-3-1 button {
+      width: 50px;
+      padding: 8px;
+  }
+
+  .detailsBlock-3-1 input {
+      width: 50px;
+  }
 }

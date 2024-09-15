@@ -178,13 +178,16 @@ function Products() {
           </div>
 
           <ReactPaginate
-            previousLabel={<MdSkipPrevious />}
-            nextLabel={<MdSkipNext />}
-            pageCount={Math.ceil(filteredProducts.length / productsPerPage)}
-            onPageChange={({ selected }) => setPageNumber(selected)}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
-          />
+  previousLabel={<MdSkipPrevious />}
+  nextLabel={<MdSkipNext />}
+  pageCount={Math.ceil(filteredProducts.length / productsPerPage)}
+  onPageChange={({ selected }) => setPageNumber(selected)}
+  containerClassName={'pagination'}
+  activeClassName={'active'}
+  previousClassName={'previous'}
+  nextClassName={'next'}
+/>
+
         </div>
       )}
     </>
