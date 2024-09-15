@@ -27,8 +27,8 @@
 
 .media img {
   width: 100%;
-  height: auto;
-  border-radius: 8px;
+  height: 300px;
+  max-width: 300px;
   object-fit: cover;
 }
 
@@ -162,4 +162,5 @@
   .detailsBlock-3-1 input {
     width: 60px;
   }
+  
 }
