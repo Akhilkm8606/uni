@@ -4,8 +4,6 @@ import { AiOutlineShop, AiOutlineShoppingCart, AiOutlineUser } from "react-icons
 import { Card, Row, Col } from 'react-bootstrap';
 import '../../pages/AdminPanel/style.css';
 import BarChart from '../SellerPanel/Barchart'; // Import your BarChart component
-import instance from '../../Instance/axios'; // Import your axios instance
-import { toast } from 'react-toastify';
 import { getAllOrder } from '../../components/Redux/Slice/orders'; // Import the action
 
 function Dashboard() {
@@ -15,66 +13,13 @@ function Dashboard() {
   const products = useSelector(state => state.data.products) || []; // Ensure products is always an array
   const users = useSelector(state => state.auth.users) || []; // Use proper slice for all users
 
-  const admin = useSelector(state => state.auth.user)?._id;  // Get the admin's _id
-  
   // State for storing counts and chart data
   const [orderCount, setOrderCount] = useState(orders.length);  // Default count to existing length
   const [productCount, setProductCount] = useState(products.length);  // Same for products
   const [userCount, setUserCount] = useState(users.length);  // Same for users
   const [salesData, setSalesData] = useState({ labels: [], values: [] });
 
-  // Fetch dashboard data
-  const fetchDashboard = async () => {
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-      toast.error('No authentication token found');
-      return;
-    }
-
-    try {
-      const response = await instance.get(`/api/v1/viewAdminDashboard/${admin}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
-      });
-      const dashboardData = response.data.dashboard;
-      
-      const fetchedOrders = dashboardData.orders;
-      const fetchedProducts = dashboardData.products;
-      const monthlyData = dashboardData.monthlyData;
-
-      // Dispatch the getAllOrder action to update the orders in the Redux store
-      dispatch(getAllOrder(fetchedOrders));
-
-      // Set the counts from the fetched data
-      setOrderCount(fetchedOrders.length);
-      setProductCount(fetchedProducts.length);
-      setUserCount(users.length);
-      
-      // Set chart data
-      const chartLabels = monthlyData.map(item => item.month);
-      const chartValues = monthlyData.map(item => item.value);
-      setSalesData({ labels: chartLabels, values: chartValues });
-
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-      toast.error('Failed to fetch dashboard data');
-    }
-  };
-
-  // Call fetchDashboard when component mounts
-  useEffect(() => {
-    fetchDashboard();
-  }, []);
-
-  // Log counts after update
-  useEffect(() => {
-    console.log('Order Count:', orderCount);
-    console.log('User Count:', userCount);
-    console.log('Product Count:', productCount);
-  }, [orderCount, userCount, productCount]);
-
-  // Simulated fallback data
+  // Use simulated data for the dashboard
   const simulatedSalesData = [
     { month: 'January', value: 5000 },
     { month: 'February', value: 6000 },
@@ -121,8 +66,8 @@ function Dashboard() {
   ];
 
   // Use fallback simulated data if no API data is available
-  const salesLabels = salesData.labels.length ? salesData.labels : simulatedSalesData.map(item => item.month);
-  const salesValues = salesData.values.length ? salesData.values : simulatedSalesData.map(item => item.value);
+  const salesLabels = simulatedSalesData.map(item => item.month);
+  const salesValues = simulatedSalesData.map(item => item.value);
 
   const items = [
     {
