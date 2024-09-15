@@ -60,9 +60,7 @@ function Header() {
   };
 
   // Navigation function
-  const navigateTo = (path) => {
-    navigate(path);
-  };
+
 
   return (
     <div className='PanelHeader'>
@@ -113,7 +111,7 @@ function Header() {
         {profileState.card && (
           <div className='profile_setting'>
             <h4>User Options</h4>
-            <Link className='profileLinks' onClick={() => navigateTo("/MyAccount")}><FaUser /> Profile</Link>
+            <Link className='profileLinks'to={"/MyAccount"}><FaUser /> Profile</Link>
             <Link className='profileLinks' to="/settings"><IoSettingsOutline /> Settings</Link>
             <Link className='profileLinks' to="#" onClick={handleLogOut}><IoExit /> Logout</Link>
           </div>
