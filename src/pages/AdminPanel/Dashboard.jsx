@@ -6,7 +6,7 @@ import '../../pages/AdminPanel/style.css';
 import BarChart from '../SellerPanel/Barchart'; // Import your BarChart component
 import instance from '../../Instance/axios'; // Import your axios instance
 import { toast } from 'react-toastify';
-import { getAllOrder } from '../../Slice/orders'; // Import the action
+import { getAllOrder } from '../../components/Redux/Slice/orders'; // Import the action
 
 function Dashboard() {
   const dispatch = useDispatch();
