@@ -1,203 +1,155 @@
-.empty-cart {
-    height: 100vh;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
-     min-height: 50vh;
-     text-align: center;
-     font-family: sans-serif;
-   }
-   
-   .empty-cart h1 {
-     font-size: 2rem;
-     margin-bottom: 1rem;
-   }
-   
-   .empty-cart p {
-     font-size: 1.2rem;
-     margin-bottom: 2rem;
-   }
-   
-   .empty-cart button {
-     background-color: #333;
-     color: #fff;
-     height: 50px;
-     width: 200px;
-     border: none;
-     border-radius: 5px;
-     cursor: pointer;
-     transition: background-color 0.2s ease;
-   }
-   
-   .empty-cart button:hover {
-     background-color: #222;
-   }
-   
-   .empty-cart img {
-     width: 200px;
-     height: 200px;
-     margin-top: 2rem;
-   }
-   
- 
- 
-   /* Cart.css */
- 
- .cart-container {
-     display: flex;
-     flex-direction: column;
-     flex-wrap: wrap;
-     justify-content: space-around; 
-     align-items: center;
-     gap: 30px;
-     width: 100%;
-     height: fit-content;
- }
- .cart-header {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .cart-header h2 {
-  
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 10px;
-    margin-bottom: 10px;
-  }
- 
- 
- .cart-item-div{
-   margin: 20px;
-   padding: 20px;
-   overflow: hidden;
-   display: flex;
-   border-radius: 5px;
-   border: 1px solid black;
+/* Cart.css */
 
-   width: 70vw ;
- }
- 
- .item-image{
-    width: 100%;
- }
- .item-image img{
-   padding: 20px;
-  height: 100%;
+.cart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
   width: 100%;
-  max-width: 200px;
+  height: fit-content;
+}
+
+.cart-header {
+  text-align: center;
+  padding: 20px;
+}
+
+.cart-header h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.cart-item-div {
+  margin: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column; /* Changed to column for better stacking on small screens */
+  border-radius: 5px;
+  border: 1px solid black;
+  width: 100%; /* Adjust width to fit the screen */
+  max-width: 600px; /* Set a max width to prevent it from being too wide */
+}
+
+.item-image {
+  display: flex;
+  justify-content: center; /* Center the image */
+}
+
+.item-image img {
+  padding: 20px;
+  max-height: 200px; /* Ensure the image height is not too large */
+  width: auto; /* Adjust width to maintain aspect ratio */
+  max-width: 100%; /* Ensure the image fits within its container */
   transition: 0.2s;
- }
- 
- .cart-item-div img:hover{
-   opacity: 80%;
- }
- 
- .cart-product-quantity{
-    width: 80px;
-       border: 1px solid black;
-   gap: 10px;
-   border-radius: 10px;
- }
- 
- .cart-product-quantity button{
-   font-size: 15px;
-   height: 30%;
-   padding: 6px 10px;
-   color: rgb(70, 165, 7);
-   border:none;
-   outline: none;
-   background-color: transparent;
- }
- 
- .cart-product-quantity input{
-    width: 20px;
-    border:none;
-    outline: none;
-    text-align: center;
-   
- }
- .cart-text{
-    width:100%;
+}
 
- }
- .cart-text h6{
-    text-transform: uppercase;
- }
- 
- .cart-text p{
-   width: 99%;
-   display: -webkit-box;
-   -webkit-line-clamp:3;
-   -webkit-box-orient:horizontal;
-    overflow: hidden;
- }
- 
- .remove-btn button{
-    text-align: center;
- border-radius: 5px;
- background-color: rgb(109, 2, 2);
- color: white;
- height: 35px;
- width: 80px;
- border: 1px solid rgb(11, 11, 63);
+.cart-product-quantity {
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  gap: 10px;
+  border-radius: 10px;
+  padding: 5px; /* Added padding */
+}
 
- }
- 
- .pqr-div{
-   display: flex;
-   gap: 20px;
-   align-items: center;
-   
- }
- 
+.cart-product-quantity button {
+  font-size: 15px;
+  height: 30px;
+  padding: 6px 10px;
+  color: rgb(70, 165, 7);
+  border: none;
+  background-color: transparent;
+}
 
- .cpr span h6{
-   text-transform: uppercase;
- }
+.cart-product-quantity input {
+  width: 40px; /* Adjust width to fit better */
+  border: none;
+  text-align: center;
+}
 
- .buy-div{
-    align-self: center;
- }
- .buy-button  {
-  
-    background-color: #FFAE42; /* Set the background color */
-    color: white; /* Set the text color */
-    padding: 10px 20px; /* Add padding to the button */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Add border radius */
-    text-decoration: none; /* Remove default link underline */
-    margin-top: 10px; /* Add margin */
-    transition: background-color 0.3s ease; /* Add transition effect */
+.cart-text {
+  width: 100%;
+}
+
+.cart-text h5 {
+  margin: 0;
+}
+
+.cart-text p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: center; /* Center-align text */
+}
+
+.remove-btn button {
+  background-color: rgb(109, 2, 2);
+  color: white;
+  height: 35px;
+  width: 80px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pqr-div {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  gap: 20px;
+  align-items: center;
+  margin-top: 10px; /* Added margin for spacing */
+}
+
+.cpr span h5 {
+  text-transform: uppercase;
+}
+
+.buy-div {
+  text-align: center;
+  margin-top: 10px; /* Added margin for spacing */
+}
+
+.buy-button {
+  background-color: #FFAE42;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.buy-button:hover {
+  background-color: #FF8C00;
+}
+
+/* Media Queries */
+
+@media (max-width: 992px) {
+  .item-image img {
+      max-width: 100%;
+      height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .cart-item-div {
+      display: block;
+      width: 100%;
+      padding: 10px;
+  }
+
+  .cart-product-quantity {
+      width: 100%; /* Ensure quantity section takes full width */
+      justify-content: space-around; /* Distribute buttons and input evenly */
+  }
+
+  .remove-btn {
+      text-align: center;
   }
   
-  .buy-button:hover {
-    background-color: #FF8C00; /* Change background color on hover */
+  .item-image img {
+      width: 100%;
   }
-  
- 
- 
-
- @media (max-width:992px) {
- 
-   .item-image img {
-    width: 100%;
-    max-width: 200px;
-    margin-bottom: 20px;
-  }
- }
- @media (max-width:600px) {
-   .cart-item-div{
-     display: block;
-   }
- 
-   
- .buy-div{
-    margin-top: 30px;
- }
-   .item-image img {
-    width: 100%;
-    margin-bottom: 20px;
-  }
- }
+}
