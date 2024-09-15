@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineShop, AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { Card, Row, Col } from 'react-bootstrap';
 import '../../pages/AdminPanel/style.css';
-import { useSelector } from 'react-redux';
 import BarChart from '../SellerPanel/Barchart'; // Import your BarChart component
 import instance from '../../Instance/axios'; // Import your axios instance
 import { toast } from 'react-toastify';
+import { getAllOrder } from '../../Slice/orders'; // Import the action
 
 function Dashboard() {
-  const orders = useSelector(state => state.orders) || [];  // Ensure orders is always an array
+  const dispatch = useDispatch();
+
+  const orders = useSelector(state => state.orders.orders) || [];  // Access orders from orders slice
   const products = useSelector(state => state.data.products) || []; // Ensure products is always an array
   const users = useSelector(state => state.auth.users) || []; // Use proper slice for all users
 
@@ -40,10 +43,13 @@ function Dashboard() {
       const fetchedProducts = dashboardData.products;
       const monthlyData = dashboardData.monthlyData;
 
+      // Dispatch the getAllOrder action to update the orders in the Redux store
+      dispatch(getAllOrder(fetchedOrders));
+
       // Set the counts from the fetched data
       setOrderCount(fetchedOrders.length);
       setProductCount(fetchedProducts.length);
-      setUserCount(users.length); // Ensure users count is updated if changed
+      setUserCount(users.length);
       
       // Set chart data
       const chartLabels = monthlyData.map(item => item.month);
@@ -150,7 +156,7 @@ function Dashboard() {
                   <span className='icon'>{item.icon}</span>
                   <div className='items'>
                     <span>{item.title}</span>
-                    <span>{(item.value || 0).toLocaleString()}</span> {/* Use fallback of 0 if value is undefined */}
+                    <span>{(item.value || 0).toLocaleString()}</span> {/* Use a fallback of 0 if value is undefined */}
                   </div>
                 </Card.Body>
               </Card>
