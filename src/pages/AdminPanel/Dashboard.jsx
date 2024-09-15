@@ -14,11 +14,11 @@ function Dashboard() {
   const admin = users?._id;
 
   // Filter users
-  const user = users.filter(user => user.role === 'user');
-  console.log('Users:', user);
 
-  const seller = users.filter(user => user.role === 'seller');
+  const user = Array.isArray(users) ? users.filter(user => user.role === 'user') : [];
+  const seller = Array.isArray(users) ? users.filter(user => user.role === 'seller') : [];
   const allUsers = [...user, ...seller];
+  
 
   const [orderCount, setOrderCount] = useState(0);
   const [productCount, setProductCount] = useState(0);
