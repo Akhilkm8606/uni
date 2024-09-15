@@ -112,33 +112,48 @@ border-radius: 10px;
   border-top: 1px solid rgb(81, 78, 78);
   padding-top: 5px;
   color: green;
-}
-/* Ensure the container is responsive */
+}/* Add this to your CSS file */
 .pagination {
   display: flex;
   justify-content: center;
-  padding: 10px 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* Style the pagination items */
-.pagination a,
-.pagination span {
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination a, .pagination span {
   display: inline-block;
-  padding: 8px 12px;
-  margin: 0 4px;
-  border-radius: 4px;
-  background-color: #f0f0f0;
-  color: #333;
+  padding: 10px 15px;
   text-decoration: none;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
+  color: #333;
+  border-radius: 5px;
 }
 
-.pagination a:hover,
-.pagination span.active {
+.pagination .active a {
   background-color: #007bff;
   color: white;
 }
+
+.pagination .previous a, .pagination .next a {
+  font-size: 20px;
+}
+
+.pagination .previous a, .pagination .next a {
+  padding: 10px 15px;
+}
+
+.pagination .disabled {
+  color: #ccc;
+}
+
+.pagination .disabled a {
+  pointer-events: none;
+}
+
 
 /* Ensure pagination items fit well on smaller screens */
 

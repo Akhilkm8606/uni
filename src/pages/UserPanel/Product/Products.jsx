@@ -8,7 +8,7 @@ import ReactStars from 'react-rating-stars-component';
 import instance from '../../../Instance/axios';
 import { getCategory } from '../../../components/Redux/Slice/category';
 import ReactPaginate from 'react-paginate';
-import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
+import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 
 function Products() {
   const { keyword } = useParams();
@@ -41,46 +41,46 @@ function Products() {
   useEffect(() => {
     if (products.length === 0) return;
 
-    const minProductPrice = Math.min(...products.map(product => product.price));
-    const maxProductPrice = Math.max(...products.map(product => product.price));
+    // Filter products by selected categories
+    let filtered = products;
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(product => selectedCategories.includes(product.categoryId));
+    }
+
+    // Calculate price ranges based on filtered products
+    const minProductPrice = Math.min(...filtered.map(product => product.price));
+    const maxProductPrice = Math.max(...filtered.map(product => product.price));
 
     const ranges = [];
     for (let i = minProductPrice; i <= maxProductPrice; i += 1000) {
       ranges.push({ min: i, max: i + 1000 });
     }
     setPriceRanges(ranges);
-  }, [products]);
 
-  useEffect(() => {
-    let filtered = products;
-
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter(product => selectedCategories.includes(product.categoryId));
-    }
-
+    // Filter products by selected price ranges
     if (selectedPriceRanges.length > 0) {
-      filtered = filtered.filter(product => {
-        return selectedPriceRanges.some(range => product.price >= range.min && product.price <= range.max);
-      });
+      filtered = filtered.filter(product => 
+        selectedPriceRanges.some(range => product.price >= range.min && product.price <= range.max)
+      );
     }
 
     setFilteredProducts(filtered);
-  }, [selectedCategories, selectedPriceRanges, products]);
+  }, [products, selectedCategories, selectedPriceRanges]);
 
   const handleCategoryClick = (categoryId) => {
-    if (selectedCategories.includes(categoryId)) {
-      setSelectedCategories(selectedCategories.filter(id => id !== categoryId));
-    } else {
-      setSelectedCategories([...selectedCategories, categoryId]);
-    }
+    setSelectedCategories(prevSelectedCategories =>
+      prevSelectedCategories.includes(categoryId)
+        ? prevSelectedCategories.filter(id => id !== categoryId)
+        : [...prevSelectedCategories, categoryId]
+    );
   };
 
   const handlePriceRangeClick = (range) => {
-    if (selectedPriceRanges.some(r => r.min === range.min && r.max === range.max)) {
-      setSelectedPriceRanges(selectedPriceRanges.filter(r => r.min !== range.min || r.max !== range.max));
-    } else {
-      setSelectedPriceRanges([...selectedPriceRanges, range]);
-    }
+    setSelectedPriceRanges(prevSelectedPriceRanges =>
+      prevSelectedPriceRanges.some(r => r.min === range.min && r.max === range.max)
+        ? prevSelectedPriceRanges.filter(r => r.min !== range.min || r.max !== range.max)
+        : [...prevSelectedPriceRanges, range]
+    );
   };
 
   const indexOfLastProduct = (pageNumber + 1) * productsPerPage;
@@ -178,16 +178,15 @@ function Products() {
           </div>
 
           <ReactPaginate
-  previousLabel={<MdSkipPrevious />}
-  nextLabel={<MdSkipNext />}
-  pageCount={Math.ceil(filteredProducts.length / productsPerPage)}
-  onPageChange={({ selected }) => setPageNumber(selected)}
-  containerClassName={'pagination'}
-  activeClassName={'active'}
-  previousClassName={'previous'}
-  nextClassName={'next'}
-/>
-
+            previousLabel={<MdSkipPrevious />}
+            nextLabel={<MdSkipNext />}
+            pageCount={Math.ceil(filteredProducts.length / productsPerPage)}
+            onPageChange={({ selected }) => setPageNumber(selected)}
+            containerClassName={'pagination'}
+            activeClassName={'active'}
+            previousClassName={'previous'}
+            nextClassName={'next'}
+          />
         </div>
       )}
     </>
