@@ -21,9 +21,6 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const productsPerPage = 10;
-  const allUsers = useSelector((state) => state.userAuth.user|| []);
-  console.log(allUsers);
-  
 
   useEffect(() => {
     dispatch(getProducts(keyword));

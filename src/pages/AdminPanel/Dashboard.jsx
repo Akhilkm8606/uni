@@ -10,14 +10,14 @@ import { toast } from 'react-toastify';
 function Dashboard() {
   const orders = useSelector(state => state.orders) || [];  // Ensure orders is always an array
   const products = useSelector(state => state.data.products) || []; // Ensure products is always an array
-  const allUsers = useSelector((state) => state.userAuth.user|| []);
+  const users = useSelector(state => state.users.allUsers) || []; // Use proper slice for all users
 
   const admin = useSelector(state => state.auth.user)?._id;  // Get the admin's _id
   
   // State for storing counts and chart data
   const [orderCount, setOrderCount] = useState(orders.length);  // Default count to existing length
   const [productCount, setProductCount] = useState(products.length);  // Same for products
-  const [userCount, setUserCount] = useState(allUsers.length);  // Same for users
+  const [userCount, setUserCount] = useState(users.length);  // Same for users
   const [salesData, setSalesData] = useState({ labels: [], values: [] });
 
   // Fetch dashboard data
@@ -43,7 +43,7 @@ function Dashboard() {
       // Set the counts from the fetched data
       setOrderCount(fetchedOrders.length);
       setProductCount(fetchedProducts.length);
-      setUserCount(allUsers.length); // Ensure users count is updated if changed
+      setUserCount(users.length); // Ensure users count is updated if changed
       
       // Set chart data
       const chartLabels = monthlyData.map(item => item.month);
@@ -110,9 +110,9 @@ function Dashboard() {
   // Use fallback simulated data if no API data is available
   const salesLabels = (salesData.labels.length ? salesData.labels : simulatedSalesData.map(item => item.month));
   const salesValues = (salesData.values.length ? salesData.values : simulatedSalesData.map(item => item.value));
-console.log(orderCount,"kjjhj");
-console.log(userCount,"kjjhj");
-console.log(productCount,"kjjhj");
+console.log(orderCount);
+console.log(userCount);
+console.log(productCount,);
 
   const items = [
     {
