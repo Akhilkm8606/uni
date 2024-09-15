@@ -8,69 +8,60 @@ import instance from '../../Instance/axios'; // Import your axios instance
 import { toast } from 'react-toastify';
 
 function Dashboard() {
-  const orders = useSelector(state => state.orders);
-  const products = useSelector(state => state.data.products);
-  const users = useSelector(state => state.auth.user) || []; // Default to an empty array
-  const admin = users?._id;
+  const orders = useSelector(state => state.orders) || [];  // Ensure orders is always an array
+  const products = useSelector(state => state.data.products) || []; // Ensure products is always an array
+  const users = useSelector(state => state.users.allUsers) || []; // Use proper slice for all users
 
-  // Filter users
-
-  const user = Array.isArray(users) ? users.filter(user => user.role === 'user') : [];
-  const seller = Array.isArray(users) ? users.filter(user => user.role === 'seller') : [];
-  const allUsers = [...user, ...seller];
+  const admin = useSelector(state => state.auth.user)?._id;  // Get the admin's _id
   
-
-  const [orderCount, setOrderCount] = useState(0);
-  const [productCount, setProductCount] = useState(0);
+  // State for storing counts and chart data
+  const [orderCount, setOrderCount] = useState(orders.length);  // Default count to existing length
+  const [productCount, setProductCount] = useState(products.length);  // Same for products
+  const [userCount, setUserCount] = useState(users.length);  // Same for users
   const [salesData, setSalesData] = useState({ labels: [], values: [] });
-  const [orderData, setOrderData] = useState({ labels: [], values: [] });
-  const [productData, setProductData] = useState({ labels: [], values: [] });
-  
+
   // Fetch dashboard data
-    const fetchDashboard = async () => {
-      const token = localStorage.getItem('token');
-      console.log(token, 'token');
+  const fetchDashboard = async () => {
+    const token = localStorage.getItem('token');
     
-      if (!token) {
-        toast.error('No authentication token found');
-        return;
-      }
+    if (!token) {
+      toast.error('No authentication token found');
+      return;
+    }
+
     try {
       const response = await instance.get(`/api/v1/viewAdminDashboard/${admin}`, {
-
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the request
-        },
+        headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
       const dashboardData = response.data.dashboard;
-      console.log(dashboardData);
-  
-      const orders = dashboardData.orders;
-      const products = dashboardData.products;
+      
+      const fetchedOrders = dashboardData.orders;
+      const fetchedProducts = dashboardData.products;
       const monthlyData = dashboardData.monthlyData;
-  
-      setOrderCount(orders.length);
-      setProductCount(products.length);
-  
+
+      // Set the counts from the fetched data
+      setOrderCount(fetchedOrders.length);
+      setProductCount(fetchedProducts.length);
+      setUserCount(users.length); // Ensure users count is updated if changed
+      
+      // Set chart data
       const chartLabels = monthlyData.map(item => item.month);
       const chartValues = monthlyData.map(item => item.value);
-  
       setSalesData({ labels: chartLabels, values: chartValues });
-  
+
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
       toast.error('Failed to fetch dashboard data');
     }
   };
-  
 
   // Call fetchDashboard when component mounts
   useEffect(() => {
     fetchDashboard();
   }, []);
 
-  // Simulated data (for fallback if API data is not reliable)
+  // Simulated fallback data
   const simulatedSalesData = [
     { month: 'January', value: 5000 },
     { month: 'February', value: 6000 },
@@ -116,15 +107,9 @@ function Dashboard() {
     { month: 'December', count: 280 }
   ];
 
-  // Use simulated data if no API data is available
+  // Use fallback simulated data if no API data is available
   const salesLabels = (salesData.labels.length ? salesData.labels : simulatedSalesData.map(item => item.month));
   const salesValues = (salesData.values.length ? salesData.values : simulatedSalesData.map(item => item.value));
-
-  const orderLabels = (orderData.labels.length ? orderData.labels : simulatedOrderData.map(item => item.month));
-  const orderValues = (orderData.values.length ? orderData.values : simulatedOrderData.map(item => item.count));
-
-  const productLabels = (productData.labels.length ? productData.labels : simulatedProductData.map(item => item.month));
-  const productValues = (productData.values.length ? productData.values : simulatedProductData.map(item => item.count));
 
   const items = [
     {
@@ -135,12 +120,12 @@ function Dashboard() {
     {
       icon: <AiOutlineUser style={{ color: "blue" }} />,
       title: "Users",
-      value: allUsers.length
+      value: userCount
     },
     {
       icon: <AiOutlineShop style={{ color: "green" }} />,
-      title: "Store",
-      value: products.length
+      title: "Products",
+      value: productCount
     },
   ];
 
@@ -149,29 +134,26 @@ function Dashboard() {
       <Row>
         <h2>DASHBOARD</h2>
       </Row>
-      <Row>
-        <Row className='card-Row'>
-          {items.map((item, index) => (
-            <Col key={index} md={4}>
-              <div className='card-container'>
-                <Card className='card'>
-                  <Card.Body className='card-body'>
-                    <span className='icon'>{item.icon}</span>
-                    <div className='items'>
-                      <span>{item.title}</span>
-                      <span>{item.value.toLocaleString()}</span>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </div>
-            </Col>
-          ))}
-        </Row>
+      <Row className='card-Row'>
+        {items.map((item, index) => (
+          <Col key={index} md={4}>
+            <div className='card-container'>
+              <Card className='card'>
+                <Card.Body className='card-body'>
+                  <span className='icon'>{item.icon}</span>
+                  <div className='items'>
+                    <span>{item.title}</span>
+                    <span>{item.value.toLocaleString()}</span>
+                  </div>
+                </Card.Body>
+              </Card>
+            </div>
+          </Col>
+        ))}
       </Row>
       <div>
         <BarChart title="Sales Data" data={{ labels: salesLabels, values: salesValues }} />
-        <BarChart title="Order Data" data={{ labels: orderLabels, values: orderValues }} />
-        <BarChart title="Product Data" data={{ labels: productLabels, values: productValues }} />
+        {/* Other charts here */}
       </div>
     </div>
   );
