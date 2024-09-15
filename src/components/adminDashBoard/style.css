@@ -178,9 +178,9 @@ background-color: rgb(6, 25, 60);
         align-items: center;
         width: 100%;
       }
-      .header-right{
+      /* .header-right{
         display: none;
-      }
+      } */
         .PanelSideBar .options:last-child span:last-child {
             display: none;
           }
