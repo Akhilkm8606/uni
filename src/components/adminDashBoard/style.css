@@ -188,36 +188,42 @@ background-color: rgb(6, 25, 60);
            font-size: 25px;
           }
  }
-    @media  (max-width: 577px) {
-      .toggleButton{  
-        margin-left: 35px;       
-        margin-bottom: 20px;       
-      }
-        .sidebarAndPage{
-            display: flex;
-          flex-direction: column;
-          flex: 1;
-          }
-        .PanelSideBar {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items:center ;
-            height:0;
-        } 
-        .PanelSideBar .toggleButton{
-           display: none;
-          }
-          .PanelHeader {
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 12px;
-        }
-    
-        .header-right {
-            width: 100%;
-            justify-content: center;
-            margin-top: 10px;
-        }
- }
-          
+ @media (max-width: 577px) {
+  .toggleButton {  
+    margin-left: 35px;       
+    margin-bottom: 20px;       
+  }
+  
+  .sidebarAndPage {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .PanelSideBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 0;
+  } 
+  
+  .PanelSideBar .toggleButton {
+    display: none;
+  }
+  
+  .PanelHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    padding: 12px;
+    width: 100%; /* Ensure it takes full width for proper centering */
+  }
+
+  .header-right {
+    display: flex;
+    justify-content: center;
+    width: 100%; /* Ensure it takes full width for proper centering */
+    margin-top: 10px;
+  }
+}

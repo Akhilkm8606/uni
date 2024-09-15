@@ -109,8 +109,9 @@ function Dashboard() {
           </Col>
         ))}
       </Row>
+       
 
-      {/* Chart section */}
+      {/* Chart sectionyu */}
       <div>
         <BarChart title="Sales Data" data={{ labels: salesLabels, values: salesValues }} />
         <BarChart title="Order Data" data={{ labels: salesLabels, values: simulatedOrderData.map(item => item.count) }} />
