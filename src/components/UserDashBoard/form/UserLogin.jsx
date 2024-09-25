@@ -38,7 +38,6 @@ function UserLogin() {
                 password,
             }, { withCredentials: true });
 
-            console.log('Login Response:', response.data);
 
             const { data } = response;
             if (data.success) {
@@ -47,11 +46,8 @@ function UserLogin() {
                 toast.success(data.msg, { autoClose: 3000, position: "top-center" });
                 localStorage.setItem('token', token); // Storing token in localStorage
                 localStorage.setItem('user', JSON.stringify(user)); 
-               
-                console.log('Token:', token);
                 
                 // Check user role before redirecting
-                console.log('User Role:', user.role);
                 handleRedirect(user.role);
 
                 // Clear form fields after successful submission

@@ -37,7 +37,6 @@ function Home() {
     } else {
       navigate("/products");
     }
-    console.log("Search keyword:", keyword);
   };
 
   const handleProfile = () => {

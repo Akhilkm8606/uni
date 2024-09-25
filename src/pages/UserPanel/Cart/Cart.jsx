@@ -34,7 +34,6 @@ function Cart() {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true
         });
-        console.log(response.data.userCart);
         setCart(response.data.userCart);
         setLoading(false); // Set loading to false when data is fetched
       } catch (error) {

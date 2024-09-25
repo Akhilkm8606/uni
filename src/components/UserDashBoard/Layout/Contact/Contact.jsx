@@ -25,7 +25,6 @@ function Contact() {
         // Validate form before submission
         if (validateForm()) {
             // Proceed with form submission logic here
-            console.log(formData);
             // Reset form after submission
             resetForm();
         }

@@ -40,7 +40,6 @@ function ProductDetails() {
 
   const handleAddToCart = async () => {
     const token = localStorage.getItem('token');
-    console.log(token, 'token');
     
     if (!token) {
       toast.error('No authentication token found');

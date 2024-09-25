@@ -21,7 +21,6 @@ function DashBoard() {
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
-    console.log(option);
   };
 
   return (

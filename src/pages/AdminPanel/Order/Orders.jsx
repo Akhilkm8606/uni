@@ -32,7 +32,6 @@ function Orders() {
           'Authorization': `Bearer ${token}` // Ensure you include the token if required
         }
       });
-      console.log(response);
       
       if (response) {
         dispatch(getAllOrder(response.data.orders));

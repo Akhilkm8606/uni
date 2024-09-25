@@ -37,7 +37,6 @@ function Header() {
   const handleLogOut = async () => {
     try {
       await dispatch(userLogOut()); // Ensure this dispatch function returns a promise
-      console.log('Logged out');
       navigate('/login'); // Redirect to login page
     } catch (error) {
       console.error("Error logging out:", error);

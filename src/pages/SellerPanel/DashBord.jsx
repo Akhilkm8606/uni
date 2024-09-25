@@ -21,7 +21,6 @@ function Dashboard() {
   useEffect(() => {
     const fetchDashboard = async () => {
       const token = localStorage.getItem('token');
-      console.log(token, 'token');
     
       if (!token) {
         toast.error('No authentication token found');
@@ -38,11 +37,9 @@ function Dashboard() {
         });
         
 
-        console.log(response);
         
         if (response.status === 200) {
           const dashboardData = response.data.dashboard || {};
-          console.log('Dashboard data:', dashboardData);
 
           const orders = dashboardData.orders || [];
           const products = dashboardData.products || [];
