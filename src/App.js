@@ -1,20 +1,11 @@
   // App.js
   import './App.css';
-  import { Link, Route, Routes, useLocation, useParams } from 'react-router-dom';
+  import {  Route, Routes, useLocation, useParams } from 'react-router-dom';
   import DashBoard from './components/adminDashBoard/AdminDashBoard';
-  import SellerDashBoard from './pages/SellerPanel/DashBord';
   import PageContent from './components/adminDashBoard/PageContent';
-  import OrderList from './pages/AdminPanel/Order/Orders';
-  import MDashBoard from './pages/AdminPanel/Dashboard';
-  import Store from './pages/SellerPanel/Store';
-  import Users from './pages/SellerPanel/Users';
   import Order from './pages/UserPanel/Order/ProductOrder';
   import UserLogin from './components/UserDashBoard/form/UserLogin';
-  import Profile from './pages/AdminPanel/Profile';
   import UserSignUp from './components/UserDashBoard/form/UserSignUp';
-  import { TransitionGroup, CSSTransition } from 'react-transition-group';
-  import ProtectedRouter from './components/utils/ProtectedRotes';
-  import { useDispatch, useSelector } from 'react-redux';
   import Home from './components/UserDashBoard/Layout/Home/Home';
   import ProductDetails from './pages/UserPanel/Product/ProductDetails';
   import Loader from './components/UserDashBoard/Layout/Loader/Loader';
@@ -24,7 +15,6 @@
   import Products from './pages/UserPanel/Product/Products';
   import ReviewCard from './pages/UserPanel/Product/Review/ReviewCard';
   import { useEffect, useState } from 'react';
-  import { userAuthentic, userLogOut } from './components/Redux/Slice/user';
   import PaymentSuccess from './pages/UserPanel/payment/PaymentSuccess';
   import About from './components/UserDashBoard/Layout/About/About';
   import Contact from './components/UserDashBoard/Layout/Contact/Contact';
@@ -32,11 +22,10 @@
   import EditProfile from './components/UserDashBoard/Layout/Profile/EditProfile';
 import Sidebar from './components/adminDashBoard/Sidebar';
 import OrderDetails from './pages/AdminPanel/Order/OrderDetails';
-import UserList from './pages/AdminPanel/Users/UserList';
-import AddProduct from './pages/AdminPanel/Products/Add/AddProduct';
 import EditUser from './pages/AdminPanel/Users/EditUser';
 import EditProduct from './pages/AdminPanel/Products/List/EditProduct';
 import OrderSuccess from './pages/UserPanel/Order/OrderSuccess';
+import { useSelector } from 'react-redux';
 
 
   function App() {

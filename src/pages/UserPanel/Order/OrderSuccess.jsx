@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './OrderSuccess.css'; // Assuming you want to style this component
 
 function OrderSuccess() {
   return (
