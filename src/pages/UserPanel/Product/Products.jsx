@@ -47,19 +47,20 @@ function Products() {
       filtered = filtered.filter(product => selectedCategories.includes(product.categoryId));
     }
 
-    // Calculate price ranges based on filtered products
-    const minProductPrice = Math.min(...filtered.map(product => product.price));
-    const maxProductPrice = Math.max(...filtered.map(product => product.price));
-
-    const ranges = [];
-    for (let i = minProductPrice; i <= maxProductPrice; i += 1000) {
-      ranges.push({ min: i, max: i + 3000 });
-    }
-    setPriceRanges(ranges);
+    // Define dynamic price ranges
+    const priceSteps = [
+      { min: 100, max: 500 },
+      { min: 500, max: 1000 },
+      { min: 1000, max: 5000 },
+      { min: 5000, max: 10000 },
+      { min: 10000, max: 50000 },
+      { min: 50000, max: 100000 },
+    ];
+    setPriceRanges(priceSteps);
 
     // Filter products by selected price ranges
     if (selectedPriceRanges.length > 0) {
-      filtered = filtered.filter(product => 
+      filtered = filtered.filter(product =>
         selectedPriceRanges.some(range => product.price >= range.min && product.price <= range.max)
       );
     }
