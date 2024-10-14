@@ -36,6 +36,7 @@ import UserList from './pages/AdminPanel/Users/UserList';
 import AddProduct from './pages/AdminPanel/Products/Add/AddProduct';
 import EditUser from './pages/AdminPanel/Users/EditUser';
 import EditProduct from './pages/AdminPanel/Products/List/EditProduct';
+import OrderSuccess from './pages/UserPanel/Order/OrderSuccess';
 
 
   function App() {
@@ -73,6 +74,7 @@ import EditProduct from './pages/AdminPanel/Products/List/EditProduct';
           <Route path="/Cart" element={< Cart />} />
           <Route path="/Order/:id" element={< Order />} />
           <Route path="/PaymentSuccess" element={<PaymentSuccess/>}  />
+          <Route path="/success" element={<OrderSuccess/>}  />
         {/* admin */}
             <Route path="/seller" element={<DashBoard />}>
             <Route element={<Sidebar />} />
