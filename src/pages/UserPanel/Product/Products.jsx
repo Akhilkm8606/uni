@@ -37,36 +37,36 @@ function Products() {
     };
     fetchData();
   }, [dispatch]);
-
   useEffect(() => {
     if (products.length === 0) return;
-
+  
     // Filter products by selected categories
     let filtered = products;
     if (selectedCategories.length > 0) {
       filtered = filtered.filter(product => selectedCategories.includes(product.categoryId));
     }
-
-    // Define dynamic price ranges
+  
+    // Calculate price ranges dynamically
     const priceSteps = [
       { min: 100, max: 500 },
       { min: 500, max: 1000 },
       { min: 1000, max: 5000 },
       { min: 5000, max: 10000 },
       { min: 10000, max: 50000 },
-      { min: 50000, max: 100000 },
+      { min: 50000, max: 100000 }
     ];
     setPriceRanges(priceSteps);
-
+  
     // Filter products by selected price ranges
     if (selectedPriceRanges.length > 0) {
       filtered = filtered.filter(product =>
         selectedPriceRanges.some(range => product.price >= range.min && product.price <= range.max)
       );
     }
-
+  
     setFilteredProducts(filtered);
   }, [products, selectedCategories, selectedPriceRanges]);
+  
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategories(prevSelectedCategories =>
@@ -128,19 +128,20 @@ function Products() {
             </div>
 
             <div className='price-filter'>
-              {priceRanges.map((range, index) => (
-                <div key={index}>
-                  <p className='cateitems'>
-                    <input
-                      type="checkbox"
-                      checked={selectedPriceRanges.some(r => r.min === range.min && r.max === range.max)}
-                      onChange={() => handlePriceRangeClick(range)}
-                    />
-                    {`₹${range.min} - ₹${range.max}`}
-                  </p>
-                </div>
-              ))}
-            </div>
+  {priceRanges.map((range, index) => (
+    <div key={index}>
+      <p className='cateitems'>
+        <input
+          type="checkbox"
+          checked={selectedPriceRanges.some(r => r.min === range.min && r.max === range.max)}
+          onChange={() => handlePriceRangeClick(range)}
+        />
+        {`₹${range.min} - ₹${range.max}`}
+      </p>
+    </div>
+  ))}
+</div>
+
           </div>
 
           <div className='products-container'>
