@@ -77,7 +77,17 @@ function Profile() {
                       return (
                         <div key={item._id} className="product-item">
                           <Link to={`/product/${product._id}`}>
-                            <img src={`http://localhost:5000/uploads/${product.images[0]}`} className="product-image" alt="" />
+                            <img
+                              src={
+                                product.images[0]
+                                  ? product.images[0].startsWith('http')
+                                    ? product.images[0] // Use the image URL as is
+                                    : `http://localhost:5000/uploads/${product.images[0]}` // Local server path
+                                  : 'https://via.placeholder.com/150' // Fallback image
+                              }
+                              className="product-image"
+                              alt={product.name}
+                            />
                           </Link>
                           <p>{product.name}</p>
                           <p>Quantity: {item.quantity}</p>
