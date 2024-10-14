@@ -53,7 +53,8 @@ function Products() {
       { min: 1000, max: 5000 },
       { min: 5000, max: 10000 },
       { min: 10000, max: 50000 },
-      { min: 50000, max: 100000 }
+      { min: 50000, max: 100000 },
+      { min: 100000, max: 150000 },
     ];
     setPriceRanges(priceSteps);
   
