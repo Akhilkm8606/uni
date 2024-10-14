@@ -42,6 +42,12 @@ function Profile() {
     setOpenDialog(false);
   };
 
+  const getImagePublicId = (imageUrl) => {
+    const urlParts = imageUrl.split('/');
+    const fileNameWithExtension = urlParts[urlParts.length - 1];
+    const [publicId] = fileNameWithExtension.split('.'); // Split by dot and take the first part
+    return publicId;
+  };
   return (
     <div className='pm'>
       {isAuthenticated ? (
@@ -82,8 +88,9 @@ function Profile() {
                                 product.images[0]
                                   ? product.images[0].startsWith('http')
                                     ? product.images[0] // Use the image URL as is
-                                    : `http://localhost:5000/uploads/${product.images[0]}` // Local server path
-                                  : 'https://via.placeholder.com/150' // Fallback image
+                                    `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
+                                    : `https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`
+                                  : 'https://via.placeholder.com/150'
                               }
                               className="product-image"
                               alt={product.name}
