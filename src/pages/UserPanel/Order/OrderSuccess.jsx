@@ -11,7 +11,7 @@ function OrderSuccess() {
      
       <div className="actions">
         <Link to="/" className="btn">Return to Home</Link>
-        <Link to="/orders" className="btn">View Orders</Link>
+        <Link to="/MyAccount" className="btn">View Orders</Link>
       </div>
     </div>
   );
