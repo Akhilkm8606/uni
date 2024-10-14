@@ -77,32 +77,30 @@ function Profile() {
             <div className="orders-list">
               {orders.map(order => (
                 <div key={order._id} className="order-item">
-                  {order.items.map(item => {
-                    const product = products.find(product => product._id === item.product);
-                    if (product) {
-                      return (
-                        <div key={item._id} className="product-item">
-                          <Link to={`/product/${product._id}`}>
-                            <img
-                              src={
-                                product.images[0]
-                                  ? product.images[0].startsWith('http')
-                                    ? product.images[0] // Use the image URL as is
-                                    `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
-                                    : `https://res.cloudinary.com/dbyfurx53/image/upload/${product.images[0]}`
-                                  : 'https://via.placeholder.com/150'
-                              }
-                              className="product-image"
-                              alt={product.name}
-                            />
-                          </Link>
-                          <p>{product.name}</p>
-                          <p>Quantity: {item.quantity}</p>
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
+               {order.items.map(item => {
+  const product = products.find(product => product._id === item.product);
+  if (product && product.images && Array.isArray(product.images) && product.images.length > 0) {
+    return (
+      <div key={item._id} className="product-item">
+        <Link to={`/product/${product._id}`}>
+          <img
+            src={
+              product.images[0].startsWith('http')
+                ? product.images[0] // Use the image URL as is
+                : `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(product.images[0])}`
+            }
+            className="product-image"
+            alt={product.name}
+          />
+        </Link>
+        <p>{product.name}</p>
+        <p>Quantity: {item.quantity}</p>
+      </div>
+    );
+  }
+  return null;
+})}
+
                   <div>
                     <h2>Order ID: {order._id}</h2>
                     <p>Total Price: {order.totalPrice}</p>
