@@ -7,6 +7,8 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import instance from '../../../Instance/axios';
+import success from '../Order/OrderSuccess';
+
 
 function ProductOrderForm() {
     const location = useLocation();
@@ -104,7 +106,7 @@ function ProductOrderForm() {
     
             if (response.data.success) {
                 if (formData.paymentMethod === 'Cash on Delivery') {
-                    alert('Order placed successfully!');
+                   navigate("/success")
                 } else {
                     const { success, razorpayOrder } = response.data;
                     if (success) {
