@@ -33,6 +33,8 @@ function Orders() {
         }
       });
       
+      console.log(response.data.orders);
+      
       if (response) {
         dispatch(getAllOrder(response.data.orders));
       }
