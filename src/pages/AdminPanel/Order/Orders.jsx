@@ -33,7 +33,7 @@ function Orders() {
         }
       });
       
-      console.log(response.data.orders);
+      console.log(response,'kjklk');
       
       if (response) {
         dispatch(getAllOrder(response.data.orders));
