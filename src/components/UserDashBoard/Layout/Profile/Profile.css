@@ -112,6 +112,7 @@ body {
 }
 
 .order-item p {
+    color: black;
     font-size: 1rem;
     margin-bottom: 5px;
 }

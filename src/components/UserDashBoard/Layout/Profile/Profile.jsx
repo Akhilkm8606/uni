@@ -103,10 +103,12 @@ function Profile() {
 
                   <div>
                     <h2>Order ID: {order._id}</h2>
-                    <p>Total Price: {order.totalPrice}</p>
+                   <div className='prf-p'>
+                   <p>Total Price: {order.totalPrice}</p>
                     <p>Payment Method: {order.paymentMethod}</p>
                     <p>Payment Status: {order.paymentStatus}</p>
                     <p>Shipment Status: {order.status}</p>
+                   </div>
                   </div>
                 </div>
               ))}
