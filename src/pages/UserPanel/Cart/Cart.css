@@ -8,7 +8,6 @@
   gap: 30px;
   width: 100%;
   padding: 20px; /* Added padding to the container */
-  background-color: #f8f9fa; /* Light background for contrast */
 }
 
 .cart-header {
@@ -32,7 +31,6 @@
   width: 100%; /* Adjust width to fit the screen */
   max-width: 600px; /* Set a max width to prevent it from being too wide */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added subtle shadow for depth */
-  background-color: #ffffff; /* White background for each item */
 }
 
 .item-image {
