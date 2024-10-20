@@ -197,11 +197,12 @@ function Cart() {
               </div>
             ))}
           </div>
+          
           <div className="cart-total">
-            <h4>Total Selected Price: ₹{calculateSelectedTotalPrice()}</h4>
-            <button className="buy-button" onClick={handleBuyAll}>
-              Buy
-            </button>
+          <h4>Total Selected Price: ₹{calculateSelectedTotalPrice()}</h4>
+    <Link className="buy-button" to={`/Order/${cart[0]._id}`}> {/* Use cart[0]._id for the link */}
+        Buy
+    </Link>
           </div>
         </div>
       )}
