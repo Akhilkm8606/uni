@@ -87,6 +87,26 @@
   width: 100%;
 
 }
+.select-item input[type="checkbox"] {
+  width: 20px; /* Size of the checkbox */
+  height: 20px; /* Size of the checkbox */
+  margin-right: 10px; /* Space between checkbox and label */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Cart Total Styles */
+.cart-total {
+  display: flex;
+  justify-content: space-between; /* Space out total text and amount */
+  width: 100%; /* Full width of the container */
+  max-width: 600px; /* Limit the width */
+  padding: 10px; /* Padding for spacing */
+  border-top: 2px solid #ccc; /* Add a top border for separation */
+  margin-top: 20px; /* Space above the total section */
+  font-size: 1.2rem; /* Increase font size for visibility */
+  font-weight: bold; /* Make text bold */
+  color: #333; /* Color for the total text */
+}
 
 .cart-text h5 {
   margin: 0;

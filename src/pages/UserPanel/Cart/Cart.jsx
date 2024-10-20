@@ -174,6 +174,13 @@ function Cart() {
                   <div className='pqr-div'>
                     <div className='cpr'>
                       <span id={item?.productId?._id}><h5>Price: ₹{item?.productId?.price}/-</h5></span>
+                      <div className='select-item'>
+                      <input
+                        type="checkbox"
+                        checked={selectedItems.has(item._id)}
+                        onChange={() => handleSelectItem(item._id)}
+                      />
+                    </div>
                     </div>
                     <div className='cart-product-quantity'>
                       <button onClick={() => updateQuantity(item._id, Math.max(item.quantity - 1, 1))}>-</button>
@@ -185,13 +192,7 @@ function Cart() {
                         <MdDelete />
                       </button>
                     </div>
-                    <div className='select-item'>
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.has(item._id)}
-                        onChange={() => handleSelectItem(item._id)}
-                      />
-                    </div>
+                   
                   </div>
                 </div>
               </div>
