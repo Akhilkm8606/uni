@@ -130,12 +130,13 @@ function Cart() {
     setSelectedItems(newSelectedItems);
   };
 
- const handleBuyAll = () => {
+  const handleBuyAll = () => {
     const itemsToBuy = cart.filter(item => selectedItems.has(item._id));
     if (itemsToBuy.length === 0) {
       toast.error('No items selected for purchase.');
       return;
     }
+    // Navigate to /Order route and pass selected items' IDs as state
     navigate('/Order', { state: { items: itemsToBuy } });
   };
 
@@ -173,13 +174,6 @@ function Cart() {
                   <div className='pqr-div'>
                     <div className='cpr'>
                       <span id={item?.productId?._id}><h5>Price: ₹{item?.productId?.price}/-</h5></span>
-                      <div className='select-item'>
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.has(item._id)}
-                        onChange={() => handleSelectItem(item._id)}
-                      />
-                    </div>
                     </div>
                     <div className='cart-product-quantity'>
                       <button onClick={() => updateQuantity(item._id, Math.max(item.quantity - 1, 1))}>-</button>
@@ -191,18 +185,23 @@ function Cart() {
                         <MdDelete />
                       </button>
                     </div>
-                   
+                    <div className='select-item'>
+                      <input
+                        type="checkbox"
+                        checked={selectedItems.has(item._id)}
+                        onChange={() => handleSelectItem(item._id)}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          
           <div className="cart-total">
-          <h4>Total Selected Price: ₹{calculateSelectedTotalPrice()}</h4>
-    <Link className="buy-button" to={`/Order/${cart[0]._id}`}> {/* Use cart[0]._id for the link */}
-        Buy
-    </Link>
+            <h4>Total Selected Price: ₹{calculateSelectedTotalPrice()}</h4>
+            <button className="buy-button" onClick={handleBuyAll}> {/* Call handleBuyAll on button click */}
+              Buy
+            </button>
           </div>
         </div>
       )}
