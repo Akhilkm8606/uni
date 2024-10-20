@@ -175,7 +175,7 @@ function Cart() {
                       <span id={item?.productId?._id}><h5>Price: {item?.productId?.price}/-</h5></span>
                     </div>
                     <div className='cart-product-quantity'>
-                      <button onClick={() => updateQuantity(item._id, item.quantity - 1)}>-</button>
+                      <button onClick={() => updateQuantity(item._id, Math.max(item.quantity - 1, 1))}>-</button>
                       <input type="text" value={item.quantity} readOnly />
                       <button onClick={() => updateQuantity(item._id, item.quantity + 1)}>+</button>
                     </div>
@@ -193,6 +193,9 @@ function Cart() {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="cart-total">
+            <h4>Total Price: ₹{calculateTotalCartPrice()}</h4>
           </div>
         </div>
       )}
