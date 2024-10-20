@@ -78,6 +78,36 @@ function Cart() {
     }
   };
 
+  const updateQuantity = async (itemId, quantity) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        toast.error('No authentication token found.');
+        return;
+      }
+
+      const response = await instance.put(`/api/v1/cart/edit/${itemId}`,
+        { quantity },
+        { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        setCart(prevCart => {
+          return prevCart.map(item => {
+            if (item._id === itemId) {
+              return { ...item, quantity }; // Update the quantity
+            }
+            return item;
+          });
+        });
+      }
+    } catch (error) {
+      console.error('Error updating item quantity:', error);
+      toast.error('Failed to update quantity.');
+    }
+  };
+
   return (
     <div className="cart-container">
       {loading ? (
