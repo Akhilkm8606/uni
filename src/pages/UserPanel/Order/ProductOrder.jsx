@@ -11,8 +11,12 @@ function ProductOrderForm() {
     const location = useLocation();
     const dispatch = useDispatch();
     const { id } = useParams();
-    const cartItems = useSelector(state => state.cart.items);
-    const selectedItem = cartItems.find(item => item._id === id);
+    const cartItems = useSelector(state => state.cart.items) || []; // Default to an empty array
+
+    // Find the item with the specified id
+    const selectedItem = cartItems.length > 0 ? cartItems.find(item => item._id === id) : null;
+
+    const cartId = selectedItem ? selectedItem._id : null;
     const navigate = useNavigate();
     const user = useSelector(state => state.auth.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
