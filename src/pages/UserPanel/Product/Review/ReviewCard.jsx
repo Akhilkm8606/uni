@@ -66,9 +66,16 @@ function ReviewCard({productId}) {
       } else {
         toast.error("Please login to add a review", { autoClose: 1000 });
       }
-    } catch (error) {
+    }  catch (error) {
       console.error('Error adding review:', error);
-      toast.error('Failed to add review');
+  
+      // Check if server provided a specific error message
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(`Error: ${error.response.data.message}`, { autoClose: 2000 });
+      } else {
+        // Generic error message for unexpected errors
+        toast.error('Failed to add review. Please try again later.', { autoClose: 2000 });
+      }
     }
   };
   
