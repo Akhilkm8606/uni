@@ -54,6 +54,8 @@ function ReviewCard({productId}) {
           const newReview = response.data.product.reviews;
           setReviews(newReview);
           dispatch(getProductDetails(productId));
+          console.log(newReview);
+          
           
           setComment('');
           setRating(0);
