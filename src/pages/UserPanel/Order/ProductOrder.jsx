@@ -2,51 +2,33 @@ import React, { useEffect, useState } from 'react';
 import './order.css'; // Import the CSS file
 import { Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import instance from '../../../Instance/axios';
 
-function ProductOrderForm() {
+const ProductOrderForm = () => {
     const location = useLocation();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const dispatch = useDispatch(); // Keep this if you'll use dispatch later
+    const { id } = useParams();
+    const cartItems = useSelector(state => state.cart.items);
     const user = useSelector(state => state.auth.user);
-    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-    
-    // Accessing the items passed from the Cart
-    const { items } = location.state || {};
-    
-    // Check if items exist
-    if (!items || items.length === 0) {
-        toast.error("No items selected for purchase.", {
-            autoClose: 1000,
-        });
-        navigate('/cart'); // Redirect to cart if no items
-        return null;
-    }
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const navigate = useNavigate();
 
-    // Extract user ID
-    const userID = user?._id;
-
+    // Check if the user is authenticated at the start of the component
     if (!isAuthenticated) {
-        toast.error("Please login", {
-            autoClose: 1000,
-        });
+        toast.error("Please login", { autoClose: 1000 });
         navigate('/login');
+        return null; // Prevent rendering the component if not authenticated
     }
 
-    // Initializing form data
+    // State definitions
     const [formData, setFormData] = useState({
-        user: userID || '',
-        sellerId: items[0].productId.userId, // Assuming all items have the same seller
-        items: items.map(item => ({
-            product: item.productId._id,
-            name: item.productId.name,
-            quantity: item.quantity,
-            price: item.productId.price,
-        })),
-        totalPrice: items.reduce((total, item) => total + item.amount, 0) + 20, // Including shipping
+        user: user?._id || '',
+        sellerId: '',
+        items: [],
+        totalPrice: '',
         status: 'Pending',
         paymentMethod: '',
         shippingAddress: {
@@ -61,22 +43,29 @@ function ProductOrderForm() {
         },
     });
 
+    // Fetch the selected item using useEffect
     useEffect(() => {
-        if (!isAuthenticated) {
-            toast.error("Please login", {
-                autoClose: 1000,
-            });
-            navigate('/login');
+        const selectedItem = cartItems.find(item => item._id === id);
+        if (selectedItem) {
+            setFormData(prev => ({
+                ...prev,
+                sellerId: selectedItem.productId.userId,
+                items: [{
+                    product: selectedItem.productId._id,
+                    name: selectedItem.productId.name,
+                    quantity: selectedItem.quantity,
+                    price: selectedItem.price
+                }],
+                totalPrice: selectedItem.amount,
+            }));
         }
-    }, [isAuthenticated, navigate]);
+    }, [cartItems, id]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "totalPrice" || name === "paymentMethod") {
-            // Handle user, totalPrice, and paymentMethod directly under formData
             setFormData({ ...formData, [name]: value });
         } else {
-            // Handle shippingAddress fields
             setFormData({
                 ...formData,
                 shippingAddress: {
@@ -101,42 +90,43 @@ function ProductOrderForm() {
                     const { success, razorpayOrder } = response.data;
                     if (success) {
                         const data = await instance.get('/api/v1/api/razorpay/key');
+                        const options = {
+                            "key": data.key_id,
+                            "amount": razorpayOrder.amount,
+                            "currency": "INR",
+                            "name": "Acme Corp",
+                            "description": "Test Transaction",
+                            "image": "https://example.com/your_logo",
+                            "order_id": razorpayOrder.id,
+                            "callback_url": "https://unified-cart-server.vercel.app/api/v1/api/paymentVerification",
+                            "prefill": {
+                                "name": "Gaurav Kumar",
+                                "email": "gaurav.kumar@example.com",
+                                "contact": "9000090000"
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
 
-                        // Check if Razorpay script is loaded
-                        if (typeof window.Razorpay !== 'undefined') {
-                            const options = {
-                                "key": data.key_id,
-                                "amount": razorpayOrder.amount,
-                                "currency": "INR",
-                                "name": "Acme Corp",
-                                "description": "Test Transaction",
-                                "image": "https://example.com/your_logo",
-                                "order_id": razorpayOrder.id,
-                                "callback_url": "https://unified-cart-server.vercel.app/api/v1/api/paymentVerification",
-                                "prefill": {
-                                    "name": "Gaurav Kumar",
-                                    "email": "gaurav.kumar@example.com",
-                                    "contact": "9000090000"
-                                },
-                                "notes": {
-                                    "address": "Razorpay Corporate Office"
-                                },
-                                "theme": {
-                                    "color": "#3399cc"
-                                }
-                            };
-
-                            const rzp = new window.Razorpay(options);
-                            rzp.open();
-                        } else {
-                            console.error('Razorpay SDK is not loaded.');
-                        }
+                        const rzp = new window.Razorpay(options);
+                        rzp.open();
                     }
                 }
             }
         } catch (error) {
             console.error('Error creating order:', error);
         }
+    };
+
+    const getImagePublicId = (imageUrl) => {
+        const urlParts = imageUrl.split('/');
+        const fileNameWithExtension = urlParts[urlParts.length - 1];
+        const [publicId] = fileNameWithExtension.split('.');
+        return publicId;
     };
 
     return (
@@ -147,16 +137,19 @@ function ProductOrderForm() {
                     <form onSubmit={handleSubmit} className="form">
                         <label>Shipping Address:</label>
                         <div className="shipping-address">
-                            {/* ... Your shipping address inputs go here, similar to your original code ... */}
+                            {/* Shipping Address Fields */}
+                            <input type="text" name="FullName" placeholder="Enter FullName" value={formData.shippingAddress.FullName} onChange={handleChange} required />
+                            <input type="text" name="MobileNumber" placeholder="Enter Mobile Number" value={formData.shippingAddress.MobileNumber} onChange={handleChange} required />
+                            <input type="text" name="Address" placeholder="Enter Address" value={formData.shippingAddress.Address} onChange={handleChange} required />
+                            <input type="text" name="Apartment" placeholder="Enter Apartment" value={formData.shippingAddress.Apartment} onChange={handleChange} required />
+                            <input type="text" name="LandMark" placeholder="LandMark" value={formData.shippingAddress.LandMark} onChange={handleChange} required />
+                            <input type="text" name="City" placeholder="Enter City" value={formData.shippingAddress.City} onChange={handleChange} required />
+                            <input type="text" name="State" placeholder="Enter State" value={formData.shippingAddress.State} onChange={handleChange} required />
+                            <input type="number" name="ZipCode" placeholder="Enter Zip Code" value={formData.shippingAddress.ZipCode} onChange={handleChange} required />
                         </div>
 
                         <label>Payment Method:</label>
-                        <select
-                            name="paymentMethod"
-                            value={formData.paymentMethod}
-                            onChange={handleChange}
-                            required
-                        >
+                        <select name="paymentMethod" value={formData.paymentMethod} onChange={handleChange} required>
                             <option value="">Select Payment Method</option>
                             <option value="Credit Card">Credit Card</option>
                             <option value="PayPal">PayPal</option>
@@ -167,38 +160,33 @@ function ProductOrderForm() {
                 </Col>
                 <Col className='ordered-item'>
                     <div className='item-details'>
-                        {items.map((item, index) => (
-                            <div key={index}>
+                        {formData.items.length > 0 && (
+                            <div>
                                 <div className='item-img'>
                                     <img
                                         src={
-                                            item.productId.images[0]
-                                                ? item.productId.images[0].startsWith('http')
-                                                    ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(item.productId.images[0])}`
-                                                    : `https://res.cloudinary.com/dbyfurx53/image/upload/${item.productId.images[0]}`
+                                            formData.items[0].productId?.images[0]
+                                                ? formData.items[0].productId.images[0].startsWith('http')
+                                                    ? `https://res.cloudinary.com/dbyfurx53/image/upload/${getImagePublicId(formData.items[0].productId.images[0])}`
+                                                    : `https://res.cloudinary.com/dbyfurx53/image/upload/${formData.items[0].productId.images[0]}`
                                                 : 'https://via.placeholder.com/150' // Fallback image
                                         }
-                                        alt={item.productId.name}
+                                        alt={formData.items[0].name}
                                         className="card-img-top"
                                     />
-                                    <p>{item.productId.name}</p>
+                                    <p>{formData.items[0].name}</p>
                                 </div>
-
                                 <div className='details'>
-                                    <div>
-                                        <p>{item._id}</p>
-                                        <p>Quantity: <span>{item.quantity}</span></p>
-                                        <p>Amount: <span>{item.amount}</span></p>
-                                        <p>Shipping Amount: <span>20</span></p>
-                                    </div>
-                                    <h4>Total Price: {formData.totalPrice}</h4>
+                                    <p>Quantity: <span>{formData.items[0].quantity}</span></p>
+                                    <p>Amount: <span>{formData.items[0].price}</span></p>
+                                    <p>Shipping Amount: <span>20</span></p>
+                                    <h4>Total Price: {parseFloat(formData.items[0].price) + 20}</h4>
                                 </div>
                             </div>
-                        ))}
+                        )}
                     </div>
                 </Col>
             </Row>
-
             <ToastContainer />
         </div>
     );
