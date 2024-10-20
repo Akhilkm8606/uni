@@ -131,7 +131,6 @@ function Cart() {
   };
 
   const handleBuyAll = () => {
-    // Prepare order details for selected items
     const itemsToBuy = cart.filter(item => selectedItems.has(item._id));
     if (itemsToBuy.length === 0) {
       toast.error('No items selected for purchase.');
