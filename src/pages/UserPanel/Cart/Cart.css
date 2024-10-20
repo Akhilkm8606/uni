@@ -87,6 +87,12 @@
 
 .cart-text {
   width: 100%;
+  max-height: 60px; /* Set a maximum height for the text container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 5px; /* Added padding for better spacing */
+  border: 1px solid #ccc; /* Light border for definition */
+  border-radius: 5px; /* Rounded corners */
+  background-color: #f9f9f9; /* Light background for the text area */
 }
 
 .cart-text h5 {
