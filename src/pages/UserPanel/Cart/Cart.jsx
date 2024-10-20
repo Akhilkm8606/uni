@@ -130,14 +130,6 @@ function Cart() {
     setSelectedItems(newSelectedItems);
   };
 
-  const handleBuyAll = () => {
-    const itemsToBuy = cart.filter(item => selectedItems.has(item._id));
-    if (itemsToBuy.length === 0) {
-      toast.error('No items selected for purchase.');
-      return;
-    }
-    navigate('/Order', { state: { items: itemsToBuy } });
-  };
 
   return (
     <div className="cart-container">
@@ -194,15 +186,19 @@ function Cart() {
                    
                   </div>
                 </div>
+                <div className="cart-total">
+            <h4>Total Selected Price: ₹{calculateSelectedTotalPrice()}</h4>
+            <div className='buy-div'>
+                  <Link className='buy-button' to={`/Order/${item?._id}`}>
+                    Buy
+                  </Link>
+                </div>
+          </div>
               </div>
+              
             ))}
           </div>
-          <div className="cart-total">
-            <h4>Total Selected Price: ₹{calculateSelectedTotalPrice()}</h4>
-            <button className="buy-button" onClick={handleBuyAll}>
-              Buy
-            </button>
-          </div>
+          
         </div>
       )}
       <ToastContainer />
