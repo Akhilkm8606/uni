@@ -54,7 +54,7 @@ function ReviewCard({productId}) {
           const newReview = response.data.product.reviews;
           setReviews(newReview);
           dispatch(getProductDetails(productId));
-          console.log(newReview);
+        
           
           
           setComment('');
@@ -67,7 +67,7 @@ function ReviewCard({productId}) {
         toast.error("Please login to add a review", { autoClose: 1000 });
       }
     }  catch (error) {
-      console.error('Error adding review:', error);
+
   
       // Check if server provided a specific error message
       if (error.response && error.response.data && error.response.data.message) {
