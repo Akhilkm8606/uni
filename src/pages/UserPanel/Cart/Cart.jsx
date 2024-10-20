@@ -55,6 +55,17 @@ function Cart() {
     return total;
   };
 
+  const calculateSelectedTotalPrice = () => {
+    let total = 0;
+    selectedItems.forEach(itemId => {
+      const item = cart.find(item => item._id === itemId);
+      if (item) {
+        total += calculateTotalPrice(item);
+      }
+    });
+    return total;
+  };
+
   const handleRemoveCart = async (itemId) => {
     try {
       const token = localStorage.getItem('token');
@@ -162,7 +173,7 @@ function Cart() {
                   <p>{item?.productId?.description}</p>
                   <div className='pqr-div'>
                     <div className='cpr'>
-                      <span id={item?.productId?._id}><h5>Price: {item?.productId?.price}/-</h5></span>
+                      <span id={item?.productId?._id}><h5>Price: ₹{item?.productId?.price}/-</h5></span>
                     </div>
                     <div className='cart-product-quantity'>
                       <button onClick={() => updateQuantity(item._id, Math.max(item.quantity - 1, 1))}>-</button>
@@ -187,7 +198,7 @@ function Cart() {
             ))}
           </div>
           <div className="cart-total">
-            <h4>Total Price: ₹{calculateTotalCartPrice()}</h4>
+            <h4>Total Selected Price: ₹{calculateSelectedTotalPrice()}</h4>
             <button className="buy-all-button" onClick={handleBuyAll}>
               Buy All Selected
             </button>
