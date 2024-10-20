@@ -61,7 +61,7 @@ import { useSelector } from 'react-redux';
           <Route path="/Products/:keyword" element={<Products />} />
           <Route path="/adReview/:id" element={<ReviewCard />} />
           <Route path="/Cart" element={< Cart />} />
-          <Route path="/Order/:id" element={< Order />} />
+          <Route path="/Order" element={< Order />} />
           <Route path="/PaymentSuccess" element={<PaymentSuccess/>}  />
           <Route path="/success" element={<OrderSuccess/>}  />
         {/* admin */}
