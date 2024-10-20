@@ -200,8 +200,8 @@ function Cart() {
           </div>
           <div className="cart-total">
             <h4>Total Selected Price: ₹{calculateSelectedTotalPrice()}</h4>
-            <button className="buy-all-button" onClick={handleBuyAll}>
-              Buy All Selected
+            <button className="buy-button" onClick={handleBuyAll}>
+              Buy
             </button>
           </div>
         </div>
