@@ -10,6 +10,7 @@ import Loader from '../../../components/UserDashBoard/Layout/Loader/Loader';
 function Cart() {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedItems, setSelectedItems] = useState(new Set()); // To keep track of selected items
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(state => state.auth.user);
@@ -108,6 +109,26 @@ function Cart() {
     }
   };
 
+  const handleSelectItem = (itemId) => {
+    const newSelectedItems = new Set(selectedItems);
+    if (newSelectedItems.has(itemId)) {
+      newSelectedItems.delete(itemId);
+    } else {
+      newSelectedItems.add(itemId);
+    }
+    setSelectedItems(newSelectedItems);
+  };
+
+  const handleBuyAll = () => {
+    // Prepare order details for selected items
+    const itemsToBuy = cart.filter(item => selectedItems.has(item._id));
+    if (itemsToBuy.length === 0) {
+      toast.error('No items selected for purchase.');
+      return;
+    }
+    navigate('/Order', { state: { items: itemsToBuy } });
+  };
+
   return (
     <div className="cart-container">
       {loading ? (
@@ -153,18 +174,23 @@ function Cart() {
                         <MdDelete />
                       </button>
                     </div>
+                    <div className='select-item'>
+                      <input
+                        type="checkbox"
+                        checked={selectedItems.has(item._id)}
+                        onChange={() => handleSelectItem(item._id)}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className='buy-div'>
-                  <Link className='buy-button' to={`/Order/${item?._id}`}>
-                    Buy
-                  </Link>
                 </div>
               </div>
             ))}
           </div>
           <div className="cart-total">
             <h4>Total Price: ₹{calculateTotalCartPrice()}</h4>
+            <button className="buy-all-button" onClick={handleBuyAll}>
+              Buy All Selected
+            </button>
           </div>
         </div>
       )}
