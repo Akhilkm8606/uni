@@ -16,13 +16,6 @@ const ProductOrderForm = () => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const navigate = useNavigate();
 
-    // Check if the user is authenticated at the start of the component
-    if (!isAuthenticated) {
-        toast.error("Please login", { autoClose: 1000 });
-        navigate('/login');
-        return null; // Prevent rendering the component if not authenticated
-    }
-
     // State definitions
     const [formData, setFormData] = useState({
         user: user?._id || '',
@@ -42,6 +35,14 @@ const ProductOrderForm = () => {
             ZipCode: ''
         },
     });
+
+    // Redirect if not authenticated
+    useEffect(() => {
+        if (!isAuthenticated) {
+            toast.error("Please login", { autoClose: 1000 });
+            navigate('/login');
+        }
+    }, [isAuthenticated, navigate]);
 
     // Fetch the selected item using useEffect
     useEffect(() => {
