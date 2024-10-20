@@ -87,6 +87,11 @@
   width: 100%;
 
 }
+.cpr {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
 .select-item input[type="checkbox"] {
   width: 20px; /* Size of the checkbox */
   height: 20px; /* Size of the checkbox */
